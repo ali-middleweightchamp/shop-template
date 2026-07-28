@@ -1,0 +1,5 @@
+-r requirements.txt
+
+# Линт и форматирование
+ruff==0.8.*
+black==24.*

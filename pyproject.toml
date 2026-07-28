@@ -1,0 +1,25 @@
+[tool.black]
+line-length = 100
+target-version = ["py312"]
+exclude = '''
+/(
+  \.git
+  | migrations
+)/
+'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["migrations"]
+
+[tool.ruff.lint]
+# E/F — pyflakes+pycodestyle, I — isort, B — bugbear, UP — pyupgrade, DJ — flake8-django
+select = ["E", "F", "I", "B", "UP", "DJ"]
+ignore = [
+    "E501",  # длину строк контролирует black
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"config/settings/*.py" = ["F401", "F403", "F405"]

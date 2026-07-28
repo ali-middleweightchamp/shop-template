@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Django
+*.log
+db.sqlite3
+/staticfiles/
+/media/
+.env
+
+# Node / Tailwind
+node_modules/
+/static/dist/
+
+# Локальные файлы редакторов и ОС
+.DS_Store
+.idea/
+.vscode/

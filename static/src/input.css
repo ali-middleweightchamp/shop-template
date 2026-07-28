@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Здесь можно добавлять кастомные компоненты через @layer.
+   Фирменный цвет магазина задаётся из ShopSettings.primary_color
+   через CSS-переменную в base.html (этап 4). */

@@ -1,0 +1,16 @@
+{% load static i18n %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ shop.name }}{% endblock %}</title>
+  {# Скомпилированный Tailwind (npm run build:css) #}
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  {# Alpine.js — интерактив корзины. defer обязателен. #}
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  {% block head %}{% endblock %}
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-900 antialiased">
+  {% block body %}{% endblock %}
+</body>
+</html>

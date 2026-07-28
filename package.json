@@ -1,0 +1,13 @@
+{
+  "name": "shop-template",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Шаблон интернет-каталога — сборка Tailwind CSS",
+  "scripts": {
+    "build:css": "tailwindcss -i ./static/src/input.css -o ./static/dist/css/app.css --minify",
+    "watch:css": "tailwindcss -i ./static/src/input.css -o ./static/dist/css/app.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}

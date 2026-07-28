@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block body %}
+<main class="mx-auto max-w-3xl px-4 py-16 text-center">
+  <h1 class="text-3xl font-bold">{{ shop.name }}</h1>
+  <p class="mt-4 text-gray-600">
+    {% trans "Каркас проекта готов. Витрина появится на этапе 4." %}
+  </p>
+  <div class="mt-8 inline-block rounded-lg bg-white px-6 py-4 shadow">
+    <p class="text-sm text-gray-500">Django запущен ✓</p>
+  </div>
+</main>
+{% endblock %}

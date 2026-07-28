@@ -1,0 +1,15 @@
+# Ядро
+Django==5.1.*
+psycopg[binary]==3.2.*
+django-environ==0.11.*
+
+# Изображения и превью
+Pillow==11.*
+easy-thumbnails==2.10.*
+
+# Импорт/экспорт Excel
+openpyxl==3.1.*
+
+# Продакшн-сервер и статика
+gunicorn==23.*
+whitenoise==6.*
