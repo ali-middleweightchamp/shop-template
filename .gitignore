@@ -8,6 +8,8 @@ venv/
 # Django
 *.log
 db.sqlite3
+*.sqlite3
+local.sqlite3
 /staticfiles/
 /media/
 .env
