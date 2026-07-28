@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n thumbnail %}
+
+{% block body %}
+{# ---------- Герой: кто мы и приглашение в каталог ---------- #}
+<section class="shell pt-8 sm:pt-12">
+  <div class="rounded-card border border-line bg-white p-6 shadow-card sm:p-10">
+    <div class="eyebrow mb-3">{% trans "Оптом и в розницу" %}</div>
+    <h1 class="max-w-2xl text-3xl font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl">
+      {{ shop.name }}
+    </h1>
+    {% if shop.description %}
+      <p class="mt-4 max-w-xl text-muted">{{ shop.description|striptags }}</p>
+    {% endif %}
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href="{% url 'catalog:catalog' %}" class="btn-brand">{% trans "Смотреть каталог" %} →</a>
+      {% if shop.telegram_username %}
+        <a href="https://t.me/{{ shop.telegram_username }}" class="btn-ghost">{% trans "Написать в Telegram" %}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{# ---------- Категории ---------- #}
+{% if categories %}
+<section class="shell mt-10">
+  <h2 class="mb-4 text-xl font-extrabold text-ink">{% trans "Категории" %}</h2>
+  <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+    {% for c in categories %}
+      <a href="{{ c.get_absolute_url }}"
+         class="group relative flex aspect-[4/3] items-end overflow-hidden rounded-card border border-line bg-white shadow-card">
+        {% if c.image %}
+          {% thumbnail c.image "400x300" crop="smart" as im %}
+          <img src="{{ im.url }}" alt="{{ c.name }}" loading="lazy"
+               class="absolute inset-0 h-full w-full object-cover transition group-hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-t from-ink/70 to-transparent"></div>
+        {% endif %}
+        <span class="relative z-10 p-3 text-sm font-bold {% if c.image %}text-white{% else %}text-ink{% endif %}">{{ c.name }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{# ---------- Популярные товары ---------- #}
+{% if featured %}
+<section class="shell mt-12">
+  <div class="mb-4 flex items-end justify-between">
+    <h2 class="text-xl font-extrabold text-ink">{% trans "Популярное" %}</h2>
+    <a href="{% url 'catalog:catalog' %}" class="text-sm font-semibold text-brand hover:underline">{% trans "Весь каталог" %} →</a>
+  </div>
+  <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+    {% for p in featured %}{% include "catalog/partials/_product_card.html" %}{% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

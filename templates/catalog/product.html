@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load i18n thumbnail catalog_extras %}
+
+{% block title %}{{ product.name }} · {{ shop.name }}{% endblock %}
+{% block meta_description %}{{ product.name }} — {{ product.sku }}. {{ product.description|striptags|truncatewords:20 }}{% endblock %}
+
+{% block body %}
+<div class="shell pt-4">
+  {# Хлебные крошки #}
+  <nav class="mb-4 flex flex-wrap items-center gap-1.5 text-xs text-muted">
+    <a href="{% url 'catalog:home' %}" class="hover:text-ink">{% trans "Главная" %}</a>
+    <span>/</span>
+    <a href="{{ product.category.get_absolute_url }}" class="hover:text-ink">{{ product.category.name }}</a>
+  </nav>
+
+  <div class="grid gap-8 lg:grid-cols-2">
+    {# ---------- Галерея ---------- #}
+    {% if product.image %}{% thumbnail product.image "800x800" as main_im %}{% endif %}
+    <div x-data="{ main: '{% if product.image %}{{ main_im.url }}{% endif %}' }">
+      <div class="aspect-square overflow-hidden rounded-card border border-line bg-white">
+        {% if product.image %}
+          <img :src="main" alt="{{ product.name }}" class="h-full w-full object-contain">
+        {% else %}
+          {% include "catalog/partials/_no_image.html" %}
+        {% endif %}
+      </div>
+      {% if product.images.all %}
+        <div class="mt-3 flex gap-2 overflow-x-auto">
+          {% if product.image %}
+            {% thumbnail product.image "160x160" crop="smart" as t0 %}
+            <button type="button" @click="main='{{ main_im.url }}'"
+                    class="h-16 w-16 shrink-0 overflow-hidden rounded-control border border-line">
+              <img src="{{ t0.url }}" alt="" class="h-full w-full object-cover">
+            </button>
+          {% endif %}
+          {% for img in product.images.all %}
+            {% thumbnail img.image "160x160" crop="smart" as t %}
+            {% thumbnail img.image "800x800" as big %}
+            <button type="button" @click="main='{{ big.url }}'"
+                    class="h-16 w-16 shrink-0 overflow-hidden rounded-control border border-line">
+              <img src="{{ t.url }}" alt="" loading="lazy" class="h-full w-full object-cover">
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    {# ---------- Информация ---------- #}
+    <div>
+      <span class="sku-tag">{% trans "Артикул" %}: {{ product.sku }}</span>
+      <h1 class="mt-2 text-2xl font-extrabold leading-tight tracking-tight text-ink sm:text-3xl">{{ product.name }}</h1>
+
+      <div class="mt-4">
+        {% if product.get_display_price is not None %}
+          <div class="nums flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-ink">{{ product.get_display_price|money }}</span>
+            <span class="text-muted">{{ shop.currency_label }}{% if product.unit %} / {{ product.get_unit_display }}{% endif %}</span>
+            {% if product.old_price %}<span class="text-muted line-through">{{ product.old_price|money }}</span>{% endif %}
+          </div>
+        {% else %}
+          <div class="text-lg font-semibold text-muted">{% trans "Цена по запросу" %}</div>
+        {% endif %}
+        {% if product.pack_size %}<p class="mt-1 text-sm text-muted">{{ product.pack_size }}</p>{% endif %}
+      </div>
+
+      <div class="mt-6">
+        {% if product.in_stock %}
+          <div class="flex items-center gap-3">
+            <div class="stepper" x-data :data-active="$store.cart.qty('{{ product.sku }}') > 0">
+              <button type="button" @click="$store.cart.dec('{{ product.sku }}')" :disabled="$store.cart.qty('{{ product.sku }}') === 0" aria-label="−" class="!h-11 !w-11">−</button>
+              <span class="qty !w-12 text-base" x-text="$store.cart.qty('{{ product.sku }}')">0</span>
+              <button type="button" @click="$store.cart.add({sku:'{{ product.sku }}', name:'{{ product.name|escapejs }}', price:{{ product.price }}, unit:'{{ product.get_unit_display|escapejs }}'})" aria-label="+" class="!h-11 !w-11">+</button>
+            </div>
+            <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-stock">
+              <span class="h-2 w-2 rounded-full bg-stock"></span>{% trans "В наличии" %}
+            </span>
+          </div>
+        {% else %}
+          <div class="inline-block rounded-control border border-line bg-paper px-4 py-2.5 text-sm font-semibold text-muted">
+            {% trans "Нет в наличии" %}
+          </div>
+        {% endif %}
+      </div>
+
+      {% if product.description %}
+        <div class="mt-8 whitespace-pre-line border-t border-line pt-6 text-sm leading-relaxed text-ink/90">{{ product.description }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  {# ---------- Похожие ---------- #}
+  {% if related %}
+  <section class="mt-14">
+    <h2 class="mb-4 text-xl font-extrabold text-ink">{% trans "Похожие товары" %}</h2>
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      {% for p in related %}{% include "catalog/partials/_product_card.html" %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

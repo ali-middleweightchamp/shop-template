@@ -1,0 +1,167 @@
+/* ------------------------------------------------------------------ *
+ * Фирменная тема Django Admin для продавца.
+ * --brand приходит из ShopSettings (см. templates/admin/base_site.html).
+ * Оттенки для hover считаем через color-mix, чтобы тема работала
+ * с любым фирменным цветом без ручной подгонки.
+ * ------------------------------------------------------------------ */
+:root,
+html[data-theme="light"] {
+  --primary: var(--brand, #2563eb);
+  --secondary: #1c1b17;
+  --accent: var(--brand, #2563eb);
+  --primary-fg: #fff;
+
+  --body-fg: #1c1b17;
+  --body-bg: #f6f5f1;
+  --body-quiet-color: #7a776d;
+  --body-loud-color: #14130f;
+
+  --header-color: #f6f5f1;
+  --header-branding-color: #fff;
+  --header-bg: #1c1b17;
+  --header-link-color: #fff;
+
+  --breadcrumbs-fg: #cfcdc6;
+  --breadcrumbs-link-fg: #fff;
+  --breadcrumbs-bg: #2a2822;
+
+  --link-fg: var(--brand, #2563eb);
+  --link-hover-color: color-mix(in srgb, var(--brand, #2563eb) 78%, black);
+  --link-selected-fg: var(--brand, #2563eb);
+
+  --button-bg: var(--brand, #2563eb);
+  --button-fg: #fff;
+  --button-hover-bg: color-mix(in srgb, var(--brand, #2563eb) 85%, black);
+  --default-button-bg: var(--brand, #2563eb);
+  --default-button-hover-bg: color-mix(in srgb, var(--brand, #2563eb) 85%, black);
+  --close-button-bg: #7a776d;
+  --close-button-hover-bg: #5f5d55;
+
+  --object-tools-bg: #1c1b17;
+  --object-tools-hover-bg: #000;
+
+  --border-color: #e6e4dc;
+  --darkened-bg: #efeee9;
+  --selected-bg: color-mix(in srgb, var(--brand, #2563eb) 12%, #fff);
+  --selected-row: color-mix(in srgb, var(--brand, #2563eb) 8%, #fff);
+
+  --font-family-primary: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-family-monospace: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+body {
+  font-family: var(--font-family-primary);
+}
+
+/* Шапка: чуть выше и с воздухом */
+#header {
+  padding: 16px 40px;
+  line-height: 1.2;
+}
+#branding h1,
+#site-name a {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+/* Скругления и мягкие тени вместо резких прямоугольников */
+.module,
+.dashboard .module table,
+div.breadcrumbs,
+.object-tools a,
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button,
+.paginator a,
+select,
+input[type=text],
+input[type=number],
+input[type=email],
+input[type=url],
+input[type=password],
+textarea {
+  border-radius: 10px;
+}
+
+/* Модули-карточки */
+.module {
+  box-shadow: 0 1px 2px rgba(28, 27, 23, 0.04), 0 10px 30px -20px rgba(28, 27, 23, 0.25);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+.module h2,
+.module caption,
+.inline-group h2 {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+/* Кнопки: жирнее, с активным нажатием */
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button {
+  font-weight: 700;
+  padding: 10px 16px;
+  transition: filter .15s ease, transform .05s ease;
+}
+.button:active,
+input[type=submit]:active {
+  transform: translateY(1px);
+}
+
+/* Поля ввода */
+input[type=text],
+input[type=number],
+input[type=email],
+input[type=url],
+input[type=password],
+textarea,
+select {
+  border: 1px solid var(--border-color);
+  padding: 8px 10px;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--brand, #2563eb);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand, #2563eb) 18%, transparent);
+  outline: none;
+}
+
+/* Хлебные крошки */
+div.breadcrumbs {
+  padding: 12px 40px;
+  font-weight: 600;
+}
+
+/* Строка объектов при наведении */
+#changelist table tbody tr:hover {
+  background: var(--selected-row);
+}
+
+/* Логин — карточка по центру, крупная кнопка */
+body.login #container {
+  border-radius: 16px;
+  box-shadow: 0 20px 60px -30px rgba(28, 27, 23, 0.5);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+body.login .submit-row {
+  padding: 0;
+}
+body.login .submit-row input {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+}
+
+/* Инструкция на главной (наш блок) — брендовая полоса */
+.dashboard #content .module ol {
+  color: var(--body-fg);
+}

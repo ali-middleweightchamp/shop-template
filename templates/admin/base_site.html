@@ -1,0 +1,26 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+
+{% block title %}{{ subtitle }}{{ title }} · {{ shop.name }}{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  {# Фирменный цвет продавца прокидываем в переменные админки #}
+  <style>
+    :root {
+      --brand: {{ shop.primary_color|default:"#2563eb" }};
+    }
+  </style>
+  <link rel="stylesheet" href="{% static 'admin/css/brand.css' %}">
+{% endblock %}
+
+{% block branding %}
+  <div id="site-name">
+    <a href="{% url 'admin:index' %}">{{ shop.name }}</a>
+  </div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

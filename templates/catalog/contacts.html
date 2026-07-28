@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Контакты" %} · {{ shop.name }}{% endblock %}
+
+{% block body %}
+<div class="shell pt-6">
+  <h1 class="text-2xl font-extrabold tracking-tight text-ink">{% trans "Контакты" %}</h1>
+
+  <div class="mt-6 grid gap-4 sm:grid-cols-2">
+    <div class="rounded-card border border-line bg-white p-6 shadow-card">
+      <div class="eyebrow mb-3">{% trans "Как с нами связаться" %}</div>
+      <dl class="space-y-3 text-sm">
+        {% if shop.address %}<div><dt class="text-muted">{% trans "Адрес" %}</dt><dd class="font-semibold text-ink">{{ shop.address }}</dd></div>{% endif %}
+        {% if shop.phone %}<div><dt class="text-muted">{% trans "Телефон" %}</dt><dd class="nums font-semibold"><a href="tel:{{ shop.phone }}" class="text-ink hover:text-brand">{{ shop.phone }}</a></dd></div>{% endif %}
+        {% if shop.phone_secondary %}<div><dt class="text-muted">{% trans "Доп. телефон" %}</dt><dd class="nums font-semibold"><a href="tel:{{ shop.phone_secondary }}" class="text-ink hover:text-brand">{{ shop.phone_secondary }}</a></dd></div>{% endif %}
+        {% if shop.work_hours %}<div><dt class="text-muted">{% trans "Часы работы" %}</dt><dd class="font-semibold text-ink">{{ shop.work_hours }}</dd></div>{% endif %}
+      </dl>
+
+      <div class="mt-5 flex flex-wrap gap-2">
+        {% if shop.telegram_username %}<a href="https://t.me/{{ shop.telegram_username }}" class="btn-brand">Telegram</a>{% endif %}
+        {% if shop.whatsapp_phone %}<a href="https://wa.me/{{ shop.whatsapp_phone }}" class="btn-ghost">WhatsApp</a>{% endif %}
+        {% if shop.instagram_url %}<a href="{{ shop.instagram_url }}" class="btn-ghost">Instagram</a>{% endif %}
+      </div>
+    </div>
+
+    {% if shop.map_link %}
+    <a href="{{ shop.map_link }}" target="_blank" rel="noopener"
+       class="group flex min-h-[220px] items-center justify-center rounded-card border border-line bg-white p-6 text-center shadow-card">
+      <div>
+        <svg class="mx-auto text-brand" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/>
+        </svg>
+        <span class="mt-3 block font-bold text-ink group-hover:text-brand">{% trans "Открыть на карте" %} →</span>
+      </div>
+    </a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Поиск" %}{% if q %}: {{ q }}{% endif %} · {{ shop.name }}{% endblock %}
+
+{% block body %}
+<div class="shell pt-6">
+  {% if q %}
+    <h1 class="text-xl font-extrabold text-ink">
+      {% blocktrans %}Результаты по запросу «{{ q }}»{% endblocktrans %}
+    </h1>
+    <p class="mt-1 text-sm text-muted">{% blocktrans count n=page_obj.paginator.count %}Найден {{ n }} товар{% plural %}Найдено товаров: {{ n }}{% endblocktrans %}</p>
+
+    {% if page_obj.object_list %}
+      <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        {% for p in page_obj %}{% include "catalog/partials/_product_card.html" %}{% endfor %}
+      </div>
+      {% include "catalog/partials/_pagination.html" %}
+    {% else %}
+      <div class="mt-16 text-center">
+        <p class="text-muted">{% trans "Ничего не нашлось. Попробуйте другой запрос или артикул." %}</p>
+        <a href="{% url 'catalog:catalog' %}" class="btn-ghost mt-4">{% trans "Открыть каталог" %}</a>
+      </div>
+    {% endif %}
+  {% else %}
+    <p class="mt-16 text-center text-muted">{% trans "Введите название или артикул товара в поле поиска." %}</p>
+  {% endif %}
+</div>
+{% endblock %}

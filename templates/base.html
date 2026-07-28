@@ -1,16 +1,111 @@
 {% load static i18n %}<!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}">
+<html lang="{{ LANGUAGE_CODE }}" style="--brand: {{ shop.primary_color|default:'#2563eb' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ shop.name }}{% endblock %}</title>
-  {# Скомпилированный Tailwind (npm run build:css) #}
+  <meta name="description" content="{% block meta_description %}{{ shop.description|striptags|truncatewords:20 }}{% endblock %}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
-  {# Alpine.js — интерактив корзины. defer обязателен. #}
+
+  {# Корзина: стор регистрируется до инициализации Alpine #}
+  <script defer src="{% static 'js/cart.js' %}"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   {% block head %}{% endblock %}
 </head>
-<body class="min-h-screen bg-gray-50 text-gray-900 antialiased">
-  {% block body %}{% endblock %}
+<body class="min-h-screen">
+
+  {# ---------- Шапка ---------- #}
+  <header class="sticky top-0 z-30 border-b border-line bg-paper/90 backdrop-blur">
+    <div class="shell flex h-16 items-center gap-3">
+      <a href="{% url 'catalog:home' %}" class="flex shrink-0 items-center gap-2">
+        {% if shop.logo %}
+          <img src="{{ shop.logo.url }}" alt="{{ shop.name }}" class="h-9 w-auto">
+        {% else %}
+          <span class="text-lg font-extrabold tracking-tight text-ink">{{ shop.name }}</span>
+        {% endif %}
+      </a>
+
+      {# Поиск: в строке на десктопе #}
+      <form action="{% url 'catalog:search' %}" method="get"
+            class="relative ml-auto hidden flex-1 max-w-md sm:block">
+        {% include "catalog/partials/_search_input.html" %}
+      </form>
+
+      {# Корзина #}
+      <a href="{% url 'catalog:cart' %}"
+         class="relative ml-auto flex h-10 w-10 shrink-0 items-center justify-center rounded-control border border-line bg-white sm:ml-0"
+         aria-label="{% trans 'Корзина' %}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M3 3h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 7H6"/>
+          <circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>
+        </svg>
+        <span x-data x-show="$store.cart.count > 0" x-text="$store.cart.count" x-cloak
+              class="nums absolute -right-1.5 -top-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[11px] font-bold text-white"
+              style="background: var(--brand)"></span>
+      </a>
+    </div>
+
+    {# Поиск на мобильном — отдельной строкой #}
+    <div class="shell pb-3 sm:hidden">
+      <form action="{% url 'catalog:search' %}" method="get" class="relative">
+        {% include "catalog/partials/_search_input.html" %}
+      </form>
+    </div>
+  </header>
+
+  {# ---------- Контент ---------- #}
+  <main class="pb-28">{% block body %}{% endblock %}</main>
+
+  {# ---------- Подвал ---------- #}
+  <footer class="border-t border-line bg-white">
+    <div class="shell grid gap-8 py-10 sm:grid-cols-3">
+      <div>
+        <div class="text-lg font-extrabold text-ink">{{ shop.name }}</div>
+        {% if shop.description %}
+          <p class="mt-2 text-sm text-muted">{{ shop.description|striptags|truncatewords:24 }}</p>
+        {% endif %}
+      </div>
+      <div class="text-sm">
+        <div class="eyebrow mb-3">{% trans "Контакты" %}</div>
+        {% if shop.address %}<p class="text-ink">{{ shop.address }}</p>{% endif %}
+        {% if shop.phone %}<p class="nums mt-1"><a href="tel:{{ shop.phone }}" class="text-ink hover:text-brand">{{ shop.phone }}</a></p>{% endif %}
+        {% if shop.phone_secondary %}<p class="nums"><a href="tel:{{ shop.phone_secondary }}" class="text-ink hover:text-brand">{{ shop.phone_secondary }}</a></p>{% endif %}
+        {% if shop.work_hours %}<p class="mt-2 text-muted">{{ shop.work_hours }}</p>{% endif %}
+      </div>
+      <div class="text-sm">
+        <div class="eyebrow mb-3">{% trans "Мы на связи" %}</div>
+        <div class="flex flex-wrap gap-2">
+          {% if shop.telegram_username %}<a href="https://t.me/{{ shop.telegram_username }}" class="btn-ghost">Telegram</a>{% endif %}
+          {% if shop.instagram_url %}<a href="{{ shop.instagram_url }}" class="btn-ghost">Instagram</a>{% endif %}
+          {% if shop.telegram_channel_url %}<a href="{{ shop.telegram_channel_url }}" class="btn-ghost">{% trans "Канал" %}</a>{% endif %}
+        </div>
+        <a href="{% url 'catalog:contacts' %}" class="mt-4 inline-block text-brand hover:underline">{% trans "Как нас найти →" %}</a>
+      </div>
+    </div>
+    <div class="border-t border-line py-4 text-center text-xs text-muted">
+      © {% now "Y" %} {{ shop.name }}
+    </div>
+  </footer>
+
+  {# ---------- Лента-чек: липкая панель заказа (подпись макета) ---------- #}
+  <div x-data x-show="$store.cart.count > 0" x-cloak class="order-tape">
+    <a href="{% url 'catalog:cart' %}" class="shell flex h-16 items-center gap-3">
+      <div class="flex-1">
+        <div class="nums text-sm font-bold text-ink">
+          <span x-text="$store.cart.count"></span> {% trans "поз." %}
+          <span class="text-muted">·</span>
+          <span x-text="formatMoney($store.cart.total)"></span> {{ shop.currency_label }}
+        </div>
+        <div class="text-xs text-muted">{% trans "Нажмите, чтобы оформить" %}</div>
+      </div>
+      <span class="btn-brand pointer-events-none">{% trans "Заказать" %} →</span>
+    </a>
+  </div>
+
+  <style>[x-cloak]{display:none!important}</style>
 </body>
 </html>
