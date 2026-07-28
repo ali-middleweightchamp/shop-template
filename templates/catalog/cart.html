@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n l10n %}
 
 {% block title %}{% trans "Корзина" %} · {{ shop.name }}{% endblock %}
 
 {% block body %}
 <div class="shell max-w-2xl pt-6"
      x-data="cartPage({
-       min: {{ shop.min_order_amount|default:0 }},
+       min: {{ shop.min_order_amount|default:0|unlocalize }},
        currency: '{{ shop.currency_label|escapejs }}',
        header: '{{ shop.order_message_header|escapejs }}',
        tg: '{{ shop.telegram_username|escapejs }}',

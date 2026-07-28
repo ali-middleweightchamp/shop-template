@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n thumbnail catalog_extras %}
+{% load i18n l10n thumbnail catalog_extras %}
 
 {% block title %}{{ product.name }} · {{ shop.name }}{% endblock %}
 {% block meta_description %}{{ product.name }} — {{ product.sku }}. {{ product.description|striptags|truncatewords:20 }}{% endblock %}
@@ -69,7 +69,7 @@
             <div class="stepper" x-data :data-active="$store.cart.qty('{{ product.sku }}') > 0">
               <button type="button" @click="$store.cart.dec('{{ product.sku }}')" :disabled="$store.cart.qty('{{ product.sku }}') === 0" aria-label="−" class="!h-11 !w-11">−</button>
               <span class="qty !w-12 text-base" x-text="$store.cart.qty('{{ product.sku }}')">0</span>
-              <button type="button" @click="$store.cart.add({sku:'{{ product.sku }}', name:'{{ product.name|escapejs }}', price:{{ product.price }}, unit:'{{ product.get_unit_display|escapejs }}'})" aria-label="+" class="!h-11 !w-11">+</button>
+              <button type="button" @click="$store.cart.add({sku:'{{ product.sku }}', name:'{{ product.name|escapejs }}', price:{{ product.price|unlocalize }}, unit:'{{ product.get_unit_display|escapejs }}'})" aria-label="+" class="!h-11 !w-11">+</button>
             </div>
             <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-stock">
               <span class="h-2 w-2 rounded-full bg-stock"></span>{% trans "В наличии" %}

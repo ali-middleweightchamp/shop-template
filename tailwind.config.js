@@ -19,6 +19,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Manrope', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        display: ['Onest', 'Manrope', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         card: "14px",

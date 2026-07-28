@@ -1,14 +1,12 @@
 {% load static i18n %}<!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}" style="--brand: {{ shop.primary_color|default:'#2563eb' }}">
+<html lang="{{ LANGUAGE_CODE }}" style="--shop-primary: {{ shop.primary_color|default:'#2563eb' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ shop.name }}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ shop.description|striptags|truncatewords:20 }}{% endblock %}">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  {# Шрифты подключены локально через @font-face в app.css (не Google CDN) #}
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
 
   {# Корзина: стор регистрируется до инициализации Alpine #}
