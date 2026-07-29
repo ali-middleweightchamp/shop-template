@@ -18,37 +18,47 @@
 
   {# ---------- Шапка ---------- #}
   <header class="sticky top-0 z-30 border-b border-line bg-paper/90 backdrop-blur">
-    <div class="shell flex h-16 items-center gap-3">
+    <div class="shell flex h-16 items-center gap-3 lg:gap-6">
       <a href="{% url 'catalog:home' %}" class="flex shrink-0 items-center gap-2">
         {% if shop.logo %}
           <img src="{{ shop.logo.url }}" alt="{{ shop.name }}" class="h-9 w-auto">
         {% else %}
-          <span class="text-lg font-extrabold tracking-tight text-ink">{{ shop.name }}</span>
+          <span class="font-display text-lg font-extrabold tracking-tight text-ink">{{ shop.name }}</span>
         {% endif %}
       </a>
 
-      {# Поиск: в строке на десктопе #}
-      <form action="{% url 'catalog:search' %}" method="get"
-            class="relative ml-auto hidden flex-1 max-w-md sm:block">
+      {# Поиск: широкий, в строке на десктопе #}
+      <form action="{% url 'catalog:search' %}" method="get" class="relative hidden flex-1 lg:block">
         {% include "catalog/partials/_search_input.html" %}
       </form>
 
-      {# Корзина #}
+      {# Телефон — только десктоп #}
+      {% if shop.phone %}
+      <a href="tel:{{ shop.phone }}" class="nums hidden shrink-0 items-center gap-1.5 text-sm font-bold text-ink hover:text-brand lg:flex">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/>
+        </svg>{{ shop.phone }}
+      </a>
+      {% endif %}
+
+      {# Корзина: на мобильном — иконка с бейджем; на десктопе — количество и сумма #}
       <a href="{% url 'catalog:cart' %}"
-         class="relative ml-auto flex h-10 w-10 shrink-0 items-center justify-center rounded-control border border-line bg-white sm:ml-0"
+         class="relative ml-auto flex h-10 shrink-0 items-center gap-2 rounded-control border border-line bg-white px-2.5 transition hover:border-ink/30 lg:ml-0"
          aria-label="{% trans 'Корзина' %}">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path d="M3 3h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 7H6"/>
           <circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>
         </svg>
         <span x-data x-show="$store.cart.count > 0" x-text="$store.cart.count" x-cloak
-              class="nums absolute -right-1.5 -top-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[11px] font-bold text-white"
-              style="background: var(--brand)"></span>
+              class="nums absolute -right-1.5 -top-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[11px] font-bold text-white lg:hidden"
+              style="background: var(--shop-primary)"></span>
+        <span x-data class="nums hidden text-sm font-bold text-ink lg:inline"
+              x-text="$store.cart.count > 0 ? $store.cart.count + ' · ' + formatMoney($store.cart.total) + ' {{ shop.currency_label|escapejs }}' : '{% trans "Корзина" %}'">{% trans "Корзина" %}</span>
       </a>
     </div>
 
     {# Поиск на мобильном — отдельной строкой #}
-    <div class="shell pb-3 sm:hidden">
+    <div class="shell pb-3 lg:hidden">
       <form action="{% url 'catalog:search' %}" method="get" class="relative">
         {% include "catalog/partials/_search_input.html" %}
       </form>
@@ -56,7 +66,7 @@
   </header>
 
   {# ---------- Контент ---------- #}
-  <main class="pb-28">{% block body %}{% endblock %}</main>
+  <main class="pb-28 lg:pb-12">{% block body %}{% endblock %}</main>
 
   {# ---------- Подвал ---------- #}
   <footer class="border-t border-line bg-white">
@@ -90,7 +100,7 @@
   </footer>
 
   {# ---------- Лента-чек: липкая панель заказа (подпись макета) ---------- #}
-  <div x-data x-show="$store.cart.count > 0" x-cloak class="order-tape">
+  <div x-data x-show="$store.cart.count > 0" x-cloak class="order-tape lg:hidden">
     <a href="{% url 'catalog:cart' %}" class="shell flex h-16 items-center gap-3">
       <div class="flex-1">
         <div class="nums text-sm font-bold text-ink">

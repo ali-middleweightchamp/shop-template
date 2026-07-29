@@ -1,6 +1,6 @@
 """Витрина: главная, каталог, карточка товара, поиск, контакты, корзина."""
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
 
 from .models import Category, Product
@@ -13,6 +13,15 @@ def _active_products():
     return Product.objects.filter(is_active=True).select_related("category")
 
 
+def _sidebar_categories():
+    # Категории верхнего уровня с числом активных товаров у каждой
+    return (
+        Category.objects.filter(is_active=True, parent__isnull=True)
+        .annotate(num=Count("products", filter=Q(products__is_active=True), distinct=True))
+        .order_by("order", "name")
+    )
+
+
 def home(request):
     """Главная: блок о магазине, категории, популярные товары."""
     context = {
@@ -23,10 +32,12 @@ def home(request):
 
 
 def catalog(request):
-    """Весь каталог с пагинацией и лентой категорий."""
-    page = Paginator(_active_products(), PER_PAGE).get_page(request.GET.get("page"))
+    """Весь каталог с пагинацией и сайдбаром категорий."""
+    products = _active_products()
+    page = Paginator(products, PER_PAGE).get_page(request.GET.get("page"))
     context = {
-        "categories": Category.objects.filter(is_active=True, parent__isnull=True),
+        "categories": _sidebar_categories(),
+        "total_count": products.count(),
         "page_obj": page,
         "title": "Каталог",
     }
@@ -34,15 +45,14 @@ def catalog(request):
 
 
 def category(request, slug):
-    """Товары одной категории (включая подкатегории)."""
+    """Товары одной категории (включая подкатегории). Тот же шаблон, что и каталог."""
     cat = get_object_or_404(Category, slug=slug, is_active=True)
     # Товары самой категории и её дочерних
-    products = _active_products().filter(
-        Q(category=cat) | Q(category__parent=cat)
-    )
+    products = _active_products().filter(Q(category=cat) | Q(category__parent=cat))
     page = Paginator(products, PER_PAGE).get_page(request.GET.get("page"))
     context = {
-        "categories": Category.objects.filter(is_active=True, parent__isnull=True),
+        "categories": _sidebar_categories(),
+        "total_count": _active_products().count(),
         "current_category": cat,
         "page_obj": page,
         "title": cat.name,

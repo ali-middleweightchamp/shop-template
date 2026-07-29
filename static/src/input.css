@@ -91,8 +91,23 @@
   }
 
   /* --- Карточка товара: равная высота, кнопки прижаты к низу --- */
-  .product-card { @apply flex h-full flex-col overflow-hidden rounded-card bg-white shadow-card; }
+  .product-card {
+    @apply flex h-full flex-col overflow-hidden rounded-card border border-transparent bg-white shadow-card
+           transition-[box-shadow,border-color] duration-150;
+  }
+  /* Ховер: подсветка карточки. БЕЗ scale — сетка не дёргается. */
+  .product-card:hover { @apply border-line; box-shadow: 0 2px 4px rgba(28,27,23,.06), 0 16px 32px -20px rgba(28,27,23,.28); }
   .product-card.is-out { opacity: .55; }
+  .product-card.is-out:hover { @apply border-transparent shadow-card; }
+
+  /* --- Пункт сайдбара категорий (десктоп) --- */
+  .cat-link {
+    @apply flex items-center justify-between gap-2 rounded-control px-3 py-2 text-sm
+           font-semibold text-ink transition hover:bg-white;
+  }
+  .cat-link .cnt { @apply nums shrink-0 text-xs font-bold text-muted; }
+  .cat-link[aria-current="page"] { @apply bg-white shadow-card; }
+  .cat-link[aria-current="page"] .cnt { color: var(--shop-primary, #2563eb); }
 
   /* Квадрат фото: любые пропорции → одинаковый квадрат, contain, белый фон */
   .product-media {

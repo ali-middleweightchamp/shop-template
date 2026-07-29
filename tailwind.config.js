@@ -30,7 +30,7 @@ module.exports = {
         tape: "0 -8px 24px -12px rgba(28,27,23,0.25)",
       },
       maxWidth: {
-        shell: "1120px",
+        shell: "1200px",
       },
     },
   },
