@@ -42,7 +42,8 @@ LOCAL_APPS = [
     "apps.importer",
 ]
 
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+# jazzmin обязан идти перед django.contrib.admin
+INSTALLED_APPS = ["jazzmin"] + DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -133,5 +134,73 @@ THUMBNAIL_ALIASES = {
         "card": {"size": (400, 400), "crop": "smart"},
         "thumb": {"size": (120, 120), "crop": "smart"},
         "detail": {"size": (800, 800), "crop": False},
+    },
+}
+
+
+# --- Админка (django-jazzmin) ---
+from django.utils.functional import lazy  # noqa: E402
+
+
+def _shop_name():
+    """Название магазина из ShopSettings. lazy — чтобы не трогать БД при импорте
+    настроек и не хардкодить имя (берётся динамически при рендере админки)."""
+    try:
+        from apps.shopsettings.models import ShopSettings
+
+        return ShopSettings.get_solo().name
+    except Exception:
+        return "Магазин"
+
+
+_shop_name_lazy = lazy(_shop_name, str)
+
+JAZZMIN_SETTINGS = {
+    "site_title": _shop_name_lazy(),
+    "site_header": _shop_name_lazy(),
+    "site_brand": _shop_name_lazy(),
+    "site_logo": None,
+    "welcome_sign": "Панель управления магазином",
+    "copyright": _shop_name_lazy(),
+    "search_model": ["catalog.Product"],
+    # Иконки разделов (Font Awesome 5)
+    "icons": {
+        "catalog.Product": "fas fa-box",
+        "catalog.Category": "fas fa-tags",
+        "shopsettings.ShopSettings": "fas fa-store",
+        "importer.ImportLog": "fas fa-file-excel",
+    },
+    "default_icon_parents": "fas fa-chevron-right",
+    "default_icon_children": "fas fa-circle",
+    # В меню — только эти модели, в этом порядке
+    "order_with_respect_to": [
+        "catalog.product",
+        "catalog.category",
+        "shopsettings.shopsettings",
+        "importer.importlog",
+    ],
+    # Прячем всё лишнее из меню
+    "hide_apps": ["auth"],
+    "hide_models": ["auth.user", "auth.group"],
+    "topmenu_links": [
+        {"name": "Открыть сайт", "url": "/", "new_window": True},
+    ],
+    "usermenu_links": [],
+    "show_ui_builder": False,
+    "changeform_format": "single",
+    "language_chooser": False,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar": "navbar-dark",
+    "navbar_fixed": True,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-primary",
+    "brand_colour": "navbar-dark",
+    "accent": "accent-danger",
+    "theme": "flatly",
+    "button_classes": {
+        "primary": "btn-primary",
+        "success": "btn-success",
     },
 }

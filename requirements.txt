@@ -3,6 +3,9 @@ Django==5.1.*
 psycopg[binary]==3.2.*
 django-environ==0.11.*
 
+# Оформление админки
+django-jazzmin==3.0.*
+
 # Изображения и превью
 Pillow==11.*
 easy-thumbnails==2.10.*

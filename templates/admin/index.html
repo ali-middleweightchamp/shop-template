@@ -1,20 +1,21 @@
 {% extends "admin/index.html" %}
 {% load i18n %}
 
-{# Короткая инструкция и кнопка загрузки прайса поверх стандартной главной админки #}
+{% comment %}Главная админки на jazzmin: крупная кнопка загрузки прайса и
+короткая инструкция, затем стандартная панель jazzmin ({{ block.super }}).{% endcomment %}
 {% block content %}
-<div class="module" style="padding:16px 20px;margin-bottom:20px;border-left:4px solid var(--primary,#2563eb)">
-  <h2 style="margin-top:0">{% trans "С чего начать" %}</h2>
-  <ol style="margin:0 0 14px 18px;line-height:1.9">
-    <li>{% trans "Откройте «Настройки магазина» — укажите название, логотип, цвет, Telegram и телефон." %}</li>
-    <li>{% trans "Загрузите прайс из файла Excel — товары и категории создадутся сами." %}</li>
-    <li>{% trans "Проверьте сайт и при необходимости поправьте цены и наличие прямо в списке товаров." %}</li>
-  </ol>
-  <a href="{% url 'admin:importer_importlog_changelist' %}"
-     class="button"
-     style="display:inline-block;padding:10px 18px;background:var(--primary,#2563eb);color:#fff;border-radius:6px;font-weight:600;text-decoration:none">
-    {% trans "Загрузить прайс" %}
-  </a>
+<div class="card card-outline card-danger mb-4">
+  <div class="card-body">
+    <h4 class="mb-3"><i class="fas fa-rocket"></i> {% trans "С чего начать" %}</h4>
+    <ol class="mb-4" style="padding-left:1.1rem;line-height:2">
+      <li>{% trans "Откройте «Настройки магазина» — название, логотип, цвет, Telegram и телефон." %}</li>
+      <li>{% trans "Загрузите прайс из файла Excel — товары и категории создадутся сами." %}</li>
+      <li>{% trans "Проверьте сайт и поправьте цены и наличие прямо в списке товаров." %}</li>
+    </ol>
+    <a href="{% url 'admin:importer_importlog_changelist' %}" class="btn btn-danger btn-lg">
+      <i class="fas fa-file-excel"></i>&nbsp; {% trans "Загрузить прайс" %}
+    </a>
+  </div>
 </div>
 
 {{ block.super }}
