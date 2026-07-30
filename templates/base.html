@@ -25,17 +25,10 @@
 
   {# Корзина: стор регистрируется до инициализации Alpine #}
   <script defer src="{% static 'js/cart.js' %}"></script>
-  <script defer src="{% static 'js/colorbends.js' %}"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   {% block head %}{% endblock %}
 </head>
 <body class="min-h-screen">
-
-  {# Анимированный фон: мягкие диагональные полосы акцентного цвета #}
-  <canvas id="bg-bends" aria-hidden="true"
-          class="pointer-events-none fixed inset-0 -z-10"
-          data-speed="0.2" data-frequency="1.0" data-band-width="0.14"
-          data-rotation="90" data-fade-top="0.75" data-intensity="1.3" data-noise="0.15"></canvas>
 
   {# ---------- Шапка ---------- #}
   <header class="sticky top-0 z-30 border-b border-line bg-surface backdrop-blur">
