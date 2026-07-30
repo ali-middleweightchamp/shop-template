@@ -160,6 +160,7 @@ JAZZMIN_SETTINGS = {
     "site_header": _shop_name_lazy(),
     "site_brand": _shop_name_lazy(),
     "site_logo": None,
+    "custom_css": "admin/css/admin-emerald.css",
     "welcome_sign": "Панель управления магазином",
     "copyright": _shop_name_lazy(),
     "search_model": ["catalog.Product"],
@@ -197,10 +198,11 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_fixed": True,
     "sidebar": "sidebar-dark-primary",
     "brand_colour": "navbar-dark",
-    "accent": "accent-danger",
-    "theme": "flatly",
+    "accent": "accent-success",  # изумрудный акцент
+    "theme": "darkly",  # тёмная база
+    "dark_mode_theme": "darkly",
     "button_classes": {
-        "primary": "btn-primary",
+        "primary": "btn-success",
         "success": "btn-success",
     },
 }

@@ -4,7 +4,7 @@
 {% comment %}Главная админки на jazzmin: крупная кнопка загрузки прайса и
 короткая инструкция, затем стандартная панель jazzmin ({{ block.super }}).{% endcomment %}
 {% block content %}
-<div class="card card-outline card-danger mb-4">
+<div class="card card-outline card-success mb-4">
   <div class="card-body">
     <h4 class="mb-3"><i class="fas fa-rocket"></i> {% trans "С чего начать" %}</h4>
     <ol class="mb-4" style="padding-left:1.1rem;line-height:2">
@@ -12,7 +12,7 @@
       <li>{% trans "Загрузите прайс из файла Excel — товары и категории создадутся сами." %}</li>
       <li>{% trans "Проверьте сайт и поправьте цены и наличие прямо в списке товаров." %}</li>
     </ol>
-    <a href="{% url 'admin:importer_importlog_changelist' %}" class="btn btn-danger btn-lg">
+    <a href="{% url 'admin:importer_importlog_changelist' %}" class="btn btn-success btn-lg">
       <i class="fas fa-file-excel"></i>&nbsp; {% trans "Загрузить прайс" %}
     </a>
   </div>

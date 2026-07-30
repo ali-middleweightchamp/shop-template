@@ -1,0 +1,623 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-30 13:20+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: uz\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: apps/catalog/admin.py:53
+msgid "Превью"
+msgstr "Ko‘rinish"
+
+#: apps/catalog/admin.py:84
+msgid "Цена и единица"
+msgstr "Narx va birlik"
+
+#: apps/catalog/admin.py:85
+msgid "Описание и фото"
+msgstr "Tavsif va rasm"
+
+#: apps/catalog/admin.py:87
+msgid "Отображение"
+msgstr "Ko‘rsatish"
+
+#: apps/catalog/admin.py:92 apps/catalog/models.py:77
+#: apps/catalog/models.py:122
+msgid "Фото"
+msgstr "Rasm"
+
+#: apps/catalog/admin.py:97
+msgid "Отметить как «в наличии»"
+msgstr "«Sotuvda bor» deb belgilash"
+
+#: apps/catalog/admin.py:100
+#, python-format
+msgid "Отмечено в наличии: %(n)d"
+msgstr "Sotuvda bor deb belgilandi: %(n)d"
+
+#: apps/catalog/admin.py:102
+msgid "Снять с наличия"
+msgstr "Sotuvdan olish"
+
+#: apps/catalog/admin.py:105
+#, python-format
+msgid "Снято с наличия: %(n)d"
+msgstr "Sotuvdan olindi: %(n)d"
+
+#: apps/catalog/admin.py:107
+msgid "Скрыть с сайта"
+msgstr "Saytdan yashirish"
+
+#: apps/catalog/admin.py:110
+#, python-format
+msgid "Скрыто с сайта: %(n)d"
+msgstr "Saytdan yashirildi: %(n)d"
+
+#: apps/catalog/admin.py:112
+msgid "Показать на сайте"
+msgstr "Saytda ko‘rsatish"
+
+#: apps/catalog/admin.py:115
+#, python-format
+msgid "Показано на сайте: %(n)d"
+msgstr "Saytda ko‘rsatildi: %(n)d"
+
+#: apps/catalog/admin.py:127 apps/catalog/models.py:21
+msgid "Картинка"
+msgstr "Rasm"
+
+#: apps/catalog/models.py:11 apps/catalog/models.py:54
+msgid "Название"
+msgstr "Nomi"
+
+#: apps/catalog/models.py:12 apps/catalog/models.py:55
+msgid "Ссылка (slug)"
+msgstr "Havola (slug)"
+
+#: apps/catalog/models.py:15
+msgid "Родительская категория"
+msgstr "Ota-turkum"
+
+#: apps/catalog/models.py:22 apps/catalog/models.py:82
+#: apps/catalog/models.py:123
+msgid "Порядок"
+msgstr "Tartib"
+
+#: apps/catalog/models.py:23
+msgid "Активна"
+msgstr "Faol"
+
+#: apps/catalog/models.py:26 apps/catalog/models.py:59
+msgid "Категория"
+msgstr "Turkum"
+
+#: apps/catalog/models.py:27 templates/catalog/home.html:27
+msgid "Категории"
+msgstr "Turkumlar"
+
+#: apps/catalog/models.py:36
+msgid "Максимальная вложенность категорий — 2 уровня."
+msgstr "Turkumlarning maksimal ichma-ichligi — 2 daraja."
+
+#: apps/catalog/models.py:39
+msgid "Категория не может быть родителем самой себе."
+msgstr "Turkum o‘zining ota-turkumi bo‘la olmaydi."
+
+#: apps/catalog/models.py:49
+msgid "шт"
+msgstr "dona"
+
+#: apps/catalog/models.py:50
+msgid "упак"
+msgstr "o‘ram"
+
+#: apps/catalog/models.py:51
+msgid "кг"
+msgstr "kg"
+
+#: apps/catalog/models.py:52
+msgid "м"
+msgstr "m"
+
+#: apps/catalog/models.py:56 templates/catalog/product.html:50
+msgid "Артикул"
+msgstr "Artikul"
+
+#: apps/catalog/models.py:64
+msgid "Цена"
+msgstr "Narx"
+
+#: apps/catalog/models.py:66
+msgid "Старая цена"
+msgstr "Eski narx"
+
+#: apps/catalog/models.py:70
+msgid "Единица"
+msgstr "Birlik"
+
+#: apps/catalog/models.py:73
+msgid "Фасовка"
+msgstr "Qadoq"
+
+#: apps/catalog/models.py:73
+msgid "Например: 12 шт в упаковке"
+msgstr "Masalan: qadoqda 12 dona"
+
+#: apps/catalog/models.py:76 apps/shopsettings/models.py:29
+msgid "Описание"
+msgstr "Tavsif"
+
+#: apps/catalog/models.py:79 templates/catalog/product.html:75
+msgid "В наличии"
+msgstr "Sotuvda bor"
+
+#: apps/catalog/models.py:80
+msgid "Показывать на сайте"
+msgstr "Saytda ko‘rsatilsin"
+
+#: apps/catalog/models.py:81
+msgid "Популярный"
+msgstr "Ommabop"
+
+#: apps/catalog/models.py:84
+msgid "Создан"
+msgstr "Yaratildi"
+
+#: apps/catalog/models.py:85
+msgid "Обновлён"
+msgstr "Yangilangan"
+
+#: apps/catalog/models.py:88 apps/catalog/models.py:118
+msgid "Товар"
+msgstr "Mahsulot"
+
+#: apps/catalog/models.py:89
+msgid "Товары"
+msgstr "Mahsulotlar"
+
+#: apps/catalog/models.py:126 apps/catalog/models.py:127
+msgid "Фото товара"
+msgstr "Mahsulot rasmi"
+
+#: apps/importer/admin.py:41 apps/importer/models.py:38
+msgid "Загрузка прайса"
+msgstr "Narx yuklash"
+
+#: apps/importer/models.py:11
+msgid "Ожидает"
+msgstr "Kutilmoqda"
+
+#: apps/importer/models.py:12
+msgid "Предпросмотр"
+msgstr "Oldindan ko‘rish"
+
+#: apps/importer/models.py:13
+msgid "Применён"
+msgstr "Qo‘llanildi"
+
+#: apps/importer/models.py:14
+msgid "Ошибка"
+msgstr "Xato"
+
+#: apps/importer/models.py:16
+msgid "Файл"
+msgstr "Fayl"
+
+#: apps/importer/models.py:17
+msgid "Загружен"
+msgstr "Yuklandi"
+
+#: apps/importer/models.py:20
+msgid "Пользователь"
+msgstr "Foydalanuvchi"
+
+#: apps/importer/models.py:26
+msgid "Всего строк"
+msgstr "Jami qatorlar"
+
+#: apps/importer/models.py:27
+msgid "Создано"
+msgstr "Yaratilgan"
+
+#: apps/importer/models.py:28
+msgid "Обновлено"
+msgstr "Yangilandi"
+
+#: apps/importer/models.py:29
+msgid "С ошибками"
+msgstr "Xatolar bilan"
+
+#: apps/importer/models.py:32
+msgid "Ошибки"
+msgstr "Xatolar"
+
+#: apps/importer/models.py:34
+msgid "Статус"
+msgstr "Holat"
+
+#: apps/importer/models.py:39
+msgid "Загрузки прайса"
+msgstr "Narx yuklashlar"
+
+#: apps/shopsettings/admin.py:19
+msgid "Бренд"
+msgstr "Brend"
+
+#: apps/shopsettings/admin.py:20
+msgid "Оформление"
+msgstr "Ko‘rinish"
+
+#: apps/shopsettings/admin.py:22
+msgid "Контакты для заказа"
+msgstr "Buyurtma uchun aloqa"
+
+#: apps/shopsettings/admin.py:26
+msgid ""
+"Именно сюда покупатель отправит готовый заказ. Telegram — без символа @."
+msgstr ""
+"Xaridor tayyor buyurtmani aynan shu yerga yuboradi. Telegram — @ belgisisiz."
+
+#: apps/shopsettings/admin.py:31
+msgid "Адрес и время работы"
+msgstr "Manzil va ish vaqti"
+
+#: apps/shopsettings/admin.py:32
+msgid "Соцсети"
+msgstr "Ijtimoiy tarmoqlar"
+
+#: apps/shopsettings/admin.py:34
+msgid "Витрина"
+msgstr "Vitrina"
+
+#: apps/shopsettings/admin.py:46
+msgid "Как выглядит цвет"
+msgstr "Rang qanday ko‘rinadi"
+
+#: apps/shopsettings/models.py:13
+msgid "Цвет должен быть в формате HEX, например #2563eb"
+msgstr "Rang HEX formatida bo‘lishi kerak, masalan #2563eb"
+
+#: apps/shopsettings/models.py:23
+msgid "Изумруд"
+msgstr "Zumrad"
+
+#: apps/shopsettings/models.py:27
+msgid "Название магазина"
+msgstr "Do‘kon nomi"
+
+#: apps/shopsettings/models.py:28
+msgid "Логотип"
+msgstr "Logotip"
+
+#: apps/shopsettings/models.py:31
+msgid "Тема оформления"
+msgstr "Ko‘rinish mavzusi"
+
+#: apps/shopsettings/models.py:35
+msgid "Цветовой пресет витрины (светлая/тёмная переключаются на сайте)"
+msgstr "Vitrina rang preseti (och/qorong‘i saytda almashtiriladi)"
+
+#: apps/shopsettings/models.py:38
+msgid "Фирменный цвет"
+msgstr "Firma rangi"
+
+#: apps/shopsettings/models.py:42
+msgid ""
+"HEX, например #0F7B5F. Если заполнен — перебивает акцент темы. Пусто — цвет "
+"из темы."
+msgstr ""
+"HEX, masalan #0F7B5F. To‘ldirilsa — mavzu aksentini almashtiradi. Bo‘sh — "
+"mavzudagi rang."
+
+#: apps/shopsettings/models.py:47
+msgid "Telegram продавца"
+msgstr "Sotuvchi Telegrami"
+
+#: apps/shopsettings/models.py:50
+msgid "Без @, например: myshop"
+msgstr "@ belgisisiz, masalan: myshop"
+
+#: apps/shopsettings/models.py:53
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+#: apps/shopsettings/models.py:56
+msgid "Только цифры с кодом страны, например: 998901234567"
+msgstr "Faqat mamlakat kodi bilan raqamlar, masalan: 998901234567"
+
+#: apps/shopsettings/models.py:58 templates/catalog/contacts.html:15
+msgid "Телефон"
+msgstr "Telefon"
+
+#: apps/shopsettings/models.py:59 templates/catalog/contacts.html:16
+msgid "Доп. телефон"
+msgstr "Qo‘shimcha telefon"
+
+#: apps/shopsettings/models.py:62 templates/catalog/contacts.html:14
+msgid "Адрес"
+msgstr "Manzil"
+
+#: apps/shopsettings/models.py:63
+msgid "Ссылка на карту"
+msgstr "Xaritaga havola"
+
+#: apps/shopsettings/models.py:65 templates/catalog/contacts.html:17
+msgid "Часы работы"
+msgstr "Ish vaqti"
+
+#: apps/shopsettings/models.py:65
+msgid "Например: Пн–Сб 9:00–18:00"
+msgstr "Masalan: Du–Sh 9:00–18:00"
+
+#: apps/shopsettings/models.py:69
+msgid "Instagram"
+msgstr "Instagram"
+
+#: apps/shopsettings/models.py:70
+msgid "Telegram-канал"
+msgstr "Telegram-kanal"
+
+#: apps/shopsettings/models.py:73
+msgid "Валюта"
+msgstr "Valyuta"
+
+#: apps/shopsettings/models.py:75 templates/catalog/cart.html:68
+msgid "Минимальная сумма заказа"
+msgstr "Minimal buyurtma summasi"
+
+#: apps/shopsettings/models.py:79
+msgid "0 — без ограничения"
+msgstr "0 — cheklovsiz"
+
+#: apps/shopsettings/models.py:82
+msgid "Заголовок сообщения заказа"
+msgstr "Buyurtma xabari sarlavhasi"
+
+#: apps/shopsettings/models.py:85
+msgid "Первая строка сообщения, которое уходит в Telegram/WhatsApp"
+msgstr "Telegram/WhatsAppga ketadigan xabarning birinchi qatori"
+
+#: apps/shopsettings/models.py:88
+msgid "Показывать цены"
+msgstr "Narxlarni ko‘rsatish"
+
+#: apps/shopsettings/models.py:90
+msgid "Выключите, если цены только по запросу"
+msgstr "Narxlar faqat so‘rov bo‘yicha bo‘lsa, o‘chiring"
+
+#: apps/shopsettings/models.py:94 apps/shopsettings/models.py:95
+msgid "Настройки магазина"
+msgstr "Do‘kon sozlamalari"
+
+#: config/urls.py:10
+msgid "Управление магазином"
+msgstr "Do‘konni boshqarish"
+
+#: config/urls.py:11
+msgid "Магазин"
+msgstr "Do‘kon"
+
+#: config/urls.py:12
+msgid "Панель управления"
+msgstr "Boshqaruv paneli"
+
+#: templates/admin/index.html:10
+msgid "С чего начать"
+msgstr "Nimadan boshlash"
+
+#: templates/admin/index.html:12
+msgid ""
+"Откройте «Настройки магазина» — название, логотип, цвет, Telegram и телефон."
+msgstr ""
+"«Do‘kon sozlamalari»ni oching — nomi, logotip, rang, Telegram va telefon."
+
+#: templates/admin/index.html:13
+msgid "Загрузите прайс из файла Excel — товары и категории создадутся сами."
+msgstr ""
+"Excel fayldan narxlarni yuklang — mahsulot va turkumlar o‘zi yaratiladi."
+
+#: templates/admin/index.html:14
+msgid "Проверьте сайт и поправьте цены и наличие прямо в списке товаров."
+msgstr ""
+"Saytni tekshiring va narx hamda mavjudlikni mahsulotlar ro‘yxatida "
+"to‘g‘rilang."
+
+#: templates/admin/index.html:17
+msgid "Загрузить прайс"
+msgstr "Narxlarni yuklash"
+
+#: templates/base.html:75
+msgid "Сменить тему"
+msgstr "Mavzuni almashtirish"
+
+#: templates/base.html:84 templates/base.html:93 templates/catalog/cart.html:4
+#: templates/catalog/cart.html:15
+msgid "Корзина"
+msgstr "Savat"
+
+#: templates/base.html:118 templates/catalog/contacts.html:4
+#: templates/catalog/contacts.html:8
+msgid "Контакты"
+msgstr "Kontaktlar"
+
+#: templates/base.html:125
+msgid "Мы на связи"
+msgstr "Biz aloqadamiz"
+
+#: templates/base.html:129
+msgid "Канал"
+msgstr "Kanal"
+
+#: templates/base.html:131
+msgid "Как нас найти →"
+msgstr "Bizni qanday topish →"
+
+#: templates/base.html:144
+msgid "поз."
+msgstr "poz."
+
+#: templates/base.html:148
+msgid "Нажмите, чтобы оформить"
+msgstr "Rasmiylashtirish uchun bosing"
+
+#: templates/base.html:150
+msgid "Заказать"
+msgstr "Buyurtma berish"
+
+#: templates/catalog/cart.html:20
+msgid "Корзина пуста."
+msgstr "Savat bo‘sh."
+
+#: templates/catalog/cart.html:21
+msgid "Перейти в каталог"
+msgstr "Katalogga o‘tish"
+
+#: templates/catalog/cart.html:43
+msgid "Удалить"
+msgstr "O‘chirish"
+
+#: templates/catalog/cart.html:52
+msgid "Комментарий к заказу"
+msgstr "Buyurtmaga izoh"
+
+#: templates/catalog/cart.html:53
+msgid "Адрес, удобное время доставки…"
+msgstr "Manzil, yetkazib berish uchun qulay vaqt…"
+
+#: templates/catalog/cart.html:59
+msgid "Итого"
+msgstr "Jami"
+
+#: templates/catalog/cart.html:70
+msgid "Добавьте ещё товаров."
+msgstr "Yana mahsulot qo‘shing."
+
+#: templates/catalog/cart.html:77
+msgid "Заказать через Telegram"
+msgstr "Telegram orqali buyurtma"
+
+#: templates/catalog/cart.html:79
+msgid "Заказать через WhatsApp"
+msgstr "WhatsApp orqali buyurtma"
+
+#: templates/catalog/catalog.html:17
+msgid "Все"
+msgstr "Hammasi"
+
+#: templates/catalog/catalog.html:33
+msgid "Все товары"
+msgstr "Barcha mahsulotlar"
+
+#: templates/catalog/catalog.html:52
+msgid "В этом разделе пока нет товаров."
+msgstr "Bu bo‘limda hozircha mahsulot yo‘q."
+
+#: templates/catalog/contacts.html:12
+msgid "Как с нами связаться"
+msgstr "Biz bilan qanday bog‘lanish"
+
+#: templates/catalog/contacts.html:34
+msgid "Открыть на карте"
+msgstr "Xaritada ochish"
+
+#: templates/catalog/home.html:8
+msgid "Оптом и в розницу"
+msgstr "Ulgurji va chakana"
+
+#: templates/catalog/home.html:16
+msgid "Смотреть каталог"
+msgstr "Katalogni ko‘rish"
+
+#: templates/catalog/home.html:18
+msgid "Написать в Telegram"
+msgstr "Telegramga yozish"
+
+#: templates/catalog/home.html:49
+msgid "Популярное"
+msgstr "Ommabop"
+
+#: templates/catalog/home.html:50
+msgid "Весь каталог"
+msgstr "Butun katalog"
+
+#: templates/catalog/partials/_pagination.html:3
+msgid "Страницы"
+msgstr "Sahifalar"
+
+#: templates/catalog/partials/_pagination.html:5
+msgid "Назад"
+msgstr "Orqaga"
+
+#: templates/catalog/partials/_pagination.html:11
+msgid "Ещё"
+msgstr "Yana"
+
+#: templates/catalog/partials/_product_card.html:27
+#: templates/catalog/product.html:61
+msgid "Цена по запросу"
+msgstr "Narx so‘rov bo‘yicha"
+
+#: templates/catalog/partials/_product_card.html:33
+msgid "Убрать"
+msgstr "Olib tashlash"
+
+#: templates/catalog/partials/_product_card.html:37
+msgid "Добавить"
+msgstr "Qo‘shish"
+
+#: templates/catalog/partials/_product_card.html:42
+#: templates/catalog/product.html:80
+msgid "Нет в наличии"
+msgstr "Sotuvda yo‘q"
+
+#: templates/catalog/partials/_search_input.html:3
+msgid "Поиск по названию или артикулу"
+msgstr "Nomi yoki artikul bo‘yicha qidiruv"
+
+#: templates/catalog/product.html:11
+msgid "Главная"
+msgstr "Bosh sahifa"
+
+#: templates/catalog/product.html:94
+msgid "Похожие товары"
+msgstr "O‘xshash mahsulotlar"
+
+#: templates/catalog/search.html:4
+msgid "Поиск"
+msgstr "Qidiruv"
+
+#: templates/catalog/search.html:10
+#, python-format
+msgid "Результаты по запросу «%(q)s»"
+msgstr "«%(q)s» so‘rovi bo‘yicha natijalar"
+
+#: templates/catalog/search.html:12
+#, python-format
+msgid "Найден %(n)s товар"
+msgid_plural "Найдено товаров: %(n)s"
+msgstr[0] "%(n)s ta mahsulot topildi"
+
+#: templates/catalog/search.html:21
+msgid "Ничего не нашлось. Попробуйте другой запрос или артикул."
+msgstr "Hech narsa topilmadi. Boshqa so‘rov yoki artikulni sinab ko‘ring."
+
+#: templates/catalog/search.html:22
+msgid "Открыть каталог"
+msgstr "Katalogni ochish"
+
+#: templates/catalog/search.html:26
+msgid "Введите название или артикул товара в поле поиска."
+msgstr "Qidiruv maydoniga mahsulot nomi yoki artikulini kiriting."

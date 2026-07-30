@@ -1,0 +1,168 @@
+/* Изумрудный акцент поверх тёмной темы darkly (jazzmin / AdminLTE / Bootstrap 5).
+   Приводит админку к тому же стилю, что и витрина: тёмный фон + emerald. */
+:root {
+  --emerald: #10B981;
+  --emerald-hover: #0C6650;
+  --emerald-soft: rgba(16, 185, 129, 0.15);
+
+  --bs-primary: #10B981;
+  --bs-primary-rgb: 16, 185, 129;
+  --bs-success: #10B981;
+  --bs-success-rgb: 16, 185, 129;
+  --bs-link-color: #37B08A;
+  --bs-link-color-rgb: 55, 176, 138;
+  --bs-link-hover-color: #5CC5A3;
+  --primary: #10B981;
+}
+
+/* Кнопки primary/success — изумруд, тёмный текст */
+.btn-primary,
+.btn-success {
+  --bs-btn-bg: var(--emerald);
+  --bs-btn-border-color: var(--emerald);
+  --bs-btn-hover-bg: var(--emerald-hover);
+  --bs-btn-hover-border-color: var(--emerald-hover);
+  --bs-btn-active-bg: var(--emerald-hover);
+  --bs-btn-active-border-color: var(--emerald-hover);
+  --bs-btn-color: #0E1418;
+  --bs-btn-hover-color: #ffffff;
+  color: #0E1418;
+}
+
+/* Ссылки и заголовки-ссылки в таблицах — изумруд */
+a,
+a:visited,
+#content a,
+.model-name a {
+  color: #37B08A;
+}
+a:hover {
+  color: #5CC5A3;
+}
+
+/* Активный пункт бокового меню — мягкая изумрудная заливка */
+.nav-sidebar .nav-link.active,
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active {
+  background-color: var(--emerald-soft) !important;
+  color: #5CC5A3 !important;
+  box-shadow: inset 3px 0 0 var(--emerald);
+}
+.nav-sidebar .nav-link:hover {
+  color: #5CC5A3;
+}
+
+/* Иконки разделов в меню */
+.nav-sidebar .nav-icon {
+  color: #37B08A;
+}
+
+/* Логотип-бренд */
+.brand-link .brand-text {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Чекбоксы/переключатели и фокус — изумруд */
+.form-check-input:checked {
+  background-color: var(--emerald);
+  border-color: var(--emerald);
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--emerald);
+  box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25);
+}
+
+/* Бейджи-иконки */
+.badge.bg-primary,
+.badge.bg-success {
+  background-color: var(--emerald) !important;
+  color: #0E1418 !important;
+}
+
+/* ---- Тёмная область контента (в тон витрине) ---- */
+:root {
+  --dark-bg: #0E1418;
+  --dark-surface: #18212A;
+  --dark-sunken: #131C24;
+  --dark-border: #2A343E;
+  --dark-text: #E8EDF2;
+  --dark-muted: #8F9BAA;
+}
+body,
+.app-wrapper,
+.wrapper {
+  background-color: var(--dark-bg) !important;
+}
+.app-main,
+.app-content,
+.content-wrapper,
+.content {
+  background-color: var(--dark-bg) !important;
+  color: var(--dark-text);
+}
+.app-header,
+.main-header,
+.main-header.navbar,
+.navbar-light,
+.navbar.bg-white {
+  background-color: var(--dark-sunken) !important;
+  border-color: var(--dark-border) !important;
+}
+.content-header h1,
+.content-wrapper h1,
+.content-title,
+h1, h2, h3, h4, h5 {
+  color: var(--dark-text) !important;
+}
+/* Карточки/модули */
+.card,
+.dashboard .card,
+.callout,
+.dropdown-menu {
+  background-color: var(--dark-surface) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text);
+}
+.card-header {
+  background-color: var(--dark-sunken) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text);
+}
+.breadcrumb {
+  background-color: var(--dark-surface) !important;
+}
+.breadcrumb-item,
+.breadcrumb-item a,
+.breadcrumb-item.active {
+  color: var(--dark-muted) !important;
+}
+/* Таблицы */
+.table,
+table.table,
+#result_list,
+#changelist table {
+  color: var(--dark-text) !important;
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--dark-text);
+  border-color: var(--dark-border);
+}
+#changelist table thead th,
+.table thead th {
+  border-color: var(--dark-border) !important;
+}
+#changelist table tbody tr:hover,
+.table-hover > tbody > tr:hover > * {
+  background-color: rgba(16, 185, 129, 0.06) !important;
+}
+/* Поля ввода */
+input[type=text], input[type=number], input[type=password],
+input[type=email], input[type=url], input[type=search],
+textarea, select, .form-control, .form-select, .vTextField {
+  background-color: var(--dark-bg) !important;
+  color: var(--dark-text) !important;
+  border-color: var(--dark-border) !important;
+}
+input[type=checkbox], input[type=radio] { accent-color: var(--emerald); }
+.text-dark, a.text-dark { color: var(--dark-text) !important; }
+.text-muted, small.text-muted { color: var(--dark-muted) !important; }
