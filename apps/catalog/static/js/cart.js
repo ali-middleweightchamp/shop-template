@@ -13,6 +13,17 @@ function formatMoney(n) {
 }
 window.formatMoney = formatMoney;
 
+// Переключатель темы. Начальное значение уже выставлено inline-скриптом в <head>.
+function toggleTheme() {
+  var html = document.documentElement;
+  var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  html.setAttribute("data-theme", next);
+  try {
+    localStorage.setItem("theme", next);
+  } catch (e) {}
+}
+window.toggleTheme = toggleTheme;
+
 document.addEventListener("alpine:init", () => {
   Alpine.store("cart", {
     items: {},

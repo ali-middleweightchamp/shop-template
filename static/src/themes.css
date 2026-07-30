@@ -1,0 +1,42 @@
+/* ================================================================== *
+ * Темы оформления. Семантические переменные — единственный источник
+ * цвета в проекте. Пресет задаётся на <html data-preset="...">,
+ * светлая/тёмная — через data-theme (переключатель в шапке).
+ *
+ * Добавление нового пресета = ещё пара блоков, без переделки:
+ *   [data-preset="ocean"]                    { светлая }
+ *   [data-preset="ocean"][data-theme="dark"] { тёмная  }
+ * ================================================================== */
+
+/* ---------- Emerald · светлая (по умолчанию) ---------- */
+:root,
+[data-preset="emerald"] {
+  --bg: #F6F7F9;
+  --surface: #FFFFFF;
+  --surface-sunken: #EEF1F5;
+  --text: #0F1B2D;
+  --text-muted: #6B7787;
+  --accent: #0F7B5F;
+  --accent-hover: #0C6650;
+  --on-accent: #FFFFFF;
+  --danger: #C0392B;
+  --border-input: #E3E7ED;
+  --shadow-card: 0 1px 3px rgba(15, 27, 45, 0.08);
+}
+
+/* ---------- Emerald · тёмная ---------- */
+[data-preset="emerald"][data-theme="dark"] {
+  --bg: #0E1418;
+  --surface: #18212A;
+  --surface-sunken: #131C24;
+  --text: #E8EDF2;
+  --text-muted: #8F9BAA;
+  --accent: #37B08A;
+  --accent-hover: #5CC5A3;
+  --on-accent: #0E1418;
+  --danger: #E5766B;
+  --border-input: #2A343E;
+  /* В тёмной теме теней нет: карточка отделяется от фона тем,
+     что --surface светлее --bg. */
+  --shadow-card: none;
+}

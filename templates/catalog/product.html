@@ -17,7 +17,7 @@
     {# ---------- Галерея ---------- #}
     {% if product.image %}{% thumbnail product.image "800x800" as main_im %}{% endif %}
     <div x-data="{ main: '{% if product.image %}{{ main_im.url }}{% endif %}' }">
-      <div class="aspect-square overflow-hidden rounded-card border border-line bg-white">
+      <div class="aspect-square overflow-hidden rounded-card border border-line bg-surface">
         {% if product.image %}
           <img :src="main" alt="{{ product.name }}" class="h-full w-full object-contain">
         {% else %}
@@ -83,7 +83,7 @@
       </div>
 
       {% if product.description %}
-        <div class="mt-8 whitespace-pre-line border-t border-line pt-6 text-sm leading-relaxed text-ink/90">{{ product.description }}</div>
+        <div class="mt-8 whitespace-pre-line border-t border-line pt-6 text-sm leading-relaxed text-ink">{{ product.description }}</div>
       {% endif %}
     </div>
   </div>

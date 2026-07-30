@@ -6,7 +6,7 @@ WORKDIR /build
 COPY package.json package-lock.json* ./
 RUN npm install
 # Конфиг и исходники нужны для tree-shaking классов
-COPY tailwind.config.js ./
+COPY tailwind.config.js postcss.config.js ./
 COPY static/src ./static/src
 COPY templates ./templates
 COPY apps ./apps

@@ -1,3 +1,5 @@
+@import "./themes.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -47,23 +49,15 @@
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
-/* ------------------------------------------------------------------ *
- * Нейтральная система + динамический акцент.
- * --shop-primary приходит из ShopSettings.primary_color (base.html).
- * --brand — легаси-алиас для ранее написанных утилит.
- * ------------------------------------------------------------------ */
 @layer base {
-  :root {
-    --brand: var(--shop-primary, #2563eb);
-  }
   html { -webkit-text-size-adjust: 100%; }
-  body { @apply bg-paper text-ink font-sans antialiased; }
-  h1, h2, h3 { font-family: "Onest", var(--tw-font-sans, system-ui), sans-serif; }
+  body { @apply bg-bg text-ink font-sans antialiased; }
+  h1, h2, h3 { font-family: "Onest", "Manrope", system-ui, sans-serif; }
 
   /* Табличные цифры — цены/количество/итог не «прыгают» */
   .nums { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
 
-  :focus-visible { outline: 2px solid var(--shop-primary, #2563eb); outline-offset: 2px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 }
 
 @layer components {
@@ -74,45 +68,33 @@
     @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-control px-4
            text-sm font-bold transition active:scale-[.98] disabled:opacity-40;
   }
-  .btn-brand { @apply btn text-white; background: var(--shop-primary, #2563eb); }
-  .btn-ink { @apply btn bg-ink text-white; }
-  .btn-ghost { @apply btn border border-line bg-white text-ink hover:border-ink/30; }
+  .btn-brand { @apply btn; background: var(--accent); color: var(--on-accent); }
+  .btn-brand:hover { background: var(--accent-hover); }
+  .btn-ghost { @apply btn border border-line bg-surface text-ink; }
+  .btn-ghost:hover { border-color: var(--text-muted); }
 
   /* --- Счётчик «− N +»: зоны нажатия 44×44 --- */
-  .stepper { @apply inline-flex items-center rounded-control border border-line bg-white; }
+  .stepper { @apply inline-flex items-center rounded-control border border-line bg-surface; }
   .stepper button {
     @apply flex h-11 w-11 items-center justify-center text-xl font-bold text-ink
-           transition hover:bg-paper disabled:text-line;
+           transition disabled:text-line;
   }
+  .stepper button:hover { background: var(--surface-sunken); }
   .stepper .qty { @apply nums min-w-[2.5rem] text-center text-sm font-bold tabular-nums; }
-  .stepper[data-active="true"] {
-    border-color: var(--shop-primary, #2563eb);
-    box-shadow: 0 0 0 1px var(--shop-primary, #2563eb);
-  }
+  .stepper[data-active="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 
   /* --- Карточка товара: равная высота, кнопки прижаты к низу --- */
   .product-card {
-    @apply flex h-full flex-col overflow-hidden rounded-card border border-transparent bg-white shadow-card
+    @apply flex h-full flex-col overflow-hidden rounded-card border border-transparent bg-surface
            transition-[box-shadow,border-color] duration-150;
+    box-shadow: var(--shadow-card);
   }
-  /* Ховер: подсветка карточки. БЕЗ scale — сетка не дёргается. */
-  .product-card:hover { @apply border-line; box-shadow: 0 2px 4px rgba(28,27,23,.06), 0 16px 32px -20px rgba(28,27,23,.28); }
+  /* Ховер: лёгкая подсветка рамкой. БЕЗ scale — сетка не дёргается. */
+  .product-card:hover { border-color: var(--border-input); }
   .product-card.is-out { opacity: .55; }
-  .product-card.is-out:hover { @apply border-transparent shadow-card; }
 
-  /* --- Пункт сайдбара категорий (десктоп) --- */
-  .cat-link {
-    @apply flex items-center justify-between gap-2 rounded-control px-3 py-2 text-sm
-           font-semibold text-ink transition hover:bg-white;
-  }
-  .cat-link .cnt { @apply nums shrink-0 text-xs font-bold text-muted; }
-  .cat-link[aria-current="page"] { @apply bg-white shadow-card; }
-  .cat-link[aria-current="page"] .cnt { color: var(--shop-primary, #2563eb); }
-
-  /* Квадрат фото: любые пропорции → одинаковый квадрат, contain, белый фон */
-  .product-media {
-    @apply flex aspect-square items-center justify-center bg-white p-2;
-  }
+  /* Квадрат фото: любые пропорции → одинаковый квадрат, contain */
+  .product-media { @apply flex aspect-square items-center justify-center bg-surface p-2; }
   .product-media img { @apply h-full w-full object-contain; }
 
   /* Название: ровно 2 строки, короткое не поднимает цену */
@@ -122,24 +104,42 @@
   }
 
   .sku-tag {
-    @apply nums inline-block rounded bg-paper px-1.5 py-0.5 text-[11px]
-           font-semibold tracking-wide text-muted;
+    @apply nums inline-block rounded px-1.5 py-0.5 text-[11px] font-semibold tracking-wide text-muted;
+    background: var(--surface-sunken);
   }
 
-  /* Чипы категорий — горизонтальная лента */
+  /* Чипы категорий — акцент только на активном */
   .chip { @apply inline-flex min-h-[44px] items-center whitespace-nowrap rounded-full border px-4 text-sm font-semibold; }
-  .chip-on { @apply border-ink bg-ink text-white; }
-  .chip-off { @apply border-line bg-white text-ink; }
+  .chip-on { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
+  .chip-off { @apply border-line bg-surface text-ink; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
 
-  /* Лента-чек: липкая панель заказа снизу */
+  /* Пункт сайдбара категорий (десктоп): акцент на активном */
+  .cat-link {
+    @apply flex items-center justify-between gap-2 rounded-control px-3 py-2 text-sm font-semibold text-ink transition;
+  }
+  .cat-link:hover { background: var(--surface); }
+  .cat-link .cnt { @apply nums shrink-0 text-xs font-bold text-muted; }
+  .cat-link[aria-current="page"] {
+    background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+    color: var(--accent);
+  }
+  .cat-link[aria-current="page"] .cnt { color: var(--accent); }
+
+  /* Лента-чек: акцентная заливка, текст --on-accent */
   .order-tape {
-    @apply fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 backdrop-blur shadow-tape;
+    @apply fixed inset-x-0 bottom-0 z-40;
+    background: var(--accent); color: var(--on-accent);
     padding-bottom: env(safe-area-inset-bottom);
   }
 
   .eyebrow { @apply text-[11px] font-extrabold uppercase tracking-[0.18em] text-muted; }
+
+  /* Переключатель темы: показываем нужную иконку */
+  .theme-toggle .i-sun { display: none; }
+  [data-theme="dark"] .theme-toggle .i-sun { display: block; }
+  [data-theme="dark"] .theme-toggle .i-moon { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

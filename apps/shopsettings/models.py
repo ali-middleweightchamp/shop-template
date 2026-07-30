@@ -19,16 +19,27 @@ class ShopSettings(models.Model):
 
     CACHE_KEY = "shop_settings"
 
+    class Theme(models.TextChoices):
+        EMERALD = "emerald", _("Изумруд")
+        # Позже сюда добавятся другие пресеты без переделки
+
     # --- Бренд ---
     name = models.CharField(_("Название магазина"), max_length=255, default="Магазин")
     logo = models.ImageField(_("Логотип"), upload_to="shop/", blank=True)
     description = models.TextField(_("Описание"), blank=True)
+    theme = models.CharField(
+        _("Тема оформления"),
+        max_length=32,
+        choices=Theme.choices,
+        default=Theme.EMERALD,
+        help_text=_("Цветовой пресет витрины (светлая/тёмная переключаются на сайте)"),
+    )
     primary_color = models.CharField(
         _("Фирменный цвет"),
         max_length=7,
-        default="#2563eb",
+        blank=True,
         validators=[hex_color_validator],
-        help_text=_("HEX, например #2563eb"),
+        help_text=_("HEX, например #0F7B5F. Если заполнен — перебивает акцент темы. Пусто — цвет из темы."),
     )
 
     # --- Контакты для заказа ---

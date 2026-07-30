@@ -17,7 +17,7 @@ class ShopSettingsAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (_("Бренд"), {"fields": ("name", "logo", "description")}),
-        (_("Фирменный цвет"), {"fields": ("primary_color", "color_preview")}),
+        (_("Оформление"), {"fields": ("theme", "primary_color", "color_preview")}),
         (
             _("Контакты для заказа"),
             {

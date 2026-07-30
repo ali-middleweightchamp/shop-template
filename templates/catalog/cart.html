@@ -25,7 +25,7 @@
   {# Список позиций #}
   <template x-if="$store.cart.count > 0">
     <div class="mt-6">
-      <div class="divide-y divide-line rounded-card border border-line bg-white">
+      <div class="divide-y divide-line rounded-card border border-line bg-surface">
         <template x-for="line in $store.cart.lines" :key="line.sku">
           <div class="flex items-center gap-3 p-3">
             <div class="min-w-0 flex-1">
@@ -51,7 +51,7 @@
       <label class="mt-4 block">
         <span class="text-sm font-semibold text-ink">{% trans "Комментарий к заказу" %}</span>
         <textarea x-model="comment" rows="2" placeholder="{% trans 'Адрес, удобное время доставки…' %}"
-                  class="mt-1 w-full rounded-control border border-line bg-white p-3 text-sm focus:border-brand"></textarea>
+                  class="mt-1 w-full rounded-control border border-line bg-surface p-3 text-sm focus:border-brand"></textarea>
       </label>
 
       {# Итого #}

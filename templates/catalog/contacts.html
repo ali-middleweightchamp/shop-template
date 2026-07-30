@@ -8,7 +8,7 @@
   <h1 class="text-2xl font-extrabold tracking-tight text-ink">{% trans "Контакты" %}</h1>
 
   <div class="mt-6 grid gap-4 sm:grid-cols-2">
-    <div class="rounded-card border border-line bg-white p-6 shadow-card">
+    <div class="rounded-card border border-line bg-surface p-6 shadow-card">
       <div class="eyebrow mb-3">{% trans "Как с нами связаться" %}</div>
       <dl class="space-y-3 text-sm">
         {% if shop.address %}<div><dt class="text-muted">{% trans "Адрес" %}</dt><dd class="font-semibold text-ink">{{ shop.address }}</dd></div>{% endif %}
@@ -26,7 +26,7 @@
 
     {% if shop.map_link %}
     <a href="{{ shop.map_link }}" target="_blank" rel="noopener"
-       class="group flex min-h-[220px] items-center justify-center rounded-card border border-line bg-white p-6 text-center shadow-card">
+       class="group flex min-h-[220px] items-center justify-center rounded-card border border-line bg-surface p-6 text-center shadow-card">
       <div>
         <svg class="mx-auto text-brand" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
           <path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/>
