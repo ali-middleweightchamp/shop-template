@@ -169,7 +169,7 @@ JAZZMIN_SETTINGS = {
     "site_header": _shop_name_lazy(),
     "site_brand": _shop_name_lazy(),
     "site_logo": None,
-    "custom_css": "admin/css/admin-emerald.css",
+    "custom_css": "admin/css/admin-theme.css",
     "custom_js": "admin/js/admin-theme-toggle.js",  # простой тумблер солнце/луна
     "show_theme_chooser": False,  # без громоздкого выпадающего списка
     "welcome_sign": "Панель управления магазином",
