@@ -42,8 +42,13 @@ LOCAL_APPS = [
     "apps.importer",
 ]
 
-# jazzmin обязан идти перед django.contrib.admin
-INSTALLED_APPS = ["jazzmin"] + DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+# jazzmin и modeltranslation обязаны идти перед django.contrib.admin
+INSTALLED_APPS = ["jazzmin", "modeltranslation"] + DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+# Двуязычный контент: ru — основной, uz с fallback на ru (пусто → показываем ru)
+MODELTRANSLATION_DEFAULT_LANGUAGE = "ru"
+MODELTRANSLATION_LANGUAGES = ("ru", "uz")
+MODELTRANSLATION_FALLBACK_LANGUAGES = ("ru",)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -202,7 +207,6 @@ JAZZMIN_UI_TWEAKS = {
     "brand_colour": "navbar-dark",
     "accent": "accent-success",  # изумрудный акцент
     "theme": "darkly",  # тёмная база
-    "dark_mode_theme": "darkly",
     "button_classes": {
         "primary": "btn-success",
         "success": "btn-success",

@@ -21,7 +21,7 @@
         {% if product.image %}
           <img :src="main" alt="{{ product.name }}" class="h-full w-full object-contain">
         {% else %}
-          {% include "catalog/partials/_no_image.html" with category=product.category.name %}
+          {% include "catalog/partials/_no_image.html" with category=product.category.name_ru %}
         {% endif %}
       </div>
       {% if product.images.all %}

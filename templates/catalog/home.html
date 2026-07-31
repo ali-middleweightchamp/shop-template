@@ -26,7 +26,7 @@
       <div class="grid h-full grid-cols-3 gap-3 p-8">
         {% for c in categories|slice:":6" %}
           <div class="hero-chip flex flex-col items-center justify-center gap-2 rounded-2xl p-3 text-center">
-            {% include "catalog/partials/_cat_icon.html" with name=c.name size="h-7 w-7" %}
+            {% include "catalog/partials/_cat_icon.html" with name=c.name_ru size="h-7 w-7" %}
             <span class="text-[11px] font-semibold leading-tight">{{ c.name }}</span>
           </div>
         {% endfor %}
@@ -48,7 +48,7 @@
           <div class="absolute inset-0 -z-0"><img src="{{ im.url }}" alt="{{ c.name }}" loading="lazy" class="h-full w-full rounded-card object-cover"></div>
         {% endif %}
         <div class="cat-tile-icon flex h-11 w-11 items-center justify-center rounded-2xl">
-          {% include "catalog/partials/_cat_icon.html" with name=c.name size="h-6 w-6" %}
+          {% include "catalog/partials/_cat_icon.html" with name=c.name_ru size="h-6 w-6" %}
         </div>
         <div>
           <div class="font-bold leading-tight text-ink">{{ c.name }}</div>

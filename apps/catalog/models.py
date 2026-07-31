@@ -4,7 +4,20 @@ import secrets
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+
+
+def unique_slug(model, base, instance_pk=None):
+    """Уникальный slug на основе base (с числовым суффиксом при коллизии)."""
+    base = (base or "item").strip("-") or "item"
+    slug = base
+    i = 2
+    qs = model.objects.exclude(pk=instance_pk)
+    while qs.filter(slug=slug).exists():
+        slug = f"{base}-{i}"
+        i += 1
+    return slug
 
 # Без похожих символов (0/O, 1/I) — код читают и диктуют
 _CODE_ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
@@ -18,7 +31,7 @@ class Category(models.Model):
     """Категория товаров. Допускается вложенность максимум в 2 уровня."""
 
     name = models.CharField(_("Название"), max_length=255)
-    slug = models.SlugField(_("Ссылка (slug)"), max_length=255, unique=True)
+    slug = models.SlugField(_("Ссылка (slug)"), max_length=255, unique=True, blank=True)
     parent = models.ForeignKey(
         "self",
         verbose_name=_("Родительская категория"),
@@ -38,6 +51,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.name, allow_unicode=True) or slugify(self.name)
+            self.slug = unique_slug(Category, base, self.pk)
+        super().save(*args, **kwargs)
 
     def clean(self):
         # Ограничение глубины: у родителя не должно быть своего родителя (макс 2 уровня)
@@ -61,7 +80,7 @@ class Product(models.Model):
         METER = "м", _("м")
 
     name = models.CharField(_("Название"), max_length=255)
-    slug = models.SlugField(_("Ссылка (slug)"), max_length=255, unique=True)
+    slug = models.SlugField(_("Ссылка (slug)"), max_length=255, unique=True, blank=True)
     sku = models.CharField(_("Артикул"), max_length=64, unique=True)
     category = models.ForeignKey(
         Category,
@@ -105,6 +124,12 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.sku})"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.sku) or slugify(self.name, allow_unicode=True)
+            self.slug = unique_slug(Product, base, self.pk)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("catalog:product", kwargs={"slug": self.slug})

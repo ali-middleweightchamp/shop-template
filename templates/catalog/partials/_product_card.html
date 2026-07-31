@@ -7,7 +7,7 @@
       {% thumbnail p.image "400x400" crop="smart" as im %}
       <img src="{{ im.url }}" alt="{{ p.name }}" loading="lazy" width="{{ im.width }}" height="{{ im.height }}">
     {% else %}
-      {% include "catalog/partials/_no_image.html" with category=p.category.name %}
+      {% include "catalog/partials/_no_image.html" with category=p.category.name_ru %}
     {% endif %}
   </a>
 

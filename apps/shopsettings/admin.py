@@ -7,12 +7,13 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+from modeltranslation.admin import TranslationAdmin
 
 from .models import ShopSettings
 
 
 @admin.register(ShopSettings)
-class ShopSettingsAdmin(admin.ModelAdmin):
+class ShopSettingsAdmin(TranslationAdmin):
     readonly_fields = ("color_preview",)
 
     fieldsets = (

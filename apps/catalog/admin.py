@@ -7,6 +7,7 @@ from django.contrib.auth.models import Group
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from easy_thumbnails.files import get_thumbnailer
+from modeltranslation.admin import TranslationAdmin
 
 from .models import Category, Product, ProductImage
 
@@ -56,7 +57,7 @@ class ProductImageInline(admin.TabularInline):
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(TranslationAdmin):
     list_display = (
         "image_preview",
         "name",
@@ -72,9 +73,8 @@ class ProductAdmin(admin.ModelAdmin):
     # Массовое редактирование цен и наличия прямо в списке
     list_editable = ("price", "in_stock", "is_active", "order")
     list_filter = ("category", "in_stock", "is_active", "is_featured")
-    search_fields = ("name", "sku")
+    search_fields = ("name_ru", "name_uz", "sku")
     list_per_page = 50
-    prepopulated_fields = {"slug": ("name",)}
     inlines = [ProductImageInline]
     autocomplete_fields = ("category",)
     actions = ("mark_in_stock", "mark_out_of_stock", "hide_from_site", "show_on_site")
@@ -116,13 +116,12 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(TranslationAdmin):
     list_display = ("image_preview", "name", "parent", "order", "is_active")
     list_display_links = ("name",)
     list_editable = ("order", "is_active")
     list_filter = ("is_active", "parent")
-    search_fields = ("name",)
-    prepopulated_fields = {"slug": ("name",)}
+    search_fields = ("name_ru", "name_uz")
 
     @admin.display(description=_("Картинка"))
     def image_preview(self, obj):

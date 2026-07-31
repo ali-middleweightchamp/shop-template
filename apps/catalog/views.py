@@ -87,8 +87,13 @@ def search(request):
     q = (request.GET.get("q") or "").strip()
     results = _active_products().none()
     if q:
+        # Ищем по обоим языкам названия/описания и по артикулу
         results = _active_products().filter(
-            Q(name__icontains=q) | Q(sku__icontains=q) | Q(description__icontains=q)
+            Q(name_ru__icontains=q)
+            | Q(name_uz__icontains=q)
+            | Q(sku__icontains=q)
+            | Q(description_ru__icontains=q)
+            | Q(description_uz__icontains=q)
         )
     page = Paginator(results, PER_PAGE).get_page(request.GET.get("page"))
     return render(request, "catalog/search.html", {"q": q, "page_obj": page})
