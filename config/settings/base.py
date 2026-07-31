@@ -151,11 +151,13 @@ from django.utils.functional import lazy  # noqa: E402
 
 def _shop_name():
     """Название магазина из ShopSettings. lazy — чтобы не трогать БД при импорте
-    настроек и не хардкодить имя (берётся динамически при рендере админки)."""
+    настроек и не хардкодить имя (берётся динамически при рендере админки).
+    Берём name_ru напрямую: админка русская и не зависит от активного языка."""
     try:
         from apps.shopsettings.models import ShopSettings
 
-        return ShopSettings.get_solo().name
+        s = ShopSettings.get_solo()
+        return getattr(s, "name_ru", None) or s.name or "Магазин"
     except Exception:
         return "Магазин"
 
@@ -200,13 +202,13 @@ JAZZMIN_SETTINGS = {
 }
 
 JAZZMIN_UI_TWEAKS = {
-    "navbar": "navbar-dark",
+    "navbar": "navbar-white navbar-light",  # светлая шапка
     "navbar_fixed": True,
     "sidebar_fixed": True,
-    "sidebar": "sidebar-dark-primary",
-    "brand_colour": "navbar-dark",
+    "sidebar": "sidebar-dark-primary",  # тёмный сайдбар + светлый контент
     "accent": "accent-success",  # изумрудный акцент
-    "theme": "darkly",  # тёмная база
+    "theme": "default",
+    "default_theme_mode": "light",  # светлая по умолчанию; тёмная — переключателем
     "button_classes": {
         "primary": "btn-success",
         "success": "btn-success",

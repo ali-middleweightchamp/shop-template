@@ -107,11 +107,15 @@ class ShopSettings(models.Model):
         # Singleton нельзя удалить — просто игнорируем
         pass
 
+    # Короткий TTL: сохранение сбрасывает кэш в своём воркере мгновенно,
+    # между воркерами (LocMemCache у каждого свой) устаревание — не дольше TTL.
+    CACHE_TTL = 60
+
     @classmethod
     def get_solo(cls):
         """Вернуть настройки, создав их при первом обращении. Кэшируется."""
         obj = cache.get(cls.CACHE_KEY)
         if obj is None:
             obj, _created = cls.objects.get_or_create(pk=1)
-            cache.set(cls.CACHE_KEY, obj)
+            cache.set(cls.CACHE_KEY, obj, cls.CACHE_TTL)
         return obj
