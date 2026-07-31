@@ -9,7 +9,7 @@
       try {
         var t = localStorage.getItem("theme");
         if (t !== "light" && t !== "dark") {
-          t = "dark"; // по умолчанию тёмная тема
+          t = "light"; // по умолчанию светлая тема
         }
         document.documentElement.setAttribute("data-theme", t);
       } catch (e) {

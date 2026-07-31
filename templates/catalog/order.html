@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n catalog_extras %}
+
+{% block title %}{% trans "Заказ" %} {{ order.code }} · {{ shop.name }}{% endblock %}
+
+{% block body %}
+<div class="shell max-w-2xl pt-6">
+  <div class="eyebrow mb-2">{% trans "Заказ" %}</div>
+  <h1 class="nums text-3xl font-extrabold tracking-tight text-ink">{{ order.code }}</h1>
+  <p class="mt-1 text-sm text-muted">{{ order.created_at|date:"d.m.Y H:i" }}</p>
+
+  <div class="mt-6 divide-y divide-line overflow-hidden rounded-card border border-line bg-surface">
+    {% for l in lines %}
+    <div class="flex items-center gap-3 p-3">
+      <div class="min-w-0 flex-1">
+        <div class="text-sm font-bold text-ink">{{ l.name }}</div>
+        <div class="sku-tag mt-0.5">{{ l.sku }}</div>
+      </div>
+      <div class="nums whitespace-nowrap text-xs text-muted">{{ l.qty }} {{ l.unit }} × {{ l.price|money }}</div>
+      <div class="nums w-24 text-right text-sm font-bold text-ink">{{ l.sum|money }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="mt-4 flex items-center justify-between border-t border-line pt-4">
+    <span class="text-sm font-semibold text-muted">{% trans "Итого" %}</span>
+    <span class="nums text-2xl font-extrabold text-ink">{{ p.total|money }} {{ p.currency }}</span>
+  </div>
+
+  {% if p.comment %}
+  <div class="mt-4 rounded-control border border-line bg-sunken p-3 text-sm">
+    <div class="mb-1 font-semibold text-ink">{% trans "Комментарий" %}</div>
+    <div class="whitespace-pre-line text-muted">{{ p.comment }}</div>
+  </div>
+  {% endif %}
+
+  <a href="{% url 'catalog:catalog' %}" class="btn-ghost mt-6">← {% trans "В каталог" %}</a>
+</div>
+{% endblock %}

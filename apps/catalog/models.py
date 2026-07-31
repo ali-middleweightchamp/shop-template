@@ -1,8 +1,17 @@
 """Каталог: категории (до 2 уровней), товары и их дополнительные фото."""
+import secrets
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+
+# Без похожих символов (0/O, 1/I) — код читают и диктуют
+_CODE_ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
+
+
+def generate_order_code(length=6):
+    return "".join(secrets.choice(_CODE_ALPHABET) for _ in range(length))
 
 
 class Category(models.Model):
@@ -129,3 +138,37 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Фото #{self.pk} — {self.product.name}"
+
+
+class ShortOrder(models.Model):
+    """Сохранённый состав заказа для длинных корзин.
+
+    Если готовый текст для Telegram/WhatsApp длиннее лимита, отправляем
+    сокращённый вариант с коротким кодом и ссылкой /order/<code>/, где лежит
+    полный состав. payload — снимок корзины на момент оформления.
+    """
+
+    code = models.CharField(_("Код заказа"), max_length=12, unique=True, db_index=True)
+    payload = models.JSONField(_("Состав заказа"))
+    created_at = models.DateTimeField(_("Создан"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("Заказ по ссылке")
+        verbose_name_plural = _("Заказы по ссылке")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Заказ {self.code}"
+
+    def save(self, *args, **kwargs):
+        # Генерируем уникальный код при первом сохранении
+        if not self.code:
+            for _attempt in range(10):
+                candidate = generate_order_code()
+                if not ShortOrder.objects.filter(code=candidate).exists():
+                    self.code = candidate
+                    break
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("catalog:order", kwargs={"code": self.code})

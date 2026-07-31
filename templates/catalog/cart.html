@@ -10,7 +10,8 @@
        currency: '{{ shop.currency_label|escapejs }}',
        header: '{{ shop.order_message_header|escapejs }}',
        tg: '{{ shop.telegram_username|escapejs }}',
-       wa: '{{ shop.whatsapp_phone|escapejs }}'
+       wa: '{{ shop.whatsapp_phone|escapejs }}',
+       createUrl: '{% url 'catalog:order_create' %}'
      })">
   <h1 class="text-2xl font-extrabold tracking-tight text-ink">{% trans "Корзина" %}</h1>
 
@@ -83,28 +84,75 @@
 </div>
 
 <script>
-  // Формирование заказа. На этапе 6 добавится обработка длинных заказов (ShortOrder).
+  // Формирование заказа. Длинные заказы (текст > лимита) сохраняются в ShortOrder,
+  // отправляется сокращённый вариант со ссылкой на полный состав.
+  const ORDER_TEXT_LIMIT = 1500; // совпадает с ORDER_TEXT_LIMIT на сервере
+
+  function getCookie(name) {
+    const m = document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)");
+    return m ? m.pop() : "";
+  }
+
   function cartPage(cfg) {
     return {
       ...cfg,
       comment: "",
-      buildText() {
+      sending: false,
+
+      line(l) {
+        return `${l.name} (${l.sku}) — ${l.qty} ${l.unit} × ${formatMoney(l.price)} = ${formatMoney(l.qty * l.price)}`;
+      },
+      // Полный текст заказа
+      fullText() {
         const c = Alpine.store("cart");
-        let text = this.header + "\n\n";
-        c.lines.forEach((l) => {
-          const sum = l.qty * l.price;
-          text += `${l.name} (${l.sku}) — ${l.qty} ${l.unit} × ${formatMoney(l.price)} = ${formatMoney(sum)}\n`;
+        let t = this.header + "\n\n" + c.lines.map((l) => this.line(l)).join("\n");
+        t += `\n\nИтого: ${formatMoney(c.total)} ${this.currency}`;
+        if (this.comment.trim()) t += `\n\nКомментарий: ${this.comment.trim()}`;
+        return t;
+      },
+      // Сокращённый текст: первые 10 позиций + код + ссылка на полный состав
+      shortText(code, url) {
+        const c = Alpine.store("cart");
+        const head = c.lines.slice(0, 10).map((l) => this.line(l)).join("\n");
+        const rest = c.lines.length - 10;
+        let t = this.header + "\n\n" + head;
+        if (rest > 0) t += `\n…и ещё ${rest} позиц.`;
+        t += `\n\nИтого: ${formatMoney(c.total)} ${this.currency}`;
+        t += `\nКод заказа: ${code}\nПолный список: ${url}`;
+        if (this.comment.trim()) t += `\n\nКомментарий: ${this.comment.trim()}`;
+        return t;
+      },
+      // Возвращает текст для отправки (полный или сокращённый со ссылкой)
+      async buildMessage() {
+        const full = this.fullText();
+        if (encodeURIComponent(full).length <= ORDER_TEXT_LIMIT) return full;
+        // Длинный заказ — сохраняем и берём короткий вариант
+        const c = Alpine.store("cart");
+        const resp = await fetch(this.createUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-CSRFToken": getCookie("csrftoken") },
+          body: JSON.stringify({
+            header: this.header, currency: this.currency, comment: this.comment,
+            total: c.total, lines: c.lines,
+          }),
         });
-        text += `\nИтого: ${formatMoney(c.total)} ${this.currency}`;
-        if (this.comment.trim()) text += `\n\nКомментарий: ${this.comment.trim()}`;
-        return text;
+        if (!resp.ok) return full; // не удалось сохранить — шлём как есть
+        const data = await resp.json();
+        const url = window.location.origin + data.url;
+        return this.shortText(data.code, url);
       },
-      orderTelegram() {
-        window.location.href = `https://t.me/${this.tg}?text=${encodeURIComponent(this.buildText())}`;
+      async send(base) {
+        if (this.sending) return;
+        this.sending = true;
+        try {
+          const text = await this.buildMessage();
+          window.location.href = base + encodeURIComponent(text);
+        } finally {
+          this.sending = false;
+        }
       },
-      orderWhatsApp() {
-        window.location.href = `https://wa.me/${this.wa}?text=${encodeURIComponent(this.buildText())}`;
-      },
+      orderTelegram() { this.send(`https://t.me/${this.tg}?text=`); },
+      orderWhatsApp() { this.send(`https://wa.me/${this.wa}?text=`); },
     };
   }
 </script>
