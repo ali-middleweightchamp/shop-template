@@ -25,7 +25,7 @@ def _sidebar_categories():
 def home(request):
     """Главная: блок о магазине, категории, популярные товары."""
     context = {
-        "categories": Category.objects.filter(is_active=True, parent__isnull=True),
+        "categories": _sidebar_categories(),
         "featured": _active_products().filter(is_featured=True)[:8],
     }
     return render(request, "catalog/home.html", context)

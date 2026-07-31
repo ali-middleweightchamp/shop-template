@@ -97,6 +97,13 @@
   .product-media { @apply flex aspect-square items-center justify-center bg-surface p-2; }
   .product-media img { @apply h-full w-full object-contain; }
 
+  /* Заглушка «нет фото»: аккуратная акцентная подложка + иконка категории */
+  .ph-media { background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
+  .ph-icon {
+    background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+    color: var(--accent);
+  }
+
   /* Название: ровно 2 строки, короткое не поднимает цену */
   .product-title {
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
@@ -135,6 +142,27 @@
   }
 
   .eyebrow { @apply text-[11px] font-extrabold uppercase tracking-[0.18em] text-muted; }
+
+  /* Декоративная панель героя: акцентный градиент + «плитки» категорий */
+  .hero-panel {
+    background: linear-gradient(140deg, var(--accent), var(--accent-hover));
+    color: var(--on-accent);
+  }
+  .hero-chip {
+    background: color-mix(in srgb, var(--on-accent) 16%, transparent);
+    border: 1px solid color-mix(in srgb, var(--on-accent) 22%, transparent);
+    color: var(--on-accent);
+  }
+
+  /* Плитка категории на главной */
+  .cat-tile { position: relative; }
+  .cat-tile:hover { border-color: var(--accent); }
+  .cat-tile-icon {
+    background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+    color: var(--accent);
+    transition: transform .15s ease;
+  }
+  .cat-tile:hover .cat-tile-icon { transform: translateY(-2px); }
 
   /* Переключатель темы: показываем нужную иконку */
   .theme-toggle .i-sun { display: none; }

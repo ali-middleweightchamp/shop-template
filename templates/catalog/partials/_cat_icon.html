@@ -1,0 +1,21 @@
+{% comment %}Иконка категории по её названию. Параметры: name, size (классы).
+Подбор по ключевым словам — работает для типового ассортимента.{% endcomment %}
+{% with n=name|lower %}
+<svg class="{{ size|default:'h-6 w-6' }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+{% if 'бумаг' in n or 'блокнот' in n or 'тетрад' in n %}
+  <path d="M6 2h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h6"/>
+{% elif 'ручк' in n or 'маркер' in n or 'карандаш' in n or 'выдел' in n %}
+  <path d="M12 19l7-7a2.1 2.1 0 0 0-3-3l-7 7-1 4 4-1Z"/><path d="M15 6l3 3"/>
+{% elif 'клей' in n or 'скотч' in n %}
+  <circle cx="12" cy="10" r="6"/><path d="M12 4v6l3 2"/><path d="M8 20h8"/>
+{% elif 'папк' in n or 'файл' in n %}
+  <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>
+{% elif 'школ' in n or 'детск' in n %}
+  <path d="M6 8a6 6 0 0 1 12 0v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><path d="M6 13h12"/>
+{% elif 'офис' in n or 'техник' in n or 'калькул' in n or 'степлер' in n %}
+  <rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6"/><path d="M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01"/>
+{% else %}
+  <rect x="4" y="7" width="16" height="12" rx="2"/><path d="M4 11h16"/><path d="M9 3h6l1 4H8Z"/>
+{% endif %}
+</svg>
+{% endwith %}
