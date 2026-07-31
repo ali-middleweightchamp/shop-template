@@ -170,6 +170,7 @@ JAZZMIN_SETTINGS = {
     "site_brand": _shop_name_lazy(),
     "site_logo": None,
     "custom_css": "admin/css/admin-emerald.css",
+    "show_theme_chooser": True,  # переключатель Светлая/Тёмная в шапке
     "welcome_sign": "Панель управления магазином",
     "copyright": _shop_name_lazy(),
     "search_model": ["catalog.Product"],

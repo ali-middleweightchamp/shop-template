@@ -75,3 +75,25 @@ input[type="radio"],
   background-color: var(--emerald) !important;
   color: #ffffff !important;
 }
+
+/* --- Тёмный режим: гарантируем читаемость и более светлый акцент --- */
+[data-bs-theme="dark"] {
+  color-scheme: dark;
+}
+[data-bs-theme="dark"] #content a,
+[data-bs-theme="dark"] #result_list a,
+[data-bs-theme="dark"] .model-name a {
+  color: #5CC5A3; /* светлее изумруд — не сливается с тёмным фоном */
+}
+[data-bs-theme="dark"] .nav-sidebar .nav-link.active {
+  color: #7CD3B3 !important;
+}
+/* Страховка от «чёрных букв на тёмном»: заголовки/текст контента — светлые */
+[data-bs-theme="dark"] #content,
+[data-bs-theme="dark"] #content h1,
+[data-bs-theme="dark"] #content h2,
+[data-bs-theme="dark"] #content h3,
+[data-bs-theme="dark"] .content-header,
+[data-bs-theme="dark"] .breadcrumb-item {
+  color: #E8EDF2;
+}
