@@ -97,3 +97,65 @@ input[type="radio"],
 [data-bs-theme="dark"] .breadcrumb-item {
   color: #E8EDF2;
 }
+
+/* ================= Визуальный лоск: шрифт, глянцевый фон, стекло ============= */
+@font-face {
+  font-family: "Manrope"; font-style: normal; font-weight: 400 800; font-display: swap;
+  src: url("/static/fonts/manrope-cyrillic.woff2") format("woff2");
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+@font-face {
+  font-family: "Manrope"; font-style: normal; font-weight: 400 800; font-display: swap;
+  src: url("/static/fonts/manrope-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+2000-206F,U+2074,U+20AC,U+2122,U+2212,U+FEFF,U+FFFD;
+}
+body, .app-wrapper, .btn, .form-control, .form-select, .card { font-family: "Manrope", system-ui, sans-serif; }
+
+/* Глянцевый фон области контента */
+.app-main, .content-wrapper, .app-content {
+  background:
+    radial-gradient(1200px 500px at 100% -10%, rgba(16,185,129,.10), transparent 60%),
+    radial-gradient(900px 400px at -10% 110%, rgba(16,185,129,.08), transparent 60%),
+    linear-gradient(180deg, #f7faf9 0%, #eef3f1 100%) !important;
+}
+[data-bs-theme="dark"] .app-main,
+[data-bs-theme="dark"] .content-wrapper,
+[data-bs-theme="dark"] .app-content {
+  background:
+    radial-gradient(1200px 500px at 100% -10%, rgba(16,185,129,.16), transparent 60%),
+    radial-gradient(900px 400px at -10% 110%, rgba(16,185,129,.10), transparent 60%),
+    linear-gradient(180deg, #0e1418 0%, #0b1013 100%) !important;
+}
+
+/* Стеклянные карточки (импорт + дашборд) */
+.glass-card, .content .card {
+  border: 1px solid rgba(16,185,129,.18);
+  border-radius: 16px;
+  background: rgba(255,255,255,.72);
+  backdrop-filter: blur(10px) saturate(1.2);
+  box-shadow: 0 10px 30px -14px rgba(16,185,129,.25), 0 2px 6px rgba(15,27,45,.05);
+}
+[data-bs-theme="dark"] .glass-card,
+[data-bs-theme="dark"] .content .card {
+  background: rgba(24,33,42,.66);
+  border-color: rgba(16,185,129,.22);
+}
+.glass-card .card-header, .content .card .card-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(16,185,129,.15);
+  font-size: 1.02rem;
+}
+
+/* Плитки статистики предпросмотра */
+.stat-tile {
+  padding: 14px 16px; border-radius: 12px;
+  background: var(--bs-body-bg, #fff);
+  box-shadow: 0 1px 3px rgba(15,27,45,.06);
+  border-left-width: 4px !important;
+}
+.stat-num { font-size: 2rem; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
+.stat-label { color: var(--bs-secondary-color, #6b7787); font-size: .82rem; margin-top: 4px; }
+
+/* Крупные кнопки чуть мягче */
+.btn { border-radius: 10px; }
+.btn-lg { border-radius: 12px; }

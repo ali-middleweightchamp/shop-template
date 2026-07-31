@@ -1,0 +1,144 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="import-page">
+
+  {# Действия: шаблон и экспорт #}
+  <div class="d-flex flex-wrap gap-2 mb-3">
+    <a href="{% url 'admin:importer_template' %}" class="btn btn-outline-success">
+      <i class="fas fa-download me-1"></i> {% trans "Скачать шаблон .xlsx" %}
+    </a>
+    <a href="{% url 'admin:importer_export' %}" class="btn btn-outline-secondary">
+      <i class="fas fa-file-export me-1"></i> {% trans "Экспорт каталога" %}
+    </a>
+  </div>
+
+  {# Загрузка файла #}
+  <div class="card mb-4 glass-card">
+    <div class="card-header"><strong>{% trans "1. Загрузите прайс" %}</strong></div>
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data" action="{% url 'admin:importer_import' %}"
+            class="row g-2 align-items-center">
+        {% csrf_token %}
+        <div class="col-sm">
+          <input type="file" name="file" accept=".xlsx,.xls,.csv" required class="form-control form-control-lg">
+        </div>
+        <div class="col-sm-auto">
+          <button type="submit" class="btn btn-success btn-lg">
+            <i class="fas fa-magnifying-glass me-1"></i> {% trans "Проверить" %}
+          </button>
+        </div>
+      </form>
+      <div class="form-text mt-2">
+        {% trans "Форматы: .xlsx, .xls, .csv. Колонки: Артикул, Название, Название (uz), Категория, Цена, Единица, В наличии, Описание. Порядок и регистр не важны." %}
+      </div>
+    </div>
+  </div>
+
+  {# Предпросмотр #}
+  {% if preview %}
+    {% if preview.missing_columns %}
+      <div class="alert alert-danger">
+        <i class="fas fa-triangle-exclamation me-1"></i>
+        {% trans "В файле не хватает обязательных колонок:" %} <strong>{{ preview.missing_columns|join:", " }}</strong>.
+      </div>
+    {% else %}
+      <div class="card mb-4 glass-card">
+        <div class="card-header"><strong>{% trans "2. Предпросмотр" %}</strong></div>
+        <div class="card-body">
+          <div class="row g-3 mb-3">
+            <div class="col">
+              <div class="stat-tile border-start border-success">
+                <div class="stat-num text-success">{{ preview.to_create }}</div>
+                <div class="stat-label">{% trans "создастся" %}</div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="stat-tile border-start border-primary">
+                <div class="stat-num text-primary">{{ preview.to_update }}</div>
+                <div class="stat-label">{% trans "обновится" %}</div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="stat-tile border-start border-danger">
+                <div class="stat-num text-danger">{{ preview.errors|length }}</div>
+                <div class="stat-label">{% trans "с ошибками" %}</div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="stat-tile border-start border-secondary">
+                <div class="stat-num">{{ preview.rows_total }}</div>
+                <div class="stat-label">{% trans "всего строк" %}</div>
+              </div>
+            </div>
+          </div>
+
+          {% if preview.errors %}
+            <details class="mb-3" open>
+              <summary class="fw-bold text-danger mb-2">{% trans "Строки с ошибками (будут пропущены)" %}</summary>
+              <div class="table-responsive" style="max-height:320px;overflow:auto">
+                <table class="table table-sm table-striped align-middle mb-0">
+                  <thead><tr><th style="width:90px">{% trans "Строка" %}</th><th>{% trans "Причина" %}</th></tr></thead>
+                  <tbody>
+                    {% for e in preview.errors %}
+                      <tr><td><span class="badge bg-danger">{{ e.row }}</span></td><td>{{ e.message }}</td></tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          {% endif %}
+
+          <form method="post" action="{% url 'admin:importer_import' %}" class="d-flex gap-2">
+            {% csrf_token %}
+            <input type="hidden" name="log_id" value="{{ preview.log_id }}">
+            <button type="submit" name="apply" value="1" class="btn btn-success btn-lg"
+                    {% if not preview.valid %}disabled{% endif %}>
+              <i class="fas fa-check me-1"></i> {% trans "Применить" %} ({{ preview.valid|length }})
+            </button>
+            <a href="{% url 'admin:importer_import' %}" class="btn btn-light btn-lg">{% trans "Отмена" %}</a>
+          </form>
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {# История #}
+  <div class="card glass-card">
+    <div class="card-header"><strong>{% trans "История загрузок" %}</strong></div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <thead>
+            <tr>
+              <th>{% trans "Когда" %}</th><th>{% trans "Статус" %}</th>
+              <th class="text-end">{% trans "Создано" %}</th><th class="text-end">{% trans "Обновлено" %}</th>
+              <th class="text-end">{% trans "Ошибок" %}</th><th>{% trans "Кто" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for h in history %}
+              <tr>
+                <td>{{ h.created_at|date:"d.m.Y H:i" }}</td>
+                <td>
+                  {% if h.status == 'success' %}<span class="badge bg-success">{{ h.get_status_display }}</span>
+                  {% elif h.status == 'failed' %}<span class="badge bg-danger">{{ h.get_status_display }}</span>
+                  {% else %}<span class="badge bg-secondary">{{ h.get_status_display }}</span>{% endif %}
+                </td>
+                <td class="text-end">{{ h.rows_created }}</td>
+                <td class="text-end">{{ h.rows_updated }}</td>
+                <td class="text-end">{{ h.rows_failed }}</td>
+                <td>{{ h.user|default:"—" }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="6" class="text-center text-muted py-3">{% trans "Пока не было загрузок" %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
