@@ -55,14 +55,11 @@
       </a>
       {% endif %}
 
-      {# Переключатель языка ru / uz #}
-      <form action="{% url 'set_language' %}" method="post"
-            class="ml-auto flex h-10 shrink-0 items-center overflow-hidden rounded-control border border-line bg-surface text-xs font-bold lg:ml-0">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.get_full_path }}">
-        <button type="submit" name="language" value="ru" class="h-full px-2.5 {% if LANGUAGE_CODE == 'ru' %}text-accent{% else %}text-muted{% endif %}">RU</button>
-        <button type="submit" name="language" value="uz" class="h-full px-2.5 {% if LANGUAGE_CODE == 'uz' %}text-accent{% else %}text-muted{% endif %}">UZ</button>
-      </form>
+      {# Переключатель языка ru / uz — обычные ссылки на текущую страницу #}
+      <div class="ml-auto flex h-10 shrink-0 items-center overflow-hidden rounded-control border border-line bg-surface text-xs font-bold lg:ml-0">
+        <a href="{{ lang_urls.ru }}" class="flex h-full items-center px-2.5 {% if LANGUAGE_CODE == 'ru' %}text-accent{% else %}text-muted{% endif %}">RU</a>
+        <a href="{{ lang_urls.uz }}" class="flex h-full items-center px-2.5 {% if LANGUAGE_CODE == 'uz' %}text-accent{% else %}text-muted{% endif %}">UZ</a>
+      </div>
 
       {# Переключатель темы: солнце/луна #}
       <button type="button" onclick="toggleTheme()" aria-label="{% trans 'Сменить тему' %}"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 13:20+0500\n"
+"POT-Creation-Date: 2026-07-31 17:18+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,7 +104,7 @@ msgstr "Faol"
 msgid "Категория"
 msgstr "Turkum"
 
-#: apps/catalog/models.py:27 templates/catalog/home.html:27
+#: apps/catalog/models.py:27 templates/catalog/home.html:41
 msgid "Категории"
 msgstr "Turkumlar"
 
@@ -191,6 +191,11 @@ msgstr "Mahsulotlar"
 #: apps/catalog/models.py:126 apps/catalog/models.py:127
 msgid "Фото товара"
 msgstr "Mahsulot rasmi"
+
+#: apps/catalog/views.py:43
+#| msgid "Весь каталог"
+msgid "Каталог"
+msgstr "Katalog"
 
 #: apps/importer/admin.py:41 apps/importer/models.py:38
 msgid "Загрузка прайса"
@@ -439,41 +444,41 @@ msgstr ""
 msgid "Загрузить прайс"
 msgstr "Narxlarni yuklash"
 
-#: templates/base.html:75
+#: templates/base.html:65
 msgid "Сменить тему"
 msgstr "Mavzuni almashtirish"
 
-#: templates/base.html:84 templates/base.html:93 templates/catalog/cart.html:4
+#: templates/base.html:74 templates/base.html:83 templates/catalog/cart.html:4
 #: templates/catalog/cart.html:15
 msgid "Корзина"
 msgstr "Savat"
 
-#: templates/base.html:118 templates/catalog/contacts.html:4
+#: templates/base.html:108 templates/catalog/contacts.html:4
 #: templates/catalog/contacts.html:8
 msgid "Контакты"
 msgstr "Kontaktlar"
 
-#: templates/base.html:125
+#: templates/base.html:115
 msgid "Мы на связи"
 msgstr "Biz aloqadamiz"
 
-#: templates/base.html:129
+#: templates/base.html:119
 msgid "Канал"
 msgstr "Kanal"
 
-#: templates/base.html:131
+#: templates/base.html:121
 msgid "Как нас найти →"
 msgstr "Bizni qanday topish →"
 
-#: templates/base.html:144
+#: templates/base.html:134
 msgid "поз."
 msgstr "poz."
 
-#: templates/base.html:148
+#: templates/base.html:138
 msgid "Нажмите, чтобы оформить"
 msgstr "Rasmiylashtirish uchun bosing"
 
-#: templates/base.html:150
+#: templates/base.html:140
 msgid "Заказать"
 msgstr "Buyurtma berish"
 
@@ -533,23 +538,23 @@ msgstr "Biz bilan qanday bog‘lanish"
 msgid "Открыть на карте"
 msgstr "Xaritada ochish"
 
-#: templates/catalog/home.html:8
+#: templates/catalog/home.html:9
 msgid "Оптом и в розницу"
 msgstr "Ulgurji va chakana"
 
-#: templates/catalog/home.html:16
+#: templates/catalog/home.html:17
 msgid "Смотреть каталог"
 msgstr "Katalogni ko‘rish"
 
-#: templates/catalog/home.html:18
+#: templates/catalog/home.html:19
 msgid "Написать в Telegram"
 msgstr "Telegramga yozish"
 
-#: templates/catalog/home.html:49
+#: templates/catalog/home.html:67
 msgid "Популярное"
 msgstr "Ommabop"
 
-#: templates/catalog/home.html:50
+#: templates/catalog/home.html:68
 msgid "Весь каталог"
 msgstr "Butun katalog"
 

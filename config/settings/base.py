@@ -75,6 +75,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 # Настройки магазина доступны во всех шаблонах как `shop`
                 "apps.shopsettings.context_processors.shop_settings",
+                # URL текущей страницы на каждом языке (переключатель языка)
+                "apps.shopsettings.context_processors.language_links",
             ],
         },
     },

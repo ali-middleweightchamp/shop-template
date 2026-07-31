@@ -2,6 +2,7 @@
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
+from django.utils.translation import gettext_lazy as _
 
 from .models import Category, Product
 
@@ -39,7 +40,7 @@ def catalog(request):
         "categories": _sidebar_categories(),
         "total_count": products.count(),
         "page_obj": page,
-        "title": "Каталог",
+        "title": _("Каталог"),
     }
     return render(request, "catalog/catalog.html", context)
 
