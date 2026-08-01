@@ -3,54 +3,55 @@
 
 {% block title %}{{ title }} · {{ shop.name }}{% endblock %}
 
-{% comment %}Один шаблон для /catalog/ и /catalog/<slug>/.
-Разница только в {{ title }} и активном пункте (current_category).{% endcomment %}
+{% comment %}Один шаблон для /catalog/ и /catalog/<slug>/.{% endcomment %}
 {% block body %}
-<div class="shell pt-6">
-  <h1 class="font-display text-2xl font-extrabold tracking-tight text-ink">{{ title }}</h1>
+<div class="shell pt-6" x-data="{ sortOpen: false }">
+  <h1 class="font-display text-3xl font-extrabold tracking-tight text-ink">{{ title }}</h1>
+  <p class="mt-1 text-muted">{% blocktrans count n=count %}{{ n }} товар{% plural %}{{ n }} товаров{% endblocktrans %}</p>
 
-  {# Мобильный (<1024px): категории — горизонтальная лента чипов #}
+  {# Категории — горизонтальная лента чипов с иконками #}
   {% if categories %}
-  <div class="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:hidden">
+  <div class="no-scrollbar -mx-4 mt-5 flex gap-2.5 overflow-x-auto px-4 pb-1">
     <a href="{% url 'catalog:catalog' %}" class="chip {% if not current_category %}chip-on{% else %}chip-off{% endif %}">
-      {% trans "Все" %}
+      {% trans "Все товары" %}
     </a>
     {% for c in categories %}
-      <a href="{{ c.get_absolute_url }}" class="chip {% if current_category.pk == c.pk %}chip-on{% else %}chip-off{% endif %}">
-        {{ c.name }}
+      <a href="{{ c.get_absolute_url }}" class="chip gap-1.5 {% if current_category.pk == c.pk %}chip-on{% else %}chip-off{% endif %}">
+        {% include "catalog/partials/_cat_icon.html" with name=c.name_ru size="h-4 w-4" %}{{ c.name }}
       </a>
     {% endfor %}
   </div>
   {% endif %}
 
-  <div class="mt-4 lg:mt-6 lg:flex lg:items-start lg:gap-6">
-    {# Десктоп (≥1024px): сайдбар категорий 200px с количеством товаров #}
-    {% if categories %}
-    <aside class="hidden shrink-0 lg:block lg:w-[200px]">
-      <nav class="sticky top-20 space-y-0.5">
-        <a href="{% url 'catalog:catalog' %}" class="cat-link" {% if not current_category %}aria-current="page"{% endif %}>
-          <span>{% trans "Все товары" %}</span><span class="cnt">{{ total_count }}</span>
-        </a>
-        {% for c in categories %}
-          <a href="{{ c.get_absolute_url }}" class="cat-link" {% if current_category.pk == c.pk %}aria-current="page"{% endif %}>
-            <span class="truncate">{{ c.name }}</span><span class="cnt">{{ c.num }}</span>
-          </a>
-        {% endfor %}
-      </nav>
-    </aside>
-    {% endif %}
-
-    {# Сетка: 2 / 3 / 4 колонки, gap 12 / 16 #}
-    <div class="min-w-0 flex-1">
-      {% if page_obj.object_list %}
-        <div class="grid grid-cols-2 items-stretch gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
-          {% for p in page_obj %}{% include "catalog/partials/_product_card.html" %}{% endfor %}
-        </div>
-        {% include "catalog/partials/_pagination.html" %}
-      {% else %}
-        <p class="py-16 text-center text-muted">{% trans "В этом разделе пока нет товаров." %}</p>
-      {% endif %}
+  {# Поиск по каталогу + сортировка #}
+  <div class="mt-4 flex items-center gap-2">
+    <form method="get" class="search-pill relative flex-1">
+      <input type="search" name="q" value="{{ q }}" placeholder="{% trans 'Поиск по каталогу…' %}">
+      <svg class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+      {% if sort %}<input type="hidden" name="sort" value="{{ sort }}">{% endif %}
+    </form>
+    <div class="relative shrink-0">
+      <button type="button" @click="sortOpen = !sortOpen" aria-label="{% trans 'Сортировка' %}"
+              class="flex h-12 w-12 items-center justify-center rounded-2xl border border-line bg-surface text-ink transition hover:border-accent">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 5h18M6 12h12M10 19h4"/></svg>
+      </button>
+      <div x-show="sortOpen" @click.away="sortOpen = false" x-cloak x-transition
+           class="absolute right-0 z-20 mt-2 w-52 overflow-hidden rounded-2xl border border-line bg-surface py-1 shadow-card">
+        <a href="?{% if q %}q={{ q }}{% endif %}" class="block px-4 py-2.5 text-sm font-semibold hover:bg-sunken {% if not sort %}text-accent{% else %}text-ink{% endif %}">{% trans "По умолчанию" %}</a>
+        <a href="?sort=price{% if q %}&q={{ q }}{% endif %}" class="block px-4 py-2.5 text-sm font-semibold hover:bg-sunken {% if sort == 'price' %}text-accent{% else %}text-ink{% endif %}">{% trans "Сначала дешёвые" %}</a>
+        <a href="?sort=-price{% if q %}&q={{ q }}{% endif %}" class="block px-4 py-2.5 text-sm font-semibold hover:bg-sunken {% if sort == '-price' %}text-accent{% else %}text-ink{% endif %}">{% trans "Сначала дорогие" %}</a>
+      </div>
     </div>
   </div>
+
+  {# Сетка товаров #}
+  {% if page_obj.object_list %}
+    <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+      {% for p in page_obj %}{% include "catalog/partials/_product_card.html" %}{% endfor %}
+    </div>
+    {% include "catalog/partials/_pagination.html" %}
+  {% else %}
+    <p class="py-16 text-center text-muted">{% trans "Ничего не найдено." %}</p>
+  {% endif %}
 </div>
 {% endblock %}

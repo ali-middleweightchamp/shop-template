@@ -202,11 +202,14 @@
            transition hover:bg-sunken;
   }
 
-  /* --- Герой --- */
+  /* --- Герой: всегда насыщенно-зелёный + белый текст (в обеих темах) --- */
   .hero {
-    background: linear-gradient(155deg, var(--accent) 0%, var(--accent-hover) 100%);
-    color: var(--on-accent);
+    background: linear-gradient(155deg,
+      color-mix(in srgb, var(--accent) 88%, #000) 0%,
+      color-mix(in srgb, var(--accent-hover) 82%, #000) 100%);
+    color: #ffffff;
   }
+  .hero h1, .hero p { color: #ffffff; }
   .hero-badge {
     @apply inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold;
     background: color-mix(in srgb, #fff 18%, transparent);

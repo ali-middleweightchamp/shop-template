@@ -2,13 +2,13 @@
 {% if page_obj.has_other_pages %}
 <nav class="mt-8 flex items-center justify-center gap-2" aria-label="{% trans 'Страницы' %}">
   {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}" class="btn-ghost">← {% trans "Назад" %}</a>
+    <a href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="btn-ghost">← {% trans "Назад" %}</a>
   {% endif %}
   <span class="nums px-2 text-sm text-muted">
     {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
   </span>
   {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}" class="btn-ghost">{% trans "Ещё" %} →</a>
+    <a href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="btn-ghost">{% trans "Ещё" %} →</a>
   {% endif %}
 </nav>
 {% endif %}

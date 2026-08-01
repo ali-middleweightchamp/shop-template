@@ -13,7 +13,7 @@
       {{ shop.tagline|default:shop.name }}
     </h1>
     {% if shop.description %}
-      <p class="mx-auto mt-4 max-w-xl text-base sm:text-lg" style="color: color-mix(in srgb, var(--on-accent) 88%, transparent)">{{ shop.description|striptags }}</p>
+      <p class="mx-auto mt-4 max-w-xl text-base sm:text-lg" style="color: rgba(255,255,255,.9)">{{ shop.description|striptags }}</p>
     {% endif %}
     <div class="mt-8">
       <a href="{% url 'catalog:catalog' %}" class="btn-white">

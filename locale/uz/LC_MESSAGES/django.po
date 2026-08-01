@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-01 18:33+0500\n"
+"POT-Creation-Date: 2026-08-01 20:58+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -208,9 +208,9 @@ msgstr "Havola bo‘yicha buyurtma"
 msgid "Заказы по ссылке"
 msgstr "Saytda ko‘rsatilsin"
 
-#: apps/catalog/views.py:47 templates/base.html:70 templates/base.html:133
-msgid "Каталог"
-msgstr "Katalog"
+#: apps/catalog/views.py:63
+msgid "Весь каталог"
+msgstr "Butun katalog"
 
 #: apps/importer/admin.py:55
 #, python-format
@@ -290,12 +290,10 @@ msgid "Скачать шаблон .xlsx"
 msgstr ".xlsx shablonini yuklab olish"
 
 #: apps/importer/templates/admin/importer/import.html:13
-#| msgid "Смотреть каталог"
 msgid "Экспорт каталога"
 msgstr "Katalogni ko‘rish"
 
 #: apps/importer/templates/admin/importer/import.html:19
-#| msgid "Загрузить прайс"
 msgid "1. Загрузите прайс"
 msgstr "Narxlarni yuklash"
 
@@ -316,7 +314,6 @@ msgid "В файле не хватает обязательных колонок
 msgstr "Faylda majburiy ustunlar yetishmayapti:"
 
 #: apps/importer/templates/admin/importer/import.html:48
-#| msgid "Предпросмотр"
 msgid "2. Предпросмотр"
 msgstr "Oldindan ko‘rish"
 
@@ -325,17 +322,14 @@ msgid "создастся"
 msgstr "yaratiladi"
 
 #: apps/importer/templates/admin/importer/import.html:60
-#| msgid "Обновлён"
 msgid "обновится"
 msgstr "Yangilangan"
 
 #: apps/importer/templates/admin/importer/import.html:66
-#| msgid "С ошибками"
 msgid "с ошибками"
 msgstr "Xatolar bilan"
 
 #: apps/importer/templates/admin/importer/import.html:72
-#| msgid "Всего строк"
 msgid "всего строк"
 msgstr "Jami qatorlar"
 
@@ -352,7 +346,6 @@ msgid "Причина"
 msgstr "Sabab"
 
 #: apps/importer/templates/admin/importer/import.html:98
-#| msgid "Применён"
 msgid "Применить"
 msgstr "Qo‘llanildi"
 
@@ -369,12 +362,10 @@ msgid "Когда"
 msgstr "Qachon"
 
 #: apps/importer/templates/admin/importer/import.html:117
-#| msgid "Ошибка"
 msgid "Ошибок"
 msgstr "Xato"
 
 #: apps/importer/templates/admin/importer/import.html:117
-#| msgid "Фото"
 msgid "Кто"
 msgstr "Rasm"
 
@@ -577,57 +568,53 @@ msgstr ""
 msgid "Загрузить прайс"
 msgstr "Narxlarni yuklash"
 
-#: templates/base.html:48
-#| msgid "Фото товара"
-msgid "Поиск товаров…"
-msgstr "Mahsulot rasmi"
+#: templates/base.html:47 templates/base.html:81 templates/base.html:135
+msgid "Каталог"
+msgstr "Katalog"
 
-#: templates/base.html:52
-msgid "Сменить тему"
-msgstr "Mavzuni almashtirish"
-
-#: templates/base.html:57 templates/catalog/cart.html:4
-#: templates/catalog/cart.html:16
-msgid "Корзина"
-msgstr "Savat"
-
-#: templates/base.html:71 templates/base.html:134
+#: templates/base.html:48 templates/base.html:82 templates/base.html:136
 #: templates/catalog/contacts.html:4 templates/catalog/contacts.html:8
 msgid "Контакты"
 msgstr "Kontaktlar"
 
-#: templates/base.html:78 templates/base.html:135
-#| msgid "Панель управления"
-msgid "Панель продавца"
-msgstr "Boshqaruv paneli"
+#: templates/base.html:52
+msgid "Поиск товаров…"
+msgstr "Mahsulot rasmi"
 
-#: templates/base.html:105
+#: templates/base.html:63
+msgid "Сменить тему"
+msgstr "Mavzuni almashtirish"
+
+#: templates/base.html:68 templates/catalog/cart.html:4
+#: templates/catalog/cart.html:16
+msgid "Корзина"
+msgstr "Savat"
+
+#: templates/base.html:107
 msgid "Канал"
 msgstr "Kanal"
 
-#: templates/base.html:131
+#: templates/base.html:133
 msgid "Навигация"
 msgstr "Navigatsiya"
 
-#: templates/base.html:149
+#: templates/base.html:150
 msgid "поз."
 msgstr "poz."
 
-#: templates/base.html:153
+#: templates/base.html:154
 msgid "Нажмите, чтобы оформить"
 msgstr "Rasmiylashtirish uchun bosing"
 
-#: templates/base.html:155
+#: templates/base.html:156
 msgid "Заказать"
 msgstr "Buyurtma berish"
 
 #: templates/catalog/cart.html:24
-#| msgid "Корзина пуста."
 msgid "Корзина пуста"
 msgstr "Savat bo‘sh."
 
 #: templates/catalog/cart.html:25
-#| msgid "Добавьте ещё товаров."
 msgid "Добавьте товары из каталога"
 msgstr "Yana mahsulot qo‘shing."
 
@@ -663,17 +650,41 @@ msgstr "Telegram orqali buyurtma"
 msgid "Заказать через WhatsApp"
 msgstr "WhatsApp orqali buyurtma"
 
-#: templates/catalog/catalog.html:17
-msgid "Все"
-msgstr "Hammasi"
+#: templates/catalog/catalog.html:11 templates/catalog/home.html:49
+#, python-format
+msgid "%(n)s товар"
+msgid_plural "%(n)s товаров"
+msgstr[0] "%(n)s ta mahsulot topildi"
 
-#: templates/catalog/catalog.html:33
+#: templates/catalog/catalog.html:17
 msgid "Все товары"
 msgstr "Barcha mahsulotlar"
 
-#: templates/catalog/catalog.html:52
-msgid "В этом разделе пока нет товаров."
-msgstr "Bu bo‘limda hozircha mahsulot yo‘q."
+#: templates/catalog/catalog.html:30
+#| msgid "Поиск товаров…"
+msgid "Поиск по каталогу…"
+msgstr "Mahsulot rasmi"
+
+#: templates/catalog/catalog.html:35
+#| msgid "Фасовка"
+msgid "Сортировка"
+msgstr "Qadoq"
+
+#: templates/catalog/catalog.html:41
+msgid "По умолчанию"
+msgstr "Standart"
+
+#: templates/catalog/catalog.html:42
+msgid "Сначала дешёвые"
+msgstr "Avval arzonlari"
+
+#: templates/catalog/catalog.html:43
+msgid "Сначала дорогие"
+msgstr "Avval qimmatlari"
+
+#: templates/catalog/catalog.html:55
+msgid "Ничего не найдено."
+msgstr "Hech narsa topilmadi."
 
 #: templates/catalog/contacts.html:12
 msgid "Как с нами связаться"
@@ -688,20 +699,10 @@ msgid "Смотреть каталог"
 msgstr "Katalogni ko‘rish"
 
 #: templates/catalog/home.html:33 templates/catalog/home.html:62
-#| msgid "Смотреть каталог"
 msgid "Смотреть все"
 msgstr "Katalogni ko‘rish"
 
-#: templates/catalog/home.html:49
-#, python-format
-#| msgid "Найден %(n)s товар"
-#| msgid_plural "Найдено товаров: %(n)s"
-msgid "%(n)s товар"
-msgid_plural "%(n)s товаров"
-msgstr[0] "%(n)s ta mahsulot topildi"
-
 #: templates/catalog/home.html:61
-#| msgid "Похожие товары"
 msgid "Популярные товары"
 msgstr "O‘xshash mahsulotlar"
 
@@ -739,7 +740,6 @@ msgid "Цена по запросу"
 msgstr "Narx so‘rov bo‘yicha"
 
 #: templates/catalog/partials/_product_card.html:41
-#| msgid "Корзина"
 msgid "В корзину"
 msgstr "Savat"
 
@@ -787,6 +787,15 @@ msgstr "Katalogni ochish"
 msgid "Введите название или артикул товара в поле поиска."
 msgstr "Qidiruv maydoniga mahsulot nomi yoki artikulini kiriting."
 
+#~ msgid "Панель продавца"
+#~ msgstr "Boshqaruv paneli"
+
+#~ msgid "Все"
+#~ msgstr "Hammasi"
+
+#~ msgid "В этом разделе пока нет товаров."
+#~ msgstr "Bu bo‘limda hozircha mahsulot yo‘q."
+
 #~ msgid "Мы на связи"
 #~ msgstr "Biz aloqadamiz"
 
@@ -801,9 +810,6 @@ msgstr "Qidiruv maydoniga mahsulot nomi yoki artikulini kiriting."
 
 #~ msgid "Популярное"
 #~ msgstr "Ommabop"
-
-#~ msgid "Весь каталог"
-#~ msgstr "Butun katalog"
 
 #~ msgid "Убрать"
 #~ msgstr "Olib tashlash"

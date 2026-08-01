@@ -36,15 +36,33 @@ def home(request):
     return render(request, "catalog/home.html", context)
 
 
+SORTS = {"price": "price", "-price": "-price"}
+
+
+def _filter_sort(products, request):
+    """Поиск по каталогу (q) и сортировка (sort) из GET-параметров."""
+    q = (request.GET.get("q") or "").strip()
+    if q:
+        products = products.filter(
+            Q(name_ru__icontains=q) | Q(name_uz__icontains=q) | Q(sku__icontains=q)
+        )
+    sort = request.GET.get("sort", "")
+    if sort in SORTS:
+        products = products.order_by(SORTS[sort])
+    return products, q, sort
+
+
 def catalog(request):
-    """Весь каталог с пагинацией и сайдбаром категорий."""
-    products = _active_products()
+    """Весь каталог: чипы категорий, поиск по каталогу, сортировка, сетка."""
+    products, q, sort = _filter_sort(_active_products(), request)
     page = Paginator(products, PER_PAGE).get_page(request.GET.get("page"))
     context = {
         "categories": _sidebar_categories(),
-        "total_count": products.count(),
+        "count": page.paginator.count,
         "page_obj": page,
-        "title": _("Каталог"),
+        "title": _("Весь каталог"),
+        "q": q,
+        "sort": sort,
     }
     return render(request, "catalog/catalog.html", context)
 
@@ -52,15 +70,17 @@ def catalog(request):
 def category(request, slug):
     """Товары одной категории (включая подкатегории). Тот же шаблон, что и каталог."""
     cat = get_object_or_404(Category, slug=slug, is_active=True)
-    # Товары самой категории и её дочерних
     products = _active_products().filter(Q(category=cat) | Q(category__parent=cat))
+    products, q, sort = _filter_sort(products, request)
     page = Paginator(products, PER_PAGE).get_page(request.GET.get("page"))
     context = {
         "categories": _sidebar_categories(),
-        "total_count": _active_products().count(),
+        "count": page.paginator.count,
         "current_category": cat,
         "page_obj": page,
         "title": cat.name,
+        "q": q,
+        "sort": sort,
     }
     return render(request, "catalog/catalog.html", context)
 
