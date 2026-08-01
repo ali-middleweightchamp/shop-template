@@ -17,7 +17,7 @@ class ShopSettingsAdmin(TranslationAdmin):
     readonly_fields = ("color_preview",)
 
     fieldsets = (
-        (_("Бренд"), {"fields": ("name", "logo", "description")}),
+        (_("Бренд"), {"fields": ("name", "tagline", "logo", "description")}),
         (_("Оформление"), {"fields": ("theme", "primary_color", "color_preview")}),
         (
             _("Контакты для заказа"),

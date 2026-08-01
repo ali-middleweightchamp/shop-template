@@ -2,74 +2,69 @@
 {% load i18n thumbnail %}
 
 {% block body %}
-{# ---------- Герой: слева текст, справа акцентная плитка категорий ---------- #}
-<section class="shell pt-8 sm:pt-12">
-  <div class="overflow-hidden rounded-card border border-line bg-surface shadow-card lg:grid lg:grid-cols-2">
-    <div class="p-6 sm:p-10">
-      <div class="eyebrow mb-3">{% trans "Оптом и в розницу" %}</div>
-      <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl">
-        {{ shop.name }}
-      </h1>
-      {% if shop.description %}
-        <p class="mt-4 max-w-md text-muted">{{ shop.description|striptags }}</p>
-      {% endif %}
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href="{% url 'catalog:catalog' %}" class="btn-brand">{% trans "Смотреть каталог" %} →</a>
-        {% if shop.telegram_username %}
-          <a href="https://t.me/{{ shop.telegram_username }}" class="btn-ghost">{% trans "Написать в Telegram" %}</a>
-        {% endif %}
-      </div>
-    </div>
-
-    {# Декоративная панель: акцентный градиент + иконки категорий #}
-    <div class="hero-panel relative hidden overflow-hidden lg:block">
-      <div class="grid h-full grid-cols-3 gap-3 p-8">
-        {% for c in categories|slice:":6" %}
-          <div class="hero-chip flex flex-col items-center justify-center gap-2 rounded-2xl p-3 text-center">
-            {% include "catalog/partials/_cat_icon.html" with name=c.name_ru size="h-7 w-7" %}
-            <span class="text-[11px] font-semibold leading-tight">{{ c.name }}</span>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-</section>
-
-{# ---------- Категории ---------- #}
-{% if categories %}
-<section class="shell mt-10">
-  <h2 class="mb-4 text-xl font-extrabold text-ink">{% trans "Категории" %}</h2>
-  <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-    {% for c in categories %}
-      <a href="{{ c.get_absolute_url }}"
-         class="cat-tile group flex aspect-[4/3] flex-col justify-between rounded-card border border-line bg-surface p-4 shadow-card transition">
-        {% if c.image %}
-          {% thumbnail c.image "400x300" crop="smart" as im %}
-          <div class="absolute inset-0 -z-0"><img src="{{ im.url }}" alt="{{ c.name }}" loading="lazy" class="h-full w-full rounded-card object-cover"></div>
-        {% endif %}
-        <div class="cat-tile-icon flex h-11 w-11 items-center justify-center rounded-2xl">
-          {% include "catalog/partials/_cat_icon.html" with name=c.name_ru size="h-6 w-6" %}
-        </div>
-        <div>
-          <div class="font-bold leading-tight text-ink">{{ c.name }}</div>
-          <div class="nums mt-0.5 text-xs text-muted">{{ c.num }}</div>
-        </div>
+{# ---------- Герой (зелёный) ---------- #}
+<section class="hero">
+  <div class="shell py-12 text-center sm:py-16">
+    <span class="hero-badge">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v6h6"/></svg>
+      {{ shop.name }}
+    </span>
+    <h1 class="mx-auto mt-5 max-w-2xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
+      {{ shop.tagline|default:shop.name }}
+    </h1>
+    {% if shop.description %}
+      <p class="mx-auto mt-4 max-w-xl text-base sm:text-lg" style="color: color-mix(in srgb, var(--on-accent) 88%, transparent)">{{ shop.description|striptags }}</p>
+    {% endif %}
+    <div class="mt-8">
+      <a href="{% url 'catalog:catalog' %}" class="btn-white">
+        {% trans "Смотреть каталог" %}
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
-    {% endfor %}
+    </div>
   </div>
 </section>
-{% endif %}
 
-{# ---------- Популярные товары ---------- #}
-{% if featured %}
-<section class="shell mt-12">
-  <div class="mb-4 flex items-end justify-between">
-    <h2 class="text-xl font-extrabold text-ink">{% trans "Популярное" %}</h2>
-    <a href="{% url 'catalog:catalog' %}" class="text-sm font-semibold text-brand hover:underline">{% trans "Весь каталог" %} →</a>
-  </div>
-  <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-    {% for p in featured %}{% include "catalog/partials/_product_card.html" %}{% endfor %}
-  </div>
-</section>
-{% endif %}
+<div class="shell">
+  {# ---------- Категории ---------- #}
+  {% if categories %}
+  <section class="mt-10">
+    <div class="mb-4 flex items-end justify-between">
+      <h2 class="font-display text-2xl font-extrabold text-ink">{% trans "Категории" %}</h2>
+      <a href="{% url 'catalog:catalog' %}" class="text-sm font-bold text-accent hover:underline">{% trans "Смотреть все" %} →</a>
+    </div>
+    <div class="grid grid-cols-2 gap-4 lg:grid-cols-3">
+      {% for c in categories %}
+        <a href="{{ c.get_absolute_url }}" class="ccard group">
+          {% if c.image %}
+            {% thumbnail c.image "600x450" crop="smart" as im %}
+            <img src="{{ im.url }}" alt="{{ c.name }}" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105">
+          {% else %}
+            <div class="ccard-fallback">
+              <span class="ci">{% include "catalog/partials/_cat_icon.html" with name=c.name_ru size="h-16 w-16" %}</span>
+            </div>
+          {% endif %}
+          <div class="ccard-shade"></div>
+          <div class="relative z-10 p-4">
+            <div class="font-display text-lg font-extrabold leading-tight text-white">{{ c.name }}</div>
+            <div class="nums mt-0.5 text-sm text-white/70">{% blocktrans count n=c.num %}{{ n }} товар{% plural %}{{ n }} товаров{% endblocktrans %}</div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {# ---------- Популярные товары ---------- #}
+  {% if featured %}
+  <section class="mt-12">
+    <div class="mb-4 flex items-end justify-between">
+      <h2 class="font-display text-2xl font-extrabold text-ink">{% trans "Популярные товары" %}</h2>
+      <a href="{% url 'catalog:catalog' %}" class="text-sm font-bold text-accent hover:underline">{% trans "Смотреть все" %} →</a>
+    </div>
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+      {% for p in featured %}{% include "catalog/partials/_product_card.html" %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>
 {% endblock %}

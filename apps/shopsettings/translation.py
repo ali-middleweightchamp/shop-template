@@ -8,6 +8,7 @@ from .models import ShopSettings
 class ShopSettingsTR(TranslationOptions):
     fields = (
         "name",
+        "tagline",
         "description",
         "address",
         "work_hours",

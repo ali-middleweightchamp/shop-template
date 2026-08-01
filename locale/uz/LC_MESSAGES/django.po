@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-31 17:32+0500\n"
+"POT-Creation-Date: 2026-08-01 18:33+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: apps/catalog/admin.py:53
+#: apps/catalog/admin.py:54
 msgid "Превью"
 msgstr "Ko‘rinish"
 
@@ -34,8 +34,8 @@ msgstr "Tavsif va rasm"
 msgid "Отображение"
 msgstr "Ko‘rsatish"
 
-#: apps/catalog/admin.py:92 apps/catalog/models.py:86
-#: apps/catalog/models.py:131
+#: apps/catalog/admin.py:92 apps/catalog/models.py:105
+#: apps/catalog/models.py:162
 msgid "Фото"
 msgstr "Rasm"
 
@@ -75,147 +75,154 @@ msgstr "Saytda ko‘rsatish"
 msgid "Показано на сайте: %(n)d"
 msgstr "Saytda ko‘rsatildi: %(n)d"
 
-#: apps/catalog/admin.py:127 apps/catalog/models.py:30
+#: apps/catalog/admin.py:126 apps/catalog/models.py:43
 msgid "Картинка"
 msgstr "Rasm"
 
-#: apps/catalog/models.py:20 apps/catalog/models.py:63
+#: apps/catalog/models.py:33 apps/catalog/models.py:82
 msgid "Название"
 msgstr "Nomi"
 
-#: apps/catalog/models.py:21 apps/catalog/models.py:64
+#: apps/catalog/models.py:34 apps/catalog/models.py:83
 msgid "Ссылка (slug)"
 msgstr "Havola (slug)"
 
-#: apps/catalog/models.py:24
+#: apps/catalog/models.py:37
 msgid "Родительская категория"
 msgstr "Ota-turkum"
 
-#: apps/catalog/models.py:31 apps/catalog/models.py:91
-#: apps/catalog/models.py:132
+#: apps/catalog/models.py:44 apps/catalog/models.py:110
+#: apps/catalog/models.py:163
 msgid "Порядок"
 msgstr "Tartib"
 
-#: apps/catalog/models.py:32
+#: apps/catalog/models.py:45
 msgid "Активна"
 msgstr "Faol"
 
-#: apps/catalog/models.py:35 apps/catalog/models.py:68
+#: apps/catalog/models.py:48 apps/catalog/models.py:87
 msgid "Категория"
 msgstr "Turkum"
 
-#: apps/catalog/models.py:36 templates/catalog/home.html:41
+#: apps/catalog/models.py:49 templates/catalog/home.html:32
 msgid "Категории"
 msgstr "Turkumlar"
 
-#: apps/catalog/models.py:45
+#: apps/catalog/models.py:64
 msgid "Максимальная вложенность категорий — 2 уровня."
 msgstr "Turkumlarning maksimal ichma-ichligi — 2 daraja."
 
-#: apps/catalog/models.py:48
+#: apps/catalog/models.py:67
 msgid "Категория не может быть родителем самой себе."
 msgstr "Turkum o‘zining ota-turkumi bo‘la olmaydi."
 
-#: apps/catalog/models.py:58
+#: apps/catalog/models.py:77
 msgid "шт"
 msgstr "dona"
 
-#: apps/catalog/models.py:59
+#: apps/catalog/models.py:78
 msgid "упак"
 msgstr "o‘ram"
 
-#: apps/catalog/models.py:60
+#: apps/catalog/models.py:79
 msgid "кг"
 msgstr "kg"
 
-#: apps/catalog/models.py:61
+#: apps/catalog/models.py:80
 msgid "м"
 msgstr "m"
 
-#: apps/catalog/models.py:65 templates/catalog/product.html:50
+#: apps/catalog/models.py:84 templates/catalog/product.html:50
 msgid "Артикул"
 msgstr "Artikul"
 
-#: apps/catalog/models.py:73
+#: apps/catalog/models.py:92
 msgid "Цена"
 msgstr "Narx"
 
-#: apps/catalog/models.py:75
+#: apps/catalog/models.py:94
 msgid "Старая цена"
 msgstr "Eski narx"
 
-#: apps/catalog/models.py:79
+#: apps/catalog/models.py:98
 msgid "Единица"
 msgstr "Birlik"
 
-#: apps/catalog/models.py:82
+#: apps/catalog/models.py:101
 msgid "Фасовка"
 msgstr "Qadoq"
 
-#: apps/catalog/models.py:82
+#: apps/catalog/models.py:101
 msgid "Например: 12 шт в упаковке"
 msgstr "Masalan: qadoqda 12 dona"
 
-#: apps/catalog/models.py:85 apps/shopsettings/models.py:29
+#: apps/catalog/models.py:104 apps/shopsettings/models.py:33
 msgid "Описание"
 msgstr "Tavsif"
 
-#: apps/catalog/models.py:88 templates/catalog/product.html:75
+#: apps/catalog/models.py:107 templates/catalog/product.html:75
 msgid "В наличии"
 msgstr "Sotuvda bor"
 
-#: apps/catalog/models.py:89
+#: apps/catalog/models.py:108
 msgid "Показывать на сайте"
 msgstr "Saytda ko‘rsatilsin"
 
-#: apps/catalog/models.py:90
+#: apps/catalog/models.py:109
 msgid "Популярный"
 msgstr "Ommabop"
 
-#: apps/catalog/models.py:93 apps/catalog/models.py:153
+#: apps/catalog/models.py:112 apps/catalog/models.py:184
 msgid "Создан"
 msgstr "Yaratildi"
 
-#: apps/catalog/models.py:94
+#: apps/catalog/models.py:113
 msgid "Обновлён"
 msgstr "Yangilangan"
 
-#: apps/catalog/models.py:97 apps/catalog/models.py:127
+#: apps/catalog/models.py:116 apps/catalog/models.py:158
 msgid "Товар"
 msgstr "Mahsulot"
 
-#: apps/catalog/models.py:98
+#: apps/catalog/models.py:117
 msgid "Товары"
 msgstr "Mahsulotlar"
 
-#: apps/catalog/models.py:135 apps/catalog/models.py:136
+#: apps/catalog/models.py:166 apps/catalog/models.py:167
 msgid "Фото товара"
 msgstr "Mahsulot rasmi"
 
-#: apps/catalog/models.py:151
-#| msgid "Контакты для заказа"
+#: apps/catalog/models.py:182
 msgid "Код заказа"
 msgstr "Buyurtma uchun aloqa"
 
-#: apps/catalog/models.py:152
-#| msgid "Контакты для заказа"
+#: apps/catalog/models.py:183
 msgid "Состав заказа"
 msgstr "Buyurtma uchun aloqa"
 
-#: apps/catalog/models.py:156
+#: apps/catalog/models.py:187
 msgid "Заказ по ссылке"
 msgstr "Havola bo‘yicha buyurtma"
 
-#: apps/catalog/models.py:157
-#| msgid "Показывать на сайте"
+#: apps/catalog/models.py:188
 msgid "Заказы по ссылке"
 msgstr "Saytda ko‘rsatilsin"
 
-#: apps/catalog/views.py:47
+#: apps/catalog/views.py:47 templates/base.html:70 templates/base.html:133
 msgid "Каталог"
 msgstr "Katalog"
 
-#: apps/importer/admin.py:41 apps/importer/models.py:38
+#: apps/importer/admin.py:55
+#, python-format
+msgid "Не хватает колонок: %s"
+msgstr "Ustunlar yetishmayapti: %s"
+
+#: apps/importer/admin.py:66
+#, python-format
+msgid "Импорт применён: создано %(c)d, обновлено %(u)d, ошибок %(e)d."
+msgstr "Import qo‘llandi: yaratildi %(c)d, yangilandi %(u)d, xato %(e)d."
+
+#: apps/importer/admin.py:90 apps/importer/models.py:38
 msgid "Загрузка прайса"
 msgstr "Narx yuklash"
 
@@ -252,10 +259,12 @@ msgid "Всего строк"
 msgstr "Jami qatorlar"
 
 #: apps/importer/models.py:27
+#: apps/importer/templates/admin/importer/import.html:116
 msgid "Создано"
 msgstr "Yaratilgan"
 
 #: apps/importer/models.py:28
+#: apps/importer/templates/admin/importer/import.html:116
 msgid "Обновлено"
 msgstr "Yangilandi"
 
@@ -268,6 +277,7 @@ msgid "Ошибки"
 msgstr "Xatolar"
 
 #: apps/importer/models.py:34
+#: apps/importer/templates/admin/importer/import.html:115
 msgid "Статус"
 msgstr "Holat"
 
@@ -275,37 +285,134 @@ msgstr "Holat"
 msgid "Загрузки прайса"
 msgstr "Narx yuklashlar"
 
-#: apps/shopsettings/admin.py:19
+#: apps/importer/templates/admin/importer/import.html:10
+msgid "Скачать шаблон .xlsx"
+msgstr ".xlsx shablonini yuklab olish"
+
+#: apps/importer/templates/admin/importer/import.html:13
+#| msgid "Смотреть каталог"
+msgid "Экспорт каталога"
+msgstr "Katalogni ko‘rish"
+
+#: apps/importer/templates/admin/importer/import.html:19
+#| msgid "Загрузить прайс"
+msgid "1. Загрузите прайс"
+msgstr "Narxlarni yuklash"
+
+#: apps/importer/templates/admin/importer/import.html:29
+msgid "Проверить"
+msgstr "Tekshirish"
+
+#: apps/importer/templates/admin/importer/import.html:34
+msgid ""
+"Форматы: .xlsx, .xls, .csv. Колонки: Артикул, Название, Название (uz), "
+"Категория, Цена, Единица, В наличии, Описание. Порядок и регистр не важны."
+msgstr ""
+"Formatlar: .xlsx, .xls, .csv. Ustunlar: Artikul, Nomi, Nomi (uz), Turkum, "
+"Narx, Birlik, Sotuvda bor, Tavsif. Tartib va registr muhim emas."
+
+#: apps/importer/templates/admin/importer/import.html:44
+msgid "В файле не хватает обязательных колонок:"
+msgstr "Faylda majburiy ustunlar yetishmayapti:"
+
+#: apps/importer/templates/admin/importer/import.html:48
+#| msgid "Предпросмотр"
+msgid "2. Предпросмотр"
+msgstr "Oldindan ko‘rish"
+
+#: apps/importer/templates/admin/importer/import.html:54
+msgid "создастся"
+msgstr "yaratiladi"
+
+#: apps/importer/templates/admin/importer/import.html:60
+#| msgid "Обновлён"
+msgid "обновится"
+msgstr "Yangilangan"
+
+#: apps/importer/templates/admin/importer/import.html:66
+#| msgid "С ошибками"
+msgid "с ошибками"
+msgstr "Xatolar bilan"
+
+#: apps/importer/templates/admin/importer/import.html:72
+#| msgid "Всего строк"
+msgid "всего строк"
+msgstr "Jami qatorlar"
+
+#: apps/importer/templates/admin/importer/import.html:79
+msgid "Строки с ошибками (будут пропущены)"
+msgstr "Xatolik qatorlari (o‘tkazib yuboriladi)"
+
+#: apps/importer/templates/admin/importer/import.html:82
+msgid "Строка"
+msgstr "Qator"
+
+#: apps/importer/templates/admin/importer/import.html:82
+msgid "Причина"
+msgstr "Sabab"
+
+#: apps/importer/templates/admin/importer/import.html:98
+#| msgid "Применён"
+msgid "Применить"
+msgstr "Qo‘llanildi"
+
+#: apps/importer/templates/admin/importer/import.html:100
+msgid "Отмена"
+msgstr "Bekor qilish"
+
+#: apps/importer/templates/admin/importer/import.html:109
+msgid "История загрузок"
+msgstr "Yuklashlar tarixi"
+
+#: apps/importer/templates/admin/importer/import.html:115
+msgid "Когда"
+msgstr "Qachon"
+
+#: apps/importer/templates/admin/importer/import.html:117
+#| msgid "Ошибка"
+msgid "Ошибок"
+msgstr "Xato"
+
+#: apps/importer/templates/admin/importer/import.html:117
+#| msgid "Фото"
+msgid "Кто"
+msgstr "Rasm"
+
+#: apps/importer/templates/admin/importer/import.html:135
+msgid "Пока не было загрузок"
+msgstr "Hozircha yuklashlar yo‘q"
+
+#: apps/shopsettings/admin.py:20
 msgid "Бренд"
 msgstr "Brend"
 
-#: apps/shopsettings/admin.py:20
+#: apps/shopsettings/admin.py:21
 msgid "Оформление"
 msgstr "Ko‘rinish"
 
-#: apps/shopsettings/admin.py:22
+#: apps/shopsettings/admin.py:23
 msgid "Контакты для заказа"
 msgstr "Buyurtma uchun aloqa"
 
-#: apps/shopsettings/admin.py:26
+#: apps/shopsettings/admin.py:27
 msgid ""
 "Именно сюда покупатель отправит готовый заказ. Telegram — без символа @."
 msgstr ""
 "Xaridor tayyor buyurtmani aynan shu yerga yuboradi. Telegram — @ belgisisiz."
 
-#: apps/shopsettings/admin.py:31
+#: apps/shopsettings/admin.py:32
 msgid "Адрес и время работы"
 msgstr "Manzil va ish vaqti"
 
-#: apps/shopsettings/admin.py:32
+#: apps/shopsettings/admin.py:33
 msgid "Соцсети"
 msgstr "Ijtimoiy tarmoqlar"
 
-#: apps/shopsettings/admin.py:34
+#: apps/shopsettings/admin.py:35
 msgid "Витрина"
 msgstr "Vitrina"
 
-#: apps/shopsettings/admin.py:46
+#: apps/shopsettings/admin.py:47
 msgid "Как выглядит цвет"
 msgstr "Rang qanday ko‘rinadi"
 
@@ -325,19 +432,27 @@ msgstr "Do‘kon nomi"
 msgid "Логотип"
 msgstr "Logotip"
 
+#: apps/shopsettings/models.py:30
+msgid "Слоган на главной"
+msgstr "Bosh sahifadagi shior"
+
 #: apps/shopsettings/models.py:31
+msgid "Крупный заголовок в шапке главной. Пусто — покажем название."
+msgstr "Bosh sahifa sarlavhasi. Bo‘sh bo‘lsa — nom ko‘rsatiladi."
+
+#: apps/shopsettings/models.py:35
 msgid "Тема оформления"
 msgstr "Ko‘rinish mavzusi"
 
-#: apps/shopsettings/models.py:35
+#: apps/shopsettings/models.py:39
 msgid "Цветовой пресет витрины (светлая/тёмная переключаются на сайте)"
 msgstr "Vitrina rang preseti (och/qorong‘i saytda almashtiriladi)"
 
-#: apps/shopsettings/models.py:38
+#: apps/shopsettings/models.py:42
 msgid "Фирменный цвет"
 msgstr "Firma rangi"
 
-#: apps/shopsettings/models.py:42
+#: apps/shopsettings/models.py:46
 msgid ""
 "HEX, например #0F7B5F. Если заполнен — перебивает акцент темы. Пусто — цвет "
 "из темы."
@@ -345,83 +460,83 @@ msgstr ""
 "HEX, masalan #0F7B5F. To‘ldirilsa — mavzu aksentini almashtiradi. Bo‘sh — "
 "mavzudagi rang."
 
-#: apps/shopsettings/models.py:47
+#: apps/shopsettings/models.py:51
 msgid "Telegram продавца"
 msgstr "Sotuvchi Telegrami"
 
-#: apps/shopsettings/models.py:50
+#: apps/shopsettings/models.py:54
 msgid "Без @, например: myshop"
 msgstr "@ belgisisiz, masalan: myshop"
 
-#: apps/shopsettings/models.py:53
+#: apps/shopsettings/models.py:57
 msgid "WhatsApp"
 msgstr "WhatsApp"
 
-#: apps/shopsettings/models.py:56
+#: apps/shopsettings/models.py:60
 msgid "Только цифры с кодом страны, например: 998901234567"
 msgstr "Faqat mamlakat kodi bilan raqamlar, masalan: 998901234567"
 
-#: apps/shopsettings/models.py:58 templates/catalog/contacts.html:15
+#: apps/shopsettings/models.py:62 templates/catalog/contacts.html:15
 msgid "Телефон"
 msgstr "Telefon"
 
-#: apps/shopsettings/models.py:59 templates/catalog/contacts.html:16
+#: apps/shopsettings/models.py:63 templates/catalog/contacts.html:16
 msgid "Доп. телефон"
 msgstr "Qo‘shimcha telefon"
 
-#: apps/shopsettings/models.py:62 templates/catalog/contacts.html:14
+#: apps/shopsettings/models.py:66 templates/catalog/contacts.html:14
 msgid "Адрес"
 msgstr "Manzil"
 
-#: apps/shopsettings/models.py:63
+#: apps/shopsettings/models.py:67
 msgid "Ссылка на карту"
 msgstr "Xaritaga havola"
 
-#: apps/shopsettings/models.py:65 templates/catalog/contacts.html:17
+#: apps/shopsettings/models.py:69 templates/catalog/contacts.html:17
 msgid "Часы работы"
 msgstr "Ish vaqti"
 
-#: apps/shopsettings/models.py:65
+#: apps/shopsettings/models.py:69
 msgid "Например: Пн–Сб 9:00–18:00"
 msgstr "Masalan: Du–Sh 9:00–18:00"
 
-#: apps/shopsettings/models.py:69
+#: apps/shopsettings/models.py:73
 msgid "Instagram"
 msgstr "Instagram"
 
-#: apps/shopsettings/models.py:70
+#: apps/shopsettings/models.py:74
 msgid "Telegram-канал"
 msgstr "Telegram-kanal"
 
-#: apps/shopsettings/models.py:73
+#: apps/shopsettings/models.py:77
 msgid "Валюта"
 msgstr "Valyuta"
 
-#: apps/shopsettings/models.py:75 templates/catalog/cart.html:69
+#: apps/shopsettings/models.py:79 templates/catalog/cart.html:73
 msgid "Минимальная сумма заказа"
 msgstr "Minimal buyurtma summasi"
 
-#: apps/shopsettings/models.py:79
+#: apps/shopsettings/models.py:83
 msgid "0 — без ограничения"
 msgstr "0 — cheklovsiz"
 
-#: apps/shopsettings/models.py:82
+#: apps/shopsettings/models.py:86
 msgid "Заголовок сообщения заказа"
 msgstr "Buyurtma xabari sarlavhasi"
 
-#: apps/shopsettings/models.py:85
+#: apps/shopsettings/models.py:89
 msgid "Первая строка сообщения, которое уходит в Telegram/WhatsApp"
 msgstr "Telegram/WhatsAppga ketadigan xabarning birinchi qatori"
 
-#: apps/shopsettings/models.py:88
+#: apps/shopsettings/models.py:92
 msgid "Показывать цены"
 msgstr "Narxlarni ko‘rsatish"
 
-#: apps/shopsettings/models.py:90
+#: apps/shopsettings/models.py:94
 msgid "Выключите, если цены только по запросу"
 msgstr "Narxlar faqat so‘rov bo‘yicha bo‘lsa, o‘chiring"
 
-#: apps/shopsettings/models.py:94 apps/shopsettings/models.py:95
+#: apps/shopsettings/models.py:98 apps/shopsettings/models.py:99
 msgid "Настройки магазина"
 msgstr "Do‘kon sozlamalari"
 
@@ -462,77 +577,89 @@ msgstr ""
 msgid "Загрузить прайс"
 msgstr "Narxlarni yuklash"
 
-#: templates/base.html:65
+#: templates/base.html:48
+#| msgid "Фото товара"
+msgid "Поиск товаров…"
+msgstr "Mahsulot rasmi"
+
+#: templates/base.html:52
 msgid "Сменить тему"
 msgstr "Mavzuni almashtirish"
 
-#: templates/base.html:74 templates/base.html:83 templates/catalog/cart.html:4
+#: templates/base.html:57 templates/catalog/cart.html:4
 #: templates/catalog/cart.html:16
 msgid "Корзина"
 msgstr "Savat"
 
-#: templates/base.html:108 templates/catalog/contacts.html:4
-#: templates/catalog/contacts.html:8
+#: templates/base.html:71 templates/base.html:134
+#: templates/catalog/contacts.html:4 templates/catalog/contacts.html:8
 msgid "Контакты"
 msgstr "Kontaktlar"
 
-#: templates/base.html:115
-msgid "Мы на связи"
-msgstr "Biz aloqadamiz"
+#: templates/base.html:78 templates/base.html:135
+#| msgid "Панель управления"
+msgid "Панель продавца"
+msgstr "Boshqaruv paneli"
 
-#: templates/base.html:119
+#: templates/base.html:105
 msgid "Канал"
 msgstr "Kanal"
 
-#: templates/base.html:121
-msgid "Как нас найти →"
-msgstr "Bizni qanday topish →"
+#: templates/base.html:131
+msgid "Навигация"
+msgstr "Navigatsiya"
 
-#: templates/base.html:134
+#: templates/base.html:149
 msgid "поз."
 msgstr "poz."
 
-#: templates/base.html:138
+#: templates/base.html:153
 msgid "Нажмите, чтобы оформить"
 msgstr "Rasmiylashtirish uchun bosing"
 
-#: templates/base.html:140
+#: templates/base.html:155
 msgid "Заказать"
 msgstr "Buyurtma berish"
 
-#: templates/catalog/cart.html:21
-msgid "Корзина пуста."
+#: templates/catalog/cart.html:24
+#| msgid "Корзина пуста."
+msgid "Корзина пуста"
 msgstr "Savat bo‘sh."
 
-#: templates/catalog/cart.html:22
+#: templates/catalog/cart.html:25
+#| msgid "Добавьте ещё товаров."
+msgid "Добавьте товары из каталога"
+msgstr "Yana mahsulot qo‘shing."
+
+#: templates/catalog/cart.html:26
 msgid "Перейти в каталог"
 msgstr "Katalogga o‘tish"
 
-#: templates/catalog/cart.html:44
+#: templates/catalog/cart.html:48
 msgid "Удалить"
 msgstr "O‘chirish"
 
-#: templates/catalog/cart.html:53
+#: templates/catalog/cart.html:57
 msgid "Комментарий к заказу"
 msgstr "Buyurtmaga izoh"
 
-#: templates/catalog/cart.html:54
+#: templates/catalog/cart.html:58
 msgid "Адрес, удобное время доставки…"
 msgstr "Manzil, yetkazib berish uchun qulay vaqt…"
 
-#: templates/catalog/cart.html:60 templates/catalog/order.html:26
+#: templates/catalog/cart.html:64 templates/catalog/order.html:26
 msgid "Итого"
 msgstr "Jami"
 
-#: templates/catalog/cart.html:71
+#: templates/catalog/cart.html:75
 msgid "Добавьте ещё товаров."
 msgstr "Yana mahsulot qo‘shing."
 
-#: templates/catalog/cart.html:78
+#: templates/catalog/cart.html:82
 msgid "Заказать через Telegram"
 msgstr "Telegram orqali buyurtma"
 
-#: templates/catalog/cart.html:80
+#: templates/catalog/cart.html:84
 msgid "Заказать через WhatsApp"
 msgstr "WhatsApp orqali buyurtma"
 
@@ -556,38 +683,37 @@ msgstr "Biz bilan qanday bog‘lanish"
 msgid "Открыть на карте"
 msgstr "Xaritada ochish"
 
-#: templates/catalog/home.html:9
-msgid "Оптом и в розницу"
-msgstr "Ulgurji va chakana"
-
-#: templates/catalog/home.html:17
+#: templates/catalog/home.html:20
 msgid "Смотреть каталог"
 msgstr "Katalogni ko‘rish"
 
-#: templates/catalog/home.html:19
-msgid "Написать в Telegram"
-msgstr "Telegramga yozish"
+#: templates/catalog/home.html:33 templates/catalog/home.html:62
+#| msgid "Смотреть каталог"
+msgid "Смотреть все"
+msgstr "Katalogni ko‘rish"
 
-#: templates/catalog/home.html:67
-msgid "Популярное"
-msgstr "Ommabop"
+#: templates/catalog/home.html:49
+#, python-format
+#| msgid "Найден %(n)s товар"
+#| msgid_plural "Найдено товаров: %(n)s"
+msgid "%(n)s товар"
+msgid_plural "%(n)s товаров"
+msgstr[0] "%(n)s ta mahsulot topildi"
 
-#: templates/catalog/home.html:68
-msgid "Весь каталог"
-msgstr "Butun katalog"
+#: templates/catalog/home.html:61
+#| msgid "Похожие товары"
+msgid "Популярные товары"
+msgstr "O‘xshash mahsulotlar"
 
 #: templates/catalog/order.html:4 templates/catalog/order.html:8
-#| msgid "Заказать"
 msgid "Заказ"
 msgstr "Buyurtma berish"
 
 #: templates/catalog/order.html:32
-#| msgid "Комментарий к заказу"
 msgid "Комментарий"
 msgstr "Buyurtmaga izoh"
 
 #: templates/catalog/order.html:37
-#| msgid "Весь каталог"
 msgid "В каталог"
 msgstr "Butun katalog"
 
@@ -603,20 +729,21 @@ msgstr "Orqaga"
 msgid "Ещё"
 msgstr "Yana"
 
-#: templates/catalog/partials/_product_card.html:27
+#: templates/catalog/partials/_product_card.html:9
+msgid "ХИТ"
+msgstr "HIT"
+
+#: templates/catalog/partials/_product_card.html:34
 #: templates/catalog/product.html:61
 msgid "Цена по запросу"
 msgstr "Narx so‘rov bo‘yicha"
 
-#: templates/catalog/partials/_product_card.html:33
-msgid "Убрать"
-msgstr "Olib tashlash"
+#: templates/catalog/partials/_product_card.html:41
+#| msgid "Корзина"
+msgid "В корзину"
+msgstr "Savat"
 
-#: templates/catalog/partials/_product_card.html:37
-msgid "Добавить"
-msgstr "Qo‘shish"
-
-#: templates/catalog/partials/_product_card.html:42
+#: templates/catalog/partials/_product_card.html:50
 #: templates/catalog/product.html:80
 msgid "Нет в наличии"
 msgstr "Sotuvda yo‘q"
@@ -659,3 +786,27 @@ msgstr "Katalogni ochish"
 #: templates/catalog/search.html:26
 msgid "Введите название или артикул товара в поле поиска."
 msgstr "Qidiruv maydoniga mahsulot nomi yoki artikulini kiriting."
+
+#~ msgid "Мы на связи"
+#~ msgstr "Biz aloqadamiz"
+
+#~ msgid "Как нас найти →"
+#~ msgstr "Bizni qanday topish →"
+
+#~ msgid "Оптом и в розницу"
+#~ msgstr "Ulgurji va chakana"
+
+#~ msgid "Написать в Telegram"
+#~ msgstr "Telegramga yozish"
+
+#~ msgid "Популярное"
+#~ msgstr "Ommabop"
+
+#~ msgid "Весь каталог"
+#~ msgstr "Butun katalog"
+
+#~ msgid "Убрать"
+#~ msgstr "Olib tashlash"
+
+#~ msgid "Добавить"
+#~ msgstr "Qo‘shish"

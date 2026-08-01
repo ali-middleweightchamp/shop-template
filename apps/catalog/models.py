@@ -143,6 +143,12 @@ class Product(models.Model):
             return None
         return self.price
 
+    def discount_percent(self):
+        """Процент скидки, если задана старая цена больше текущей. Иначе None."""
+        if self.old_price and self.old_price > self.price and self.old_price > 0:
+            return int(round((self.old_price - self.price) / self.old_price * 100))
+        return None
+
 
 class ProductImage(models.Model):
     """Дополнительное фото товара (галерея)."""

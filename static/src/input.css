@@ -173,3 +173,102 @@
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+
+/* ==================================================================== *
+ * РЕДИЗАЙН витрины (retail-стиль по референсам): герой, богатые карточки,
+ * плитки категорий, круглый логотип, pill-поиск, тёмный подвал.
+ * ==================================================================== */
+@layer components {
+  /* Круглый логотип-инициал */
+  .logo-circle {
+    @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-lg font-extrabold text-white;
+    background: linear-gradient(145deg, var(--accent), var(--accent-hover));
+  }
+
+  /* Pill-поиск */
+  .search-pill input {
+    @apply w-full rounded-full border border-transparent bg-sunken py-3 pl-11 pr-4 text-sm text-ink
+           placeholder:text-muted;
+  }
+  .search-pill input:focus {
+    @apply border-transparent outline-none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+    background: var(--surface);
+  }
+
+  /* Кнопка-иконка (корзина в шапке) */
+  .icon-btn {
+    @apply relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink
+           transition hover:bg-sunken;
+  }
+
+  /* --- Герой --- */
+  .hero {
+    background: linear-gradient(155deg, var(--accent) 0%, var(--accent-hover) 100%);
+    color: var(--on-accent);
+  }
+  .hero-badge {
+    @apply inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold;
+    background: color-mix(in srgb, #fff 18%, transparent);
+    color: #fff;
+  }
+  .btn-white {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-base font-extrabold;
+    color: var(--accent);
+    box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.45);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .btn-white:hover { transform: translateY(-1px); }
+
+  /* --- Богатая карточка товара --- */
+  .pcard {
+    @apply relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface;
+    box-shadow: 0 1px 2px rgba(15, 27, 45, 0.05);
+    transition: box-shadow .16s ease, border-color .16s ease;
+  }
+  .pcard:hover { box-shadow: 0 16px 36px -18px rgba(15, 27, 45, 0.28); }
+  .pcard.is-out { opacity: .6; }
+
+  .pcard-media { @apply relative flex aspect-square items-center justify-center overflow-hidden bg-sunken p-4; }
+  .pcard-media img { @apply h-full w-full object-contain; }
+
+  .pbadge { @apply absolute z-10 rounded-lg px-2 py-0.5 text-[11px] font-extrabold leading-5; }
+  .pbadge-sale { @apply pbadge left-2.5 top-2.5 text-white; background: var(--danger); }
+  .pbadge-hit  { @apply pbadge top-2.5 text-white; background: var(--text); }
+
+  .pcard-add {
+    @apply mt-2 w-full rounded-xl py-3 text-sm font-bold text-white transition;
+    background: var(--accent);
+  }
+  .pcard-add:hover { background: var(--accent-hover); }
+
+  /* Счётчик внутри карточки (после добавления) */
+  .qty-row {
+    @apply mt-2 flex w-full items-center justify-between rounded-xl p-1;
+    border: 1px solid var(--accent);
+  }
+  .qty-row button {
+    @apply flex h-9 w-11 items-center justify-center rounded-lg text-lg font-extrabold text-white;
+    background: var(--accent);
+  }
+  .qty-row .qv { @apply nums flex-1 text-center text-base font-extrabold text-ink; }
+
+  /* --- Плитка категории с фото/градиентом --- */
+  .ccard {
+    @apply relative flex aspect-[4/3] items-end overflow-hidden rounded-2xl;
+    box-shadow: 0 1px 2px rgba(15, 27, 45, 0.05);
+  }
+  .ccard-fallback {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(120% 120% at 20% 0%, color-mix(in srgb, var(--accent) 30%, #c9d3d0), transparent),
+      linear-gradient(160deg, #cfd8d5, #aeb9b8);
+  }
+  .ccard-fallback .ci { position: absolute; right: 10px; top: 10px; opacity: .5; color: #fff; }
+  .ccard-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(15,27,45,.72)); }
+
+  /* --- Тёмный подвал (как в референсе) --- */
+  .site-footer { background: #111a2e; color: #cbd5e1; }
+  .site-footer a { color: #cbd5e1; }
+  .site-footer .fi { color: var(--accent); }
+}

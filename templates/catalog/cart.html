@@ -13,13 +13,17 @@
        wa: '{{ shop.whatsapp_phone|escapejs }}',
        createUrl: '{% url 'catalog:order_create' %}'
      })">
-  <h1 class="text-2xl font-extrabold tracking-tight text-ink">{% trans "Корзина" %}</h1>
+  <h1 class="font-display text-2xl font-extrabold tracking-tight text-ink">{% trans "Корзина" %}</h1>
 
   {# Пусто #}
   <template x-if="$store.cart.count === 0">
-    <div class="mt-16 text-center">
-      <p class="text-muted">{% trans "Корзина пуста." %}</p>
-      <a href="{% url 'catalog:catalog' %}" class="btn-brand mt-4">{% trans "Перейти в каталог" %}</a>
+    <div class="flex flex-col items-center py-16 text-center">
+      <div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-sunken text-muted">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 7H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>
+      </div>
+      <div class="mt-5 font-display text-xl font-extrabold text-ink">{% trans "Корзина пуста" %}</div>
+      <p class="mt-1 text-muted">{% trans "Добавьте товары из каталога" %}</p>
+      <a href="{% url 'catalog:catalog' %}" class="btn-brand mt-6 rounded-xl px-6">{% trans "Перейти в каталог" %}</a>
     </div>
   </template>
 

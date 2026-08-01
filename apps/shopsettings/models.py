@@ -26,6 +26,10 @@ class ShopSettings(models.Model):
     # --- Бренд ---
     name = models.CharField(_("Название магазина"), max_length=255, default="Магазин")
     logo = models.ImageField(_("Логотип"), upload_to="shop/", blank=True)
+    tagline = models.CharField(
+        _("Слоган на главной"), max_length=120, blank=True,
+        help_text=_("Крупный заголовок в шапке главной. Пусто — покажем название."),
+    )
     description = models.TextField(_("Описание"), blank=True)
     theme = models.CharField(
         _("Тема оформления"),
