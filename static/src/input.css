@@ -307,10 +307,10 @@
 
   /* Плавающая кнопка корзины (иконка + счётчик + «Корзина» + сумма) */
   .cart-fab {
-    @apply fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 rounded-full px-5 text-white shadow-2xl;
+    @apply fixed bottom-5 right-5 z-40 flex items-center gap-3 rounded-2xl px-5 text-white shadow-2xl;
     background: var(--accent);
-    padding-top: .85rem;
-    padding-bottom: calc(.85rem + env(safe-area-inset-bottom));
+    padding-top: .7rem;
+    padding-bottom: calc(.7rem + env(safe-area-inset-bottom));
   }
   .cart-fab:hover { background: var(--accent-hover); }
 
