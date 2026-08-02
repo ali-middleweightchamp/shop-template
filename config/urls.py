@@ -3,17 +3,29 @@ from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 from django.utils.translation import gettext_lazy as _
+
+from apps.catalog import views as catalog_views
+from apps.catalog.sitemaps import CategorySitemap, ProductSitemap, StaticSitemap
 
 # Русифицируем заголовки админки
 admin.site.site_header = _("Управление магазином")
 admin.site.site_title = _("Магазин")
 admin.site.index_title = _("Панель управления")
 
+sitemaps = {
+    "static": StaticSitemap,
+    "products": ProductSitemap,
+    "categories": CategorySitemap,
+}
+
+# Вне языкового префикса: SEO-служебные и переключение языка
 urlpatterns = [
-    # Переключение языка (POST /i18n/setlang/)
     path("i18n/", include("django.conf.urls.i18n")),
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
+    path("robots.txt", catalog_views.robots_txt, name="robots"),
 ]
 
 # Языковой префикс в URL (/ru/, /uz/). Админка живёт вне префикса.

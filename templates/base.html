@@ -18,7 +18,21 @@
     })();
   </script>
   <title>{% block title %}{{ shop.name }}{% endblock %}</title>
-  <meta name="description" content="{% block meta_description %}{{ shop.description|striptags|truncatewords:20 }}{% endblock %}">
+  <meta name="description" content="{% block meta_description %}{{ shop.description|striptags|truncatewords:24 }}{% endblock %}">
+  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+  <meta name="robots" content="{% block robots %}index, follow{% endblock %}">
+
+  {# Open Graph — красивое превью ссылки в Telegram / соцсетях.
+     Twitter/X читает og:*, поэтому дублировать twitter:title/description не нужно. #}
+  <meta property="og:site_name" content="{{ shop.name }}">
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}{{ shop.name }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ shop.description|striptags|truncatewords:24 }}{% endblock %}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  <meta property="og:locale" content="{{ LANGUAGE_CODE }}">
+  <meta property="og:image" content="{% block og_image %}{% if shop.logo %}{{ request.scheme }}://{{ request.get_host }}{{ shop.logo.url }}{% endif %}{% endblock %}">
+  <meta name="twitter:card" content="summary_large_image">
+  {% block og_extra %}{% endblock %}
 
   {# Шрифты подключены локально через @font-face в app.css (не Google CDN) #}
   <link rel="stylesheet" href="{% static 'css/app.css' %}?v={{ asset_version }}">

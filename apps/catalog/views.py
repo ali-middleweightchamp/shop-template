@@ -3,7 +3,7 @@ import json
 
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
@@ -120,6 +120,21 @@ def contacts(request):
 def favorites(request):
     """Избранное. Рендерится на клиенте из localStorage (без регистрации)."""
     return render(request, "catalog/favorites.html")
+
+
+def robots_txt(request):
+    """robots.txt: не индексируем служебные страницы, указываем sitemap."""
+    lines = [
+        "User-agent: *",
+        "Disallow: /admin/",
+        "Disallow: /cart/",
+        "Disallow: /favorites/",
+        "Disallow: /order/",
+        "Disallow: /search/",
+        "",
+        f"Sitemap: {request.scheme}://{request.get_host()}/sitemap.xml",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
 
 
 from django.views.decorators.csrf import ensure_csrf_cookie  # noqa: E402
