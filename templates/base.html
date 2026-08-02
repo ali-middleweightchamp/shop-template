@@ -21,10 +21,10 @@
   <meta name="description" content="{% block meta_description %}{{ shop.description|striptags|truncatewords:20 }}{% endblock %}">
 
   {# Шрифты подключены локально через @font-face в app.css (не Google CDN) #}
-  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}?v={{ asset_version }}">
 
   {# Корзина: стор регистрируется до инициализации Alpine #}
-  <script defer src="{% static 'js/cart.js' %}"></script>
+  <script defer src="{% static 'js/cart.js' %}?v={{ asset_version }}"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   {% block head %}{% endblock %}
 </head>

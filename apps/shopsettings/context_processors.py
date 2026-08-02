@@ -29,6 +29,19 @@ def shop_settings(request):
     return {"shop": shop}
 
 
+def asset_version(request):
+    """Версия для сброса кэша CSS/JS в dev (в проде статика и так хэшируется)."""
+    import os
+
+    from django.conf import settings
+
+    path = settings.BASE_DIR / "static" / "dist" / "css" / "app.css"
+    try:
+        return {"asset_version": int(os.path.getmtime(path))}
+    except OSError:
+        return {"asset_version": 0}
+
+
 def language_links(request):
     """URL текущей страницы на каждом языке для переключателя.
 

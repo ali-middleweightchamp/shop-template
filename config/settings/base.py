@@ -82,6 +82,8 @@ TEMPLATES = [
                 "apps.shopsettings.context_processors.shop_settings",
                 # URL текущей страницы на каждом языке (переключатель языка)
                 "apps.shopsettings.context_processors.language_links",
+                # Версия статики для сброса кэша в dev
+                "apps.shopsettings.context_processors.asset_version",
             ],
         },
     },
