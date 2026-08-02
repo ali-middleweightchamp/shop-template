@@ -43,9 +43,7 @@ def _filter_sort(products, request):
     """Поиск по каталогу (q) и сортировка (sort) из GET-параметров."""
     q = (request.GET.get("q") or "").strip()
     if q:
-        products = products.filter(
-            Q(name_ru__icontains=q) | Q(name_uz__icontains=q) | Q(sku__icontains=q)
-        )
+        products = products.filter(search_blob__contains=q.lower())
     sort = request.GET.get("sort", "")
     if sort in SORTS:
         products = products.order_by(SORTS[sort])
@@ -107,14 +105,9 @@ def search(request):
     q = (request.GET.get("q") or "").strip()
     results = _active_products().none()
     if q:
-        # Ищем по обоим языкам названия/описания и по артикулу
-        results = _active_products().filter(
-            Q(name_ru__icontains=q)
-            | Q(name_uz__icontains=q)
-            | Q(sku__icontains=q)
-            | Q(description_ru__icontains=q)
-            | Q(description_uz__icontains=q)
-        )
+        # search_blob — текст в нижнем регистре, поэтому поиск регистронезависим
+        # по кириллице на любой БД (в т.ч. SQLite)
+        results = _active_products().filter(search_blob__contains=q.lower())
     page = Paginator(results, PER_PAGE).get_page(request.GET.get("page"))
     return render(request, "catalog/search.html", {"q": q, "page_obj": page})
 

@@ -112,6 +112,10 @@ class Product(models.Model):
     created_at = models.DateTimeField(_("Создан"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Обновлён"), auto_now=True)
 
+    # Денормализованный текст для поиска в нижнем регистре: регистронезависимый
+    # поиск по кириллице работает и на SQLite (LIKE), и на PostgreSQL.
+    search_blob = models.TextField(editable=False, blank=True, default="")
+
     class Meta:
         verbose_name = _("Товар")
         verbose_name_plural = _("Товары")
@@ -129,6 +133,8 @@ class Product(models.Model):
         if not self.slug:
             base = slugify(self.sku) or slugify(self.name, allow_unicode=True)
             self.slug = unique_slug(Product, base, self.pk)
+        parts = [self.name_ru, self.name_uz, self.sku, self.description_ru, self.pack_size]
+        self.search_blob = " ".join(p for p in parts if p).lower()
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
