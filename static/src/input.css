@@ -283,15 +283,14 @@
   100% { background-position: 0% 50%; }
 }
 @layer components {
-  /* Переливающийся зелёный градиент героя */
+  /* Переливающийся зелёный градиент героя — ровный, без тёмных полос по краям */
   .hero-anim {
-    background: linear-gradient(120deg,
-      color-mix(in srgb, var(--accent) 90%, #000),
-      color-mix(in srgb, var(--accent-hover) 78%, #000),
-      color-mix(in srgb, var(--accent) 84%, #000),
-      color-mix(in srgb, var(--accent-hover) 88%, #000));
-    background-size: 300% 300%;
-    animation: heroShimmer 16s ease-in-out infinite;
+    background: linear-gradient(100deg,
+      color-mix(in srgb, var(--accent) 86%, #000),
+      color-mix(in srgb, var(--accent-hover) 84%, #000),
+      color-mix(in srgb, var(--accent) 86%, #000));
+    background-size: 200% 100%;
+    animation: heroShimmer 18s ease-in-out infinite;
   }
 
   /* Кнопка «в избранное» на карточке */
