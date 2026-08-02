@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-01 20:58+0500\n"
+"POT-Creation-Date: 2026-08-02 11:28+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,7 +104,7 @@ msgstr "Faol"
 msgid "Категория"
 msgstr "Turkum"
 
-#: apps/catalog/models.py:49 templates/catalog/home.html:32
+#: apps/catalog/models.py:49 templates/catalog/home.html:54
 msgid "Категории"
 msgstr "Turkumlar"
 
@@ -503,7 +503,7 @@ msgstr "Telegram-kanal"
 msgid "Валюта"
 msgstr "Valyuta"
 
-#: apps/shopsettings/models.py:79 templates/catalog/cart.html:73
+#: apps/shopsettings/models.py:79 templates/catalog/cart.html:72
 msgid "Минимальная сумма заказа"
 msgstr "Minimal buyurtma summasi"
 
@@ -568,47 +568,40 @@ msgstr ""
 msgid "Загрузить прайс"
 msgstr "Narxlarni yuklash"
 
-#: templates/base.html:47 templates/base.html:81 templates/base.html:135
+#: templates/base.html:46
+msgid "Поиск товаров…"
+msgstr "Mahsulot rasmi"
+
+#: templates/base.html:52 templates/base.html:88 templates/base.html:142
 msgid "Каталог"
 msgstr "Katalog"
 
-#: templates/base.html:48 templates/base.html:82 templates/base.html:136
+#: templates/base.html:53 templates/base.html:89 templates/base.html:143
 #: templates/catalog/contacts.html:4 templates/catalog/contacts.html:8
 msgid "Контакты"
 msgstr "Kontaktlar"
 
-#: templates/base.html:52
-msgid "Поиск товаров…"
-msgstr "Mahsulot rasmi"
-
-#: templates/base.html:63
+#: templates/base.html:62
 msgid "Сменить тему"
 msgstr "Mavzuni almashtirish"
 
-#: templates/base.html:68 templates/catalog/cart.html:4
-#: templates/catalog/cart.html:16
+#: templates/base.html:68 templates/catalog/favorites.html:4
+#: templates/catalog/favorites.html:8
+msgid "Избранное"
+msgstr "Sevimlilar"
+
+#: templates/base.html:75 templates/base.html:155 templates/base.html:163
+#: templates/catalog/cart.html:4 templates/catalog/cart.html:16
 msgid "Корзина"
 msgstr "Savat"
 
-#: templates/base.html:107
+#: templates/base.html:114
 msgid "Канал"
 msgstr "Kanal"
 
-#: templates/base.html:133
+#: templates/base.html:140
 msgid "Навигация"
 msgstr "Navigatsiya"
-
-#: templates/base.html:150
-msgid "поз."
-msgstr "poz."
-
-#: templates/base.html:154
-msgid "Нажмите, чтобы оформить"
-msgstr "Rasmiylashtirish uchun bosing"
-
-#: templates/base.html:156
-msgid "Заказать"
-msgstr "Buyurtma berish"
 
 #: templates/catalog/cart.html:24
 msgid "Корзина пуста"
@@ -618,39 +611,46 @@ msgstr "Savat bo‘sh."
 msgid "Добавьте товары из каталога"
 msgstr "Yana mahsulot qo‘shing."
 
-#: templates/catalog/cart.html:26
+#: templates/catalog/cart.html:26 templates/catalog/favorites.html:18
 msgid "Перейти в каталог"
 msgstr "Katalogga o‘tish"
 
-#: templates/catalog/cart.html:48
+#: templates/catalog/cart.html:50
 msgid "Удалить"
 msgstr "O‘chirish"
 
-#: templates/catalog/cart.html:57
+#: templates/catalog/cart.html:58
 msgid "Комментарий к заказу"
 msgstr "Buyurtmaga izoh"
 
-#: templates/catalog/cart.html:58
+#: templates/catalog/cart.html:59
 msgid "Адрес, удобное время доставки…"
 msgstr "Manzil, yetkazib berish uchun qulay vaqt…"
 
-#: templates/catalog/cart.html:64 templates/catalog/order.html:26
+#: templates/catalog/cart.html:66 templates/catalog/order.html:26
 msgid "Итого"
 msgstr "Jami"
 
-#: templates/catalog/cart.html:75
-msgid "Добавьте ещё товаров."
-msgstr "Yana mahsulot qo‘shing."
-
-#: templates/catalog/cart.html:82
-msgid "Заказать через Telegram"
+#: templates/catalog/cart.html:80
+#| msgid "Заказать через Telegram"
+msgid "Заказать в Telegram"
 msgstr "Telegram orqali buyurtma"
 
-#: templates/catalog/cart.html:84
-msgid "Заказать через WhatsApp"
+#: templates/catalog/cart.html:85
+#| msgid "Заказать через WhatsApp"
+msgid "Заказать в WhatsApp"
 msgstr "WhatsApp orqali buyurtma"
 
-#: templates/catalog/catalog.html:11 templates/catalog/home.html:49
+#: templates/catalog/cart.html:87
+msgid "Откроется мессенджер с готовым списком заказа"
+msgstr "Tayyor buyurtma ro‘yxati bilan messenjer ochiladi"
+
+#: templates/catalog/cart.html:91
+#| msgid "В корзину"
+msgid "Очистить корзину"
+msgstr "Savat"
+
+#: templates/catalog/catalog.html:11 templates/catalog/home.html:69
 #, python-format
 msgid "%(n)s товар"
 msgid_plural "%(n)s товаров"
@@ -661,12 +661,10 @@ msgid "Все товары"
 msgstr "Barcha mahsulotlar"
 
 #: templates/catalog/catalog.html:30
-#| msgid "Поиск товаров…"
 msgid "Поиск по каталогу…"
 msgstr "Mahsulot rasmi"
 
 #: templates/catalog/catalog.html:35
-#| msgid "Фасовка"
 msgid "Сортировка"
 msgstr "Qadoq"
 
@@ -694,15 +692,39 @@ msgstr "Biz bilan qanday bog‘lanish"
 msgid "Открыть на карте"
 msgstr "Xaritada ochish"
 
-#: templates/catalog/home.html:20
+#: templates/catalog/favorites.html:16
+#| msgid "Корзина пуста"
+msgid "В избранном пусто"
+msgstr "Savat bo‘sh."
+
+#: templates/catalog/favorites.html:17
+msgid "Нажимайте на сердечко у товара"
+msgstr "Mahsulotdagi yurakcha tugmasini bosing"
+
+#: templates/catalog/favorites.html:28
+msgid "Убрать из избранного"
+msgstr "Sevimlilardan olib tashlash"
+
+#: templates/catalog/favorites.html:45
+#: templates/catalog/partials/_product_card.html:44
+msgid "В корзину"
+msgstr "Savat"
+
+#: templates/catalog/favorites.html:54
+#: templates/catalog/partials/_product_card.html:52
+#: templates/catalog/product.html:80
+msgid "Нет в наличии"
+msgstr "Sotuvda yo‘q"
+
+#: templates/catalog/home.html:21
 msgid "Смотреть каталог"
 msgstr "Katalogni ko‘rish"
 
-#: templates/catalog/home.html:33 templates/catalog/home.html:62
+#: templates/catalog/home.html:55 templates/catalog/home.html:82
 msgid "Смотреть все"
 msgstr "Katalogni ko‘rish"
 
-#: templates/catalog/home.html:61
+#: templates/catalog/home.html:81
 msgid "Популярные товары"
 msgstr "O‘xshash mahsulotlar"
 
@@ -730,23 +752,18 @@ msgstr "Orqaga"
 msgid "Ещё"
 msgstr "Yana"
 
-#: templates/catalog/partials/_product_card.html:9
+#: templates/catalog/partials/_product_card.html:10
 msgid "ХИТ"
 msgstr "HIT"
 
-#: templates/catalog/partials/_product_card.html:34
+#: templates/catalog/partials/_product_card.html:13
+msgid "В избранное"
+msgstr "Sevimlilarga"
+
+#: templates/catalog/partials/_product_card.html:40
 #: templates/catalog/product.html:61
 msgid "Цена по запросу"
 msgstr "Narx so‘rov bo‘yicha"
-
-#: templates/catalog/partials/_product_card.html:41
-msgid "В корзину"
-msgstr "Savat"
-
-#: templates/catalog/partials/_product_card.html:50
-#: templates/catalog/product.html:80
-msgid "Нет в наличии"
-msgstr "Sotuvda yo‘q"
 
 #: templates/catalog/partials/_search_input.html:3
 msgid "Поиск по названию или артикулу"
@@ -786,6 +803,18 @@ msgstr "Katalogni ochish"
 #: templates/catalog/search.html:26
 msgid "Введите название или артикул товара в поле поиска."
 msgstr "Qidiruv maydoniga mahsulot nomi yoki artikulini kiriting."
+
+#~ msgid "поз."
+#~ msgstr "poz."
+
+#~ msgid "Нажмите, чтобы оформить"
+#~ msgstr "Rasmiylashtirish uchun bosing"
+
+#~ msgid "Заказать"
+#~ msgstr "Buyurtma berish"
+
+#~ msgid "Добавьте ещё товаров."
+#~ msgstr "Yana mahsulot qo‘shing."
 
 #~ msgid "Панель продавца"
 #~ msgstr "Boshqaruv paneli"

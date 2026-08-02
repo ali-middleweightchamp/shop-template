@@ -2,51 +2,71 @@
 {% load i18n thumbnail %}
 
 {% block body %}
-{# ---------- Герой (зелёный) ---------- #}
-<section class="hero">
-  <div class="shell py-12 text-center sm:py-16">
-    <span class="hero-badge">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v6h6"/></svg>
-      {{ shop.name }}
-    </span>
-    <h1 class="mx-auto mt-5 max-w-2xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
-      {{ shop.tagline|default:shop.name }}
-    </h1>
-    {% if shop.description %}
-      <p class="mx-auto mt-4 max-w-xl text-base sm:text-lg" style="color: rgba(255,255,255,.9)">{{ shop.description|striptags }}</p>
-    {% endif %}
-    <div class="mt-8">
-      <a href="{% url 'catalog:catalog' %}" class="btn-white">
-        {% trans "Смотреть каталог" %}
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
+{# ---------- Герой: слева текст, справа фото; переливающийся зелёный ---------- #}
+<section class="hero hero-anim overflow-hidden">
+  <div class="shell py-10 sm:py-14 lg:grid lg:grid-cols-2 lg:items-center lg:gap-10 lg:py-16">
+    <div class="text-center lg:text-left">
+      <span class="hero-badge">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v6h6"/></svg>
+        {{ shop.name }}
+      </span>
+      <h1 class="mx-auto mt-5 max-w-xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:mx-0">
+        {{ shop.tagline|default:shop.name }}
+      </h1>
+      {% if shop.description %}
+        <p class="mx-auto mt-4 max-w-lg text-base sm:text-lg lg:mx-0" style="color: rgba(255,255,255,.9)">{{ shop.description|striptags }}</p>
+      {% endif %}
+      <div class="mt-8">
+        <a href="{% url 'catalog:catalog' %}" class="btn-white">
+          {% trans "Смотреть каталог" %}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
     </div>
+
+    {# Правая карточка с витриной товаров #}
+    {% if featured %}
+    <div class="mt-10 lg:mt-0">
+      <div class="rounded-3xl bg-white p-3 shadow-2xl sm:p-4">
+        <div class="grid grid-cols-3 gap-2 sm:gap-3">
+          {% for p in featured|slice:":6" %}
+            <a href="{{ p.get_absolute_url }}" class="aspect-square overflow-hidden rounded-2xl bg-[#EEF1F5]">
+              {% if p.image %}
+                {% thumbnail p.image "300x300" crop="smart" as im %}
+                <img src="{{ im.url }}" alt="{{ p.name }}" loading="lazy" class="h-full w-full object-cover transition hover:scale-105">
+              {% else %}
+                {% include "catalog/partials/_no_image.html" with category=p.category.name_ru %}
+              {% endif %}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
 </section>
 
 <div class="shell">
-  {# ---------- Категории ---------- #}
+  {# ---------- Категории (мельче на десктопе) ---------- #}
   {% if categories %}
   <section class="mt-10">
     <div class="mb-4 flex items-end justify-between">
       <h2 class="font-display text-2xl font-extrabold text-ink">{% trans "Категории" %}</h2>
       <a href="{% url 'catalog:catalog' %}" class="text-sm font-bold text-accent hover:underline">{% trans "Смотреть все" %} →</a>
     </div>
-    <div class="grid grid-cols-2 gap-4 lg:grid-cols-3">
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
       {% for c in categories %}
         <a href="{{ c.get_absolute_url }}" class="ccard group">
           {% if c.image %}
-            {% thumbnail c.image "600x450" crop="smart" as im %}
+            {% thumbnail c.image "400x300" crop="smart" as im %}
             <img src="{{ im.url }}" alt="{{ c.name }}" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105">
           {% else %}
-            <div class="ccard-fallback">
-              <span class="ci">{% include "catalog/partials/_cat_icon.html" with name=c.name_ru size="h-16 w-16" %}</span>
-            </div>
+            <div class="ccard-fallback"><span class="ci">{% include "catalog/partials/_cat_icon.html" with name=c.name_ru size="h-12 w-12" %}</span></div>
           {% endif %}
           <div class="ccard-shade"></div>
-          <div class="relative z-10 p-4">
-            <div class="font-display text-lg font-extrabold leading-tight text-white">{{ c.name }}</div>
-            <div class="nums mt-0.5 text-sm text-white/70">{% blocktrans count n=c.num %}{{ n }} товар{% plural %}{{ n }} товаров{% endblocktrans %}</div>
+          <div class="relative z-10 p-3">
+            <div class="font-display text-sm font-extrabold leading-tight text-white sm:text-base">{{ c.name }}</div>
+            <div class="nums mt-0.5 text-xs text-white/70">{% blocktrans count n=c.num %}{{ n }} товар{% plural %}{{ n }} товаров{% endblocktrans %}</div>
           </div>
         </a>
       {% endfor %}

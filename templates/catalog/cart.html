@@ -13,7 +13,7 @@
        wa: '{{ shop.whatsapp_phone|escapejs }}',
        createUrl: '{% url 'catalog:order_create' %}'
      })">
-  <h1 class="font-display text-2xl font-extrabold tracking-tight text-ink">{% trans "Корзина" %}</h1>
+  <h1 class="font-display text-3xl font-extrabold tracking-tight text-ink">{% trans "Корзина" %}</h1>
 
   {# Пусто #}
   <template x-if="$store.cart.count === 0">
@@ -29,84 +29,78 @@
 
   {# Список позиций #}
   <template x-if="$store.cart.count > 0">
-    <div class="mt-6">
-      <div class="divide-y divide-line rounded-card border border-line bg-surface">
-        <template x-for="line in $store.cart.lines" :key="line.sku">
-          <div class="flex items-center gap-3 p-3">
-            <div class="min-w-0 flex-1">
-              <div class="truncate text-sm font-bold text-ink" x-text="line.name"></div>
-              <div class="sku-tag mt-0.5" x-text="line.sku"></div>
+    <div class="mt-6 space-y-3">
+      <template x-for="line in $store.cart.lines" :key="line.sku">
+        <div class="relative flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 shadow-card">
+          <a :href="line.url" class="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-sunken">
+            <template x-if="line.image"><img :src="line.image" class="h-full w-full object-cover"></template>
+          </a>
+          <div class="min-w-0 flex-1 pr-6">
+            <a :href="line.url" class="block truncate font-bold text-ink" x-text="line.name"></a>
+            <div class="nums mt-0.5 text-sm text-muted">
+              <span x-text="formatMoney(line.price)"></span> {{ shop.currency_label }} / <span x-text="line.unit"></span>
             </div>
-            <div class="stepper" :data-active="line.qty > 0">
+            <div class="nums mt-1 font-extrabold text-accent">= <span x-text="formatMoney(line.qty * line.price)"></span> {{ shop.currency_label }}</div>
+            <div class="cart-step mt-2">
               <button type="button" @click="$store.cart.dec(line.sku)" aria-label="−">−</button>
-              <span class="qty" x-text="line.qty"></span>
+              <span class="nums" x-text="line.qty"></span>
               <button type="button" @click="$store.cart.inc(line.sku)" aria-label="+">+</button>
             </div>
-            <div class="nums w-24 text-right text-sm font-bold text-ink">
-              <span x-text="formatMoney(line.qty * line.price)"></span>
-            </div>
-            <button type="button" @click="$store.cart.remove(line.sku)" class="text-muted hover:text-ink" aria-label="{% trans 'Удалить' %}">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6 6 18M6 6l12 12"/></svg>
-            </button>
           </div>
-        </template>
-      </div>
-
-      {# Комментарий #}
-      <label class="mt-4 block">
-        <span class="text-sm font-semibold text-ink">{% trans "Комментарий к заказу" %}</span>
-        <textarea x-model="comment" rows="2" placeholder="{% trans 'Адрес, удобное время доставки…' %}"
-                  class="mt-1 w-full rounded-control border border-line bg-surface p-3 text-sm focus:border-brand"></textarea>
-      </label>
-
-      {# Итого #}
-      <div class="mt-4 flex items-center justify-between border-t border-line pt-4">
-        <span class="text-sm font-semibold text-muted">{% trans "Итого" %}</span>
-        <span class="nums text-2xl font-extrabold text-ink">
-          <span x-text="formatMoney($store.cart.total)"></span> {{ shop.currency_label }}
-        </span>
-      </div>
-
-      {# Минимальная сумма #}
-      <template x-if="min > 0 && $store.cart.total < min">
-        <div class="mt-3 rounded-control border border-line bg-paper p-3 text-sm text-muted">
-          {% trans "Минимальная сумма заказа" %}:
-          <span class="nums font-bold text-ink" x-text="formatMoney(min)"></span> {{ shop.currency_label }}.
-          {% trans "Добавьте ещё товаров." %}
+          <button type="button" @click="$store.cart.remove(line.sku)" class="absolute right-3 top-3 text-muted hover:text-danger" aria-label="{% trans 'Удалить' %}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+          </button>
         </div>
       </template>
 
-      {# Кнопки заказа #}
-      <div class="mt-5 grid gap-2 sm:grid-cols-2">
-        <button type="button" @click="orderTelegram()" :disabled="min > 0 && $store.cart.total < min"
-                class="btn-brand" x-show="tg">{% trans "Заказать через Telegram" %}</button>
-        <button type="button" @click="orderWhatsApp()" :disabled="min > 0 && $store.cart.total < min"
-                class="btn-ghost" x-show="wa">{% trans "Заказать через WhatsApp" %}</button>
+      {# Комментарий #}
+      <label class="block pt-2">
+        <span class="text-sm font-semibold text-ink">{% trans "Комментарий к заказу" %}</span>
+        <textarea x-model="comment" rows="2" placeholder="{% trans 'Адрес, удобное время доставки…' %}"
+                  class="mt-1 w-full rounded-xl border border-line bg-surface p-3 text-sm focus:border-accent"></textarea>
+      </label>
+
+      {# Итого + кнопки заказа #}
+      <div class="rounded-2xl border border-line bg-surface p-5 shadow-card">
+        <div class="flex items-center justify-between">
+          <span class="text-muted">{% trans "Итого" %} (<span x-text="$store.cart.count"></span>)</span>
+          <span class="nums text-2xl font-extrabold text-accent"><span x-text="formatMoney($store.cart.total)"></span> {{ shop.currency_label }}</span>
+        </div>
+
+        <template x-if="min > 0 && $store.cart.total < min">
+          <div class="mt-3 rounded-xl border border-line bg-sunken p-3 text-sm text-muted">
+            {% trans "Минимальная сумма заказа" %}: <span class="nums font-bold text-ink" x-text="formatMoney(min)"></span> {{ shop.currency_label }}.
+          </div>
+        </template>
+
+        <hr class="my-4 border-line">
+        <button type="button" @click="orderTelegram()" :disabled="min > 0 && $store.cart.total < min" x-show="tg"
+                class="msg-btn" style="background:#229ED9">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9.8 15.6 9.6 19c.4 0 .6-.2.8-.4l1.9-1.8 3.9 2.9c.7.4 1.2.2 1.4-.7l2.6-12.1c.2-1-.4-1.4-1.1-1.2L3.3 9.3c-1 .4-1 .9-.2 1.2l4.3 1.3 10-6.3c.5-.3.9-.1.5.2Z"/></svg>
+          {% trans "Заказать в Telegram" %}
+        </button>
+        <button type="button" @click="orderWhatsApp()" :disabled="min > 0 && $store.cart.total < min" x-show="wa"
+                class="msg-btn mt-2" style="background:#25D366">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.5A10 10 0 1 0 12 2Zm5.3 14c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.2-.7-2.7-1-4.4-3.8-4.5-4-.1-.2-1-1.4-1-2.6s.6-1.8.9-2.1c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.6c-.1.2-.3.3-.1.6.1.2.7 1.1 1.5 1.8 1 .9 1.9 1.2 2.1 1.3.2.1.4.1.5-.1l.7-.8c.2-.2.3-.2.6-.1l1.8.9c.3.1.4.2.5.3.1.2.1.7-.1 1.2Z"/></svg>
+          {% trans "Заказать в WhatsApp" %}
+        </button>
+        <p class="mt-3 text-center text-sm text-muted">{% trans "Откроется мессенджер с готовым списком заказа" %}</p>
+      </div>
+
+      <div class="pt-1 text-center">
+        <button type="button" @click="$store.cart.clear()" class="text-sm font-semibold text-muted hover:text-danger">{% trans "Очистить корзину" %}</button>
       </div>
     </div>
   </template>
 </div>
 
 <script>
-  // Формирование заказа. Длинные заказы (текст > лимита) сохраняются в ShortOrder,
-  // отправляется сокращённый вариант со ссылкой на полный состав.
-  const ORDER_TEXT_LIMIT = 1500; // совпадает с ORDER_TEXT_LIMIT на сервере
-
-  function getCookie(name) {
-    const m = document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)");
-    return m ? m.pop() : "";
-  }
-
+  const ORDER_TEXT_LIMIT = 1500;
+  function getCookie(name) { const m = document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)"); return m ? m.pop() : ""; }
   function cartPage(cfg) {
     return {
-      ...cfg,
-      comment: "",
-      sending: false,
-
-      line(l) {
-        return `${l.name} (${l.sku}) — ${l.qty} ${l.unit} × ${formatMoney(l.price)} = ${formatMoney(l.qty * l.price)}`;
-      },
-      // Полный текст заказа
+      ...cfg, comment: "", sending: false,
+      line(l) { return `${l.name} (${l.sku}) — ${l.qty} ${l.unit} × ${formatMoney(l.price)} = ${formatMoney(l.qty * l.price)}`; },
       fullText() {
         const c = Alpine.store("cart");
         let t = this.header + "\n\n" + c.lines.map((l) => this.line(l)).join("\n");
@@ -114,46 +108,29 @@
         if (this.comment.trim()) t += `\n\nКомментарий: ${this.comment.trim()}`;
         return t;
       },
-      // Сокращённый текст: первые 10 позиций + код + ссылка на полный состав
       shortText(code, url) {
         const c = Alpine.store("cart");
         const head = c.lines.slice(0, 10).map((l) => this.line(l)).join("\n");
         const rest = c.lines.length - 10;
         let t = this.header + "\n\n" + head;
         if (rest > 0) t += `\n…и ещё ${rest} позиц.`;
-        t += `\n\nИтого: ${formatMoney(c.total)} ${this.currency}`;
-        t += `\nКод заказа: ${code}\nПолный список: ${url}`;
+        t += `\n\nИтого: ${formatMoney(c.total)} ${this.currency}\nКод заказа: ${code}\nПолный список: ${url}`;
         if (this.comment.trim()) t += `\n\nКомментарий: ${this.comment.trim()}`;
         return t;
       },
-      // Возвращает текст для отправки (полный или сокращённый со ссылкой)
       async buildMessage() {
         const full = this.fullText();
         if (encodeURIComponent(full).length <= ORDER_TEXT_LIMIT) return full;
-        // Длинный заказ — сохраняем и берём короткий вариант
         const c = Alpine.store("cart");
-        const resp = await fetch(this.createUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "X-CSRFToken": getCookie("csrftoken") },
-          body: JSON.stringify({
-            header: this.header, currency: this.currency, comment: this.comment,
-            total: c.total, lines: c.lines,
-          }),
-        });
-        if (!resp.ok) return full; // не удалось сохранить — шлём как есть
+        const resp = await fetch(this.createUrl, { method: "POST", headers: { "Content-Type": "application/json", "X-CSRFToken": getCookie("csrftoken") }, body: JSON.stringify({ header: this.header, currency: this.currency, comment: this.comment, total: c.total, lines: c.lines }) });
+        if (!resp.ok) return full;
         const data = await resp.json();
-        const url = window.location.origin + data.url;
-        return this.shortText(data.code, url);
+        return this.shortText(data.code, window.location.origin + data.url);
       },
       async send(base) {
-        if (this.sending) return;
-        this.sending = true;
-        try {
-          const text = await this.buildMessage();
-          window.location.href = base + encodeURIComponent(text);
-        } finally {
-          this.sending = false;
-        }
+        if (this.sending) return; this.sending = true;
+        try { window.location.href = base + encodeURIComponent(await this.buildMessage()); }
+        finally { this.sending = false; }
       },
       orderTelegram() { this.send(`https://t.me/${this.tg}?text=`); },
       orderWhatsApp() { this.send(`https://wa.me/${this.wa}?text=`); },

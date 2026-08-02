@@ -10,6 +10,7 @@ urlpatterns = [
     path("search/", views.search, name="search"),
     path("contacts/", views.contacts, name="contacts"),
     path("cart/", views.cart, name="cart"),
+    path("favorites/", views.favorites, name="favorites"),
     path("order/create/", views.order_create, name="order_create"),
     path("order/<str:code>/", views.order_detail, name="order"),
     path("catalog/<slug:slug>/", views.category, name="category"),

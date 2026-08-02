@@ -124,6 +124,11 @@ def contacts(request):
     return render(request, "catalog/contacts.html")
 
 
+def favorites(request):
+    """Избранное. Рендерится на клиенте из localStorage (без регистрации)."""
+    return render(request, "catalog/favorites.html")
+
+
 from django.views.decorators.csrf import ensure_csrf_cookie  # noqa: E402
 
 

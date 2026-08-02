@@ -275,3 +275,61 @@
   .site-footer a { color: #cbd5e1; }
   .site-footer .fi { color: var(--accent); }
 }
+
+/* ==================== Доработки: избранное, корзина, герой ============= */
+@keyframes heroShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@layer components {
+  /* Переливающийся зелёный градиент героя */
+  .hero-anim {
+    background: linear-gradient(120deg,
+      color-mix(in srgb, var(--accent) 90%, #000),
+      color-mix(in srgb, var(--accent-hover) 78%, #000),
+      color-mix(in srgb, var(--accent) 84%, #000),
+      color-mix(in srgb, var(--accent-hover) 88%, #000));
+    background-size: 300% 300%;
+    animation: heroShimmer 16s ease-in-out infinite;
+  }
+
+  /* Кнопка «в избранное» на карточке */
+  .fav-btn {
+    @apply flex h-9 w-9 items-center justify-center rounded-full bg-surface text-muted shadow-sm;
+    border: 1px solid var(--border-input);
+    transition: all .15s ease;
+  }
+  .fav-btn svg { fill: none; }
+  .fav-btn:hover { color: var(--danger); }
+  .fav-btn.is-fav { color: #fff; background: var(--danger); border-color: var(--danger); }
+  .fav-btn.is-fav svg { fill: #fff; }
+
+  /* Плавающая кнопка корзины (иконка + счётчик + «Корзина» + сумма) */
+  .cart-fab {
+    @apply fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 rounded-full px-5 text-white shadow-2xl;
+    background: var(--accent);
+    padding-top: .85rem;
+    padding-bottom: calc(.85rem + env(safe-area-inset-bottom));
+  }
+  .cart-fab:hover { background: var(--accent-hover); }
+
+  /* Круглый счётчик в корзине */
+  .cart-step { @apply inline-flex items-center gap-3; }
+  .cart-step > span { @apply nums min-w-[1.5rem] text-center text-base font-extrabold text-ink; }
+  .cart-step button {
+    @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg font-extrabold leading-none transition;
+  }
+  .cart-step button:first-child { border: 1.5px solid var(--accent); color: var(--accent); }
+  .cart-step button:first-child:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+  .cart-step button:last-child { background: var(--accent); color: #fff; }
+  .cart-step button:last-child:hover { background: var(--accent-hover); }
+
+  /* Кнопки мессенджеров (фирменные цвета TG/WA) */
+  .msg-btn {
+    @apply flex w-full items-center justify-center gap-2.5 rounded-xl py-4 text-base font-bold text-white transition;
+  }
+  .msg-btn:hover { filter: brightness(.96); }
+  .msg-btn:disabled { opacity: .45; cursor: not-allowed; }
+}
+@media (prefers-reduced-motion: reduce) { .hero-anim { animation: none; } }

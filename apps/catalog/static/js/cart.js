@@ -4,6 +4,7 @@
  * На этапе 6 сюда добавится формирование текста заказа для Telegram.
  * ------------------------------------------------------------------ */
 const CART_KEY = "cart_v1";
+const FAV_KEY = "fav_v1";
 
 // Формат суммы «240 000» (пробел-разделитель тысяч) — привычно для сумов
 function formatMoney(n) {
@@ -44,7 +45,7 @@ document.addEventListener("alpine:init", () => {
       return this.items[sku] ? this.items[sku].qty : 0;
     },
 
-    // product: {sku, name, price, unit}
+    // product: {sku, name, price, unit, image, url}
     add(product) {
       const cur = this.items[product.sku];
       if (cur) {
@@ -54,9 +55,24 @@ document.addEventListener("alpine:init", () => {
           name: product.name,
           price: Number(product.price) || 0,
           unit: product.unit || "",
+          image: product.image || "",
+          url: product.url || "",
           qty: 1,
         };
       }
+      this.persist();
+    },
+
+    setQty(sku, qty) {
+      qty = Math.max(0, parseInt(qty) || 0);
+      if (!this.items[sku]) return;
+      if (qty === 0) delete this.items[sku];
+      else this.items[sku].qty = qty;
+      this.persist();
+    },
+
+    clear() {
+      this.items = {};
       this.persist();
     },
 
@@ -88,6 +104,47 @@ document.addEventListener("alpine:init", () => {
       return Object.values(this.items).reduce((s, i) => s + i.qty * i.price, 0);
     },
 
+    get lines() {
+      return Object.entries(this.items).map(([sku, i]) => ({ sku, ...i }));
+    },
+  });
+
+  // Избранное (сердечко) — тоже на localStorage, без регистрации
+  Alpine.store("fav", {
+    items: {},
+    init() {
+      try {
+        this.items = JSON.parse(localStorage.getItem(FAV_KEY)) || {};
+      } catch (e) {
+        this.items = {};
+      }
+    },
+    persist() {
+      localStorage.setItem(FAV_KEY, JSON.stringify(this.items));
+    },
+    has(sku) {
+      return !!this.items[sku];
+    },
+    toggle(product) {
+      if (this.items[product.sku]) delete this.items[product.sku];
+      else
+        this.items[product.sku] = {
+          name: product.name,
+          price: Number(product.price) || 0,
+          unit: product.unit || "",
+          image: product.image || "",
+          url: product.url || "",
+          in_stock: product.in_stock !== false,
+        };
+      this.persist();
+    },
+    remove(sku) {
+      delete this.items[sku];
+      this.persist();
+    },
+    get count() {
+      return Object.keys(this.items).length;
+    },
     get lines() {
       return Object.entries(this.items).map(([sku, i]) => ({ sku, ...i }));
     },
