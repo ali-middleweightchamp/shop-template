@@ -1,0 +1,15 @@
+# Caddy: автоматический HTTPS (Let's Encrypt) для домена из переменной DOMAIN.
+# Для боевого запуска: DOMAIN=shop.example.uz  → Caddy сам выпустит сертификат.
+# Для теста по IP/локально: DOMAIN=:80          → обычный HTTP без TLS.
+{$DOMAIN} {
+	encode zstd gzip
+
+	# Медиа (загруженные фото) — отдаёт Caddy напрямую из общего тома, минуя Django.
+	handle_path /media/* {
+		root * /app/media
+		file_server
+	}
+
+	# Всё остальное — в gunicorn. Статику (CSS/JS) отдаёт whitenoise внутри Django.
+	reverse_proxy web:8000
+}

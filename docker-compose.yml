@@ -31,16 +31,20 @@ services:
       db:
         condition: service_healthy
 
-  nginx:
-    image: nginx:1.27-alpine
+  # Caddy — reverse proxy + автоматический HTTPS (Let's Encrypt по домену из DOMAIN).
+  caddy:
+    image: caddy:2-alpine
     restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
+    env_file: .env
     volumes:
-      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      # Те же тома, что у web — отдаём статику и медиа напрямую
-      - static:/app/staticfiles:ro
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      # Медиа отдаём напрямую; data/config — где Caddy хранит выпущенные сертификаты
       - media:/app/media:ro
+      - caddy_data:/data
+      - caddy_config:/config
     depends_on:
       - web
 
@@ -48,3 +52,5 @@ volumes:
   pgdata:
   static:
   media:
+  caddy_data:
+  caddy_config:
