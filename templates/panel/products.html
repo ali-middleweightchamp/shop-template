@@ -1,0 +1,200 @@
+{% extends "panel/base.html" %}
+{% load i18n l10n thumbnail %}
+{% block title %}{% trans "Товары" %}{% endblock %}
+
+{% block content %}
+<div x-data="productsTable([{% for p in page_obj %}{{ p.id }}{% if not forloop.last %},{% endif %}{% endfor %}])">
+
+  {# Заголовок #}
+  <div class="flex flex-wrap items-start justify-between gap-3">
+    <div>
+      <h1 class="font-display text-3xl font-extrabold tracking-tight text-ink">{% trans "Товары" %}</h1>
+      <p class="mt-1 text-muted">{% blocktrans count n=total %}{{ n }} позиция{% plural %}{{ n }} позиций{% endblocktrans %} · {% blocktrans count m=discounted %}{{ m }} со скидкой{% plural %}{{ m }} со скидкой{% endblocktrans %}</p>
+    </div>
+    <a href="{% url 'panel:product_new' %}" class="pbtn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+      {% trans "Добавить" %}
+    </a>
+  </div>
+
+  {# Поиск и фильтры #}
+  <form method="get" class="mt-6 flex flex-wrap gap-2">
+    <input type="search" name="q" value="{{ q }}" placeholder="{% trans 'Поиск товара…' %}" class="pfield min-w-[200px] flex-1">
+    <select name="cat" class="pfield w-auto" onchange="this.form.submit()">
+      <option value="">{% trans "Все категории" %}</option>
+      {% for c in categories %}<option value="{{ c.id }}" {% if cat == c.id|stringformat:'s' %}selected{% endif %}>{{ c.name }}</option>{% endfor %}
+    </select>
+    <select name="stock" class="pfield w-auto" onchange="this.form.submit()">
+      <option value="">{% trans "Всё наличие" %}</option>
+      <option value="in" {% if stock == 'in' %}selected{% endif %}>{% trans "В наличии" %}</option>
+      <option value="out" {% if stock == 'out' %}selected{% endif %}>{% trans "Нет в наличии" %}</option>
+      <option value="sale" {% if stock == 'sale' %}selected{% endif %}>{% trans "Со скидкой" %}</option>
+    </select>
+    <button class="pbtn-ghost">{% trans "Найти" %}</button>
+  </form>
+
+  {# Панель массовых действий #}
+  <div x-show="count > 0" x-cloak class="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-line bg-surface p-2">
+    <span class="px-2 text-sm font-bold text-ink" x-text="`{% trans 'Выбрано' %}: ${count}`"></span>
+    <button @click="bulk('in_stock')" class="pbtn-ghost !px-3 !py-1.5 text-xs">{% trans "В наличии" %}</button>
+    <button @click="bulk('out_stock')" class="pbtn-ghost !px-3 !py-1.5 text-xs">{% trans "Снять" %}</button>
+    <button @click="bulk('hide')" class="pbtn-ghost !px-3 !py-1.5 text-xs">{% trans "Скрыть" %}</button>
+    <button @click="bulk('show')" class="pbtn-ghost !px-3 !py-1.5 text-xs">{% trans "Показать" %}</button>
+    <button @click="bulk('delete')" class="pbtn-ghost !px-3 !py-1.5 text-xs" style="color:var(--danger)">{% trans "Удалить" %}</button>
+  </div>
+
+  {# Таблица #}
+  <div class="pcard-box mt-4 overflow-x-auto">
+    <table class="w-full min-w-[820px] text-sm">
+      <thead>
+        <tr class="border-b border-line text-left text-xs font-bold uppercase tracking-wide text-muted">
+          <th class="w-10 px-4 py-3"><input type="checkbox" :checked="allChecked()" @change="toggleAll($event.target.checked)" class="h-4 w-4 accent-[var(--accent)]"></th>
+          <th class="px-2 py-3">{% trans "Товар" %}</th>
+          <th class="px-2 py-3">{% trans "Категория" %}</th>
+          <th class="px-2 py-3 text-right">{% trans "Цена" %}</th>
+          <th class="px-2 py-3 text-center">{% trans "Скидка" %}</th>
+          <th class="px-2 py-3 text-center">{% trans "Наличие" %}</th>
+          <th class="px-2 py-3 text-center">{% trans "На сайте" %}</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-line">
+        {% for p in page_obj %}
+        <tr class="hover:bg-sunken/50">
+          {# выбор #}
+          <td class="px-4 py-3 align-top"><input type="checkbox" :checked="!!sel[{{ p.id }}]" @change="pick({{ p.id }}, $event.target.checked)" class="mt-1 h-4 w-4 accent-[var(--accent)]"></td>
+
+          {# товар: фото + название + артикул + полки #}
+          <td class="px-2 py-3">
+            <div class="flex items-start gap-3">
+              <a href="{% url 'panel:product_edit' p.id %}" class="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-sunken">
+                {% if p.image %}{% thumbnail p.image "96x96" crop="smart" as im %}<img src="{{ im.url }}" alt="" class="h-full w-full object-cover">{% endif %}
+              </a>
+              <div class="min-w-0">
+                <a href="{% url 'panel:product_edit' p.id %}" class="block font-bold leading-tight text-ink hover:text-accent">{{ p.name }}</a>
+                <div class="mt-1 flex flex-wrap items-center gap-1.5">
+                  <span class="text-xs text-muted">#{{ p.sku }} · {{ p.get_unit_display }}</span>
+                  <span x-data="{on: {{ p.is_featured|yesno:'true,false' }}}" @click="on=!on; toggleField({{ p.id }}, 'is_featured')" :class="on && 'on'" class="pchip" title="{% trans 'Популярное' %}">{% trans "Поп." %}</span>
+                  <span x-data="{on: {{ p.is_bestseller|yesno:'true,false' }}}" @click="on=!on; toggleField({{ p.id }}, 'is_bestseller')" :class="on && 'on'" class="pchip" title="{% trans 'Хит продаж' %}">{% trans "Хит" %}</span>
+                  <span x-data="{on: {{ p.is_new|yesno:'true,false' }}}" @click="on=!on; toggleField({{ p.id }}, 'is_new')" :class="on && 'on'" class="pchip" title="{% trans 'Новинка' %}">{% trans "Нов." %}</span>
+                </div>
+              </div>
+            </div>
+          </td>
+
+          {# категория #}
+          <td class="px-2 py-3 align-top text-muted">{{ p.category.name }}</td>
+
+          {# цена — инлайн-правка #}
+          <td class="px-2 py-3 align-top text-right" x-data="{ edit: false, val: '{{ p.price|unlocalize }}' }">
+            <div x-show="!edit" @click="edit = true" class="group inline-flex cursor-text items-center justify-end gap-1">
+              <span class="nums font-bold text-ink" x-text="fmt(val)"></span>
+              <svg class="text-muted opacity-0 transition group-hover:opacity-100" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </div>
+            <input x-show="edit" x-cloak type="text" inputmode="numeric" x-model="val"
+                   @input="markPrice({{ p.id }}, val, {{ p.price|unlocalize }})"
+                   @keydown.enter="edit=false" @blur="edit=false" @focus="$event.target.select()"
+                   class="pprice-input">
+          </td>
+
+          {# скидка #}
+          <td class="px-2 py-3 align-top text-center" x-data="{ show: false, pct: '' }">
+            {% if p.old_price and p.discount_percent %}
+              <span class="inline-flex items-center gap-1">
+                <span class="rounded-lg px-2 py-0.5 text-xs font-extrabold text-white" style="background:var(--danger)">−{{ p.discount_percent }}%</span>
+                <button @click="discountClear({{ p.id }})" class="text-muted hover:text-ink" title="{% trans 'Убрать скидку' %}">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
+              </span>
+            {% else %}
+              <button x-show="!show" @click="show = true" class="text-sm font-bold text-accent hover:underline">+ {% trans "скидка" %}</button>
+              <span x-show="show" x-cloak class="inline-flex items-center gap-1">
+                <input x-model="pct" type="number" min="1" max="90" placeholder="%" class="w-16 rounded-lg border border-accent bg-surface px-2 py-1 text-sm">
+                <button @click="discountSet({{ p.id }}, pct)" class="text-accent" title="OK"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </span>
+            {% endif %}
+          </td>
+
+          {# наличие #}
+          <td class="px-2 py-3 align-top text-center">
+            <button type="button" x-data="{on: {{ p.in_stock|yesno:'true,false' }}}" @click="on=!on; toggleField({{ p.id }}, 'in_stock')" :class="on && 'on'" class="pswitch"><span></span></button>
+          </td>
+
+          {# на сайте #}
+          <td class="px-2 py-3 align-top text-center">
+            <button type="button" x-data="{on: {{ p.is_active|yesno:'true,false' }}}" @click="on=!on; toggleField({{ p.id }}, 'is_active')" :class="on && 'on'" class="pswitch"><span></span></button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" class="px-4 py-16 text-center text-muted">{% trans "Ничего не найдено." %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {# Пагинация #}
+  {% if page_obj.paginator.num_pages > 1 %}
+  <div class="mt-4 flex items-center justify-between text-sm">
+    <span class="text-muted">{% blocktrans with n=page_obj.number t=page_obj.paginator.num_pages %}Страница {{ n }} из {{ t }}{% endblocktrans %}</span>
+    <div class="flex gap-2">
+      {% if page_obj.has_previous %}<a href="?{% if q %}q={{ q }}&{% endif %}{% if cat %}cat={{ cat }}&{% endif %}{% if stock %}stock={{ stock }}&{% endif %}page={{ page_obj.previous_page_number }}" class="pbtn-ghost !px-4 !py-2">←</a>{% endif %}
+      {% if page_obj.has_next %}<a href="?{% if q %}q={{ q }}&{% endif %}{% if cat %}cat={{ cat }}&{% endif %}{% if stock %}stock={{ stock }}&{% endif %}page={{ page_obj.next_page_number }}" class="pbtn-ghost !px-4 !py-2">→</a>{% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  {# Плавающая кнопка сохранения изменённых цен #}
+  <div x-show="dirtyCount > 0" x-cloak class="fixed inset-x-0 bottom-5 z-40 flex justify-center px-4">
+    <div class="flex items-center gap-4 rounded-2xl border border-line bg-surface px-5 py-3 shadow-2xl">
+      <span class="text-sm font-bold text-ink" x-text="`{% trans 'Изменено цен' %}: ${dirtyCount}`"></span>
+      <button @click="savePrices()" class="pbtn-primary !py-2">{% trans "Сохранить" %}</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function productsTable(pageIds) {
+  return {
+    pageIds: pageIds || [],
+    sel: {},
+    dirty: {},
+    get count() { return Object.keys(this.sel).filter(k => this.sel[k]).length; },
+    get dirtyCount() { return Object.keys(this.dirty).length; },
+    fmt(v) {
+      const n = parseFloat(String(v).replace(/\s/g, '').replace(',', '.'));
+      return isNaN(n) ? v : n.toLocaleString('ru-RU');
+    },
+    pick(id, on) { if (on) this.sel[id] = true; else delete this.sel[id]; },
+    allChecked() { return this.pageIds.length > 0 && this.pageIds.every(id => this.sel[id]); },
+    toggleAll(on) { this.sel = {}; if (on) this.pageIds.forEach(id => this.sel[id] = true); },
+    markPrice(id, val, orig) {
+      const num = parseFloat(String(val).replace(/\s/g, '').replace(',', '.'));
+      if (isNaN(num) || num === orig) delete this.dirty[id];
+      else this.dirty[id] = num;
+    },
+    async post(url, data) {
+      const r = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': this.csrf() },
+        body: JSON.stringify(data),
+      });
+      try { return await r.json(); } catch (e) { return null; }
+    },
+    csrf() { const m = document.cookie.match(/csrftoken=([^;]+)/); return m ? m[1] : ''; },
+    async savePrices() { await this.post("{% url 'panel:product_save_prices' %}", { changes: this.dirty }); location.reload(); },
+    toggleField(id, field) { this.post("{% url 'panel:product_toggle' %}", { id, field }); },
+    async discountSet(id, pct) {
+      const r = await this.post("{% url 'panel:product_discount' %}", { id, percent: parseInt(pct) });
+      if (r && r.ok) location.reload(); else alert("{% trans 'Введите процент от 1 до 90' %}");
+    },
+    async discountClear(id) { await this.post("{% url 'panel:product_discount' %}", { id, clear: true }); location.reload(); },
+    async bulk(action) {
+      const ids = Object.keys(this.sel).filter(k => this.sel[k]);
+      if (!ids.length) return;
+      if (action === 'delete' && !confirm("{% trans 'Удалить выбранные товары? Действие необратимо.' %}")) return;
+      await this.post("{% url 'panel:product_bulk' %}", { ids, action });
+      location.reload();
+    },
+  };
+}
+</script>
+{% endblock %}

@@ -6,6 +6,7 @@
 {% comment %}Один шаблон для /catalog/ и /catalog/<slug>/.{% endcomment %}
 {% block body %}
 <div class="shell pt-6" x-data="{ sortOpen: false }">
+  {% include "catalog/partials/_backlink.html" %}
   <h1 class="font-display text-3xl font-extrabold tracking-tight text-ink">{{ title }}</h1>
   <p class="mt-1 text-muted">{% blocktrans count n=count %}{{ n }} товар{% plural %}{{ n }} товаров{% endblocktrans %}</p>
 
@@ -46,7 +47,7 @@
 
   {# Сетка товаров #}
   {% if page_obj.object_list %}
-    <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+    <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
       {% for p in page_obj %}{% include "catalog/partials/_product_card.html" %}{% endfor %}
     </div>
     {% include "catalog/partials/_pagination.html" %}

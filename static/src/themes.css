@@ -16,8 +16,9 @@
   --surface-sunken: #EEF1F5;
   --text: #0F1B2D;
   --text-muted: #6B7787;
-  --accent: #0F7B5F;
+  --accent: #0E7A5A;
   --accent-hover: #0C6650;
+  --accent-2: #16A97E;
   --on-accent: #FFFFFF;
   --danger: #C0392B;
   --border-input: #E3E7ED;
@@ -31,9 +32,10 @@
   --surface-sunken: #131C24;
   --text: #E8EDF2;
   --text-muted: #8F9BAA;
-  --accent: #37B08A;
-  --accent-hover: #5CC5A3;
-  --on-accent: #0E1418;
+  --accent: #1FB98C;
+  --accent-hover: #45CBA4;
+  --accent-2: #46D2A6;
+  --on-accent: #06120E;
   --danger: #E5766B;
   --border-input: #2A343E;
   /* В тёмной теме теней нет: карточка отделяется от фона тем,

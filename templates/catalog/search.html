@@ -5,6 +5,7 @@
 
 {% block body %}
 <div class="shell pt-6">
+  {% include "catalog/partials/_backlink.html" %}
   {% if q %}
     <h1 class="text-xl font-extrabold text-ink">
       {% blocktrans %}Результаты по запросу «{{ q }}»{% endblocktrans %}

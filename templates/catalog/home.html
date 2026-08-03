@@ -2,29 +2,14 @@
 {% load i18n thumbnail %}
 
 {% block body %}
-{# ---------- Герой: переливающийся зелёный, текст по центру ---------- #}
-<section class="hero hero-anim overflow-hidden">
-  <div class="shell py-14 text-center sm:py-20">
-    <span class="hero-badge">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v6h6"/></svg>
-      {{ shop.name }}
-    </span>
-    <h1 class="mx-auto mt-5 max-w-2xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
-      {{ shop.tagline|default:shop.name }}
-    </h1>
-    {% if shop.description %}
-      <p class="mx-auto mt-4 max-w-xl text-base sm:text-lg" style="color: rgba(255,255,255,.9)">{{ shop.description|striptags }}</p>
-    {% endif %}
-    <div class="mt-8">
-      <a href="{% url 'catalog:catalog' %}" class="btn-white">
-        {% trans "Смотреть каталог" %}
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
+{# ---------- Баннер-слайдер: слайды из админки (панель → Баннеры). Скрыт, если выключен/пуст ---------- #}
+{% if banners %}
+<div class="shell pt-4">
+  {% include "catalog/partials/_banner.html" %}
+</div>
+{% endif %}
 
-<div class="shell">
+<div class="shell{% if not banners %} pt-2{% endif %}">
   {# ---------- Категории (мельче на десктопе) ---------- #}
   {% if categories %}
   <section class="mt-10">
@@ -32,7 +17,7 @@
       <h2 class="font-display text-2xl font-extrabold text-ink">{% trans "Категории" %}</h2>
       <a href="{% url 'catalog:catalog' %}" class="text-sm font-bold text-accent hover:underline">{% trans "Смотреть все" %} →</a>
     </div>
-    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
       {% for c in categories %}
         <a href="{{ c.get_absolute_url }}" class="ccard group">
           {% if c.image %}
@@ -52,17 +37,14 @@
   </section>
   {% endif %}
 
-  {# ---------- Популярные товары ---------- #}
-  {% if featured %}
-  <section class="mt-12">
-    <div class="mb-4 flex items-end justify-between">
-      <h2 class="font-display text-2xl font-extrabold text-ink">{% trans "Популярные товары" %}</h2>
-      <a href="{% url 'catalog:catalog' %}" class="text-sm font-bold text-accent hover:underline">{% trans "Смотреть все" %} →</a>
-    </div>
-    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
-      {% for p in featured %}{% include "catalog/partials/_product_card.html" %}{% endfor %}
-    </div>
-  </section>
-  {% endif %}
+  {# ---------- Полки товаров: популярное, хиты продаж, новинки ---------- #}
+  {% translate "Популярные товары" as t_featured %}
+  {% include "catalog/partials/_shelf.html" with shelf_title=t_featured shelf_products=featured %}
+
+  {% translate "Хит продаж" as t_best %}
+  {% include "catalog/partials/_shelf.html" with shelf_title=t_best shelf_products=bestsellers %}
+
+  {% translate "Новинки" as t_new %}
+  {% include "catalog/partials/_shelf.html" with shelf_title=t_new shelf_products=new_products %}
 </div>
 {% endblock %}

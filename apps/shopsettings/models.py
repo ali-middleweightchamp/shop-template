@@ -88,10 +88,22 @@ class ShopSettings(models.Model):
         default="Здравствуйте! Хочу заказать:",
         help_text=_("Первая строка сообщения, которое уходит в Telegram/WhatsApp"),
     )
+    order_message_footer = models.CharField(
+        _("Подпись сообщения заказа"),
+        max_length=255,
+        blank=True,
+        default="",
+        help_text=_("Необязательная последняя строка. Например: «Укажите адрес доставки»"),
+    )
     show_prices = models.BooleanField(
         _("Показывать цены"),
         default=True,
         help_text=_("Выключите, если цены только по запросу"),
+    )
+    banners_enabled = models.BooleanField(
+        _("Показывать баннеры на главной"),
+        default=False,
+        help_text=_("Hero-слайдер вверху главной. По умолчанию выключен."),
     )
 
     class Meta:

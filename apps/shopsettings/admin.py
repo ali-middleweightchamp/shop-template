@@ -38,6 +38,7 @@ class ShopSettingsAdmin(TranslationAdmin):
                     "currency_label",
                     "min_order_amount",
                     "order_message_header",
+                    "order_message_footer",
                     "show_prices",
                 )
             },

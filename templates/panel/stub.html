@@ -1,0 +1,16 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-5xl">
+  <h1 class="font-display text-3xl font-extrabold tracking-tight text-ink">{{ title }}</h1>
+  <div class="pstat mt-6 flex flex-col items-center py-16 text-center">
+    <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sunken text-muted">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+    </div>
+    <div class="mt-4 font-display text-lg font-extrabold text-ink">{% trans "Раздел в разработке" %}</div>
+    <p class="mt-1 max-w-sm text-muted">{% trans "Появится на следующем этапе. Каркас и вход уже готовы." %}</p>
+  </div>
+</div>
+{% endblock %}

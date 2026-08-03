@@ -1,0 +1,150 @@
+{% extends "panel/base.html" %}
+{% load i18n l10n %}
+{% block title %}{% trans "Настройки" %}{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="mx-auto max-w-5xl"
+      x-data="{
+        name: '{{ form.name_ru.value|default:''|escapejs }}',
+        color: '{{ form.primary_color.value|default:'#0E7A5A'|escapejs }}',
+        logoUrl: '{% if form.instance.logo %}{{ form.instance.logo.url }}{% endif %}',
+        setLogo(f){ if(f && f[0]) this.logoUrl = URL.createObjectURL(f[0]); }
+      }">
+  {% csrf_token %}
+
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <h1 class="font-display text-3xl font-extrabold tracking-tight text-ink">{% trans "Настройки" %}</h1>
+    <button type="submit" class="pbtn-primary">{% trans "Сохранить" %}</button>
+  </div>
+
+  <div class="mt-6 grid gap-5 lg:grid-cols-3">
+    {# ---------- Поля ---------- #}
+    <div class="space-y-5 lg:col-span-2">
+
+      {# Бренд #}
+      <div class="pform-block">
+        <h2 class="mb-4 font-display text-lg font-extrabold text-ink">{% trans "Магазин" %}</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label class="plabel">{% trans "Название" %} (RU)</label>
+            <input type="text" name="name_ru" x-model="name" required class="pfield">
+            {% for e in form.name_ru.errors %}<div class="perror">{{ e }}</div>{% endfor %}
+          </div>
+          <div>
+            <label class="plabel">{% trans "Название" %} (UZ)</label>{{ form.name_uz }}
+          </div>
+          <div>
+            <label class="plabel">{% trans "Слоган" %} (RU)</label>{{ form.tagline_ru }}
+          </div>
+          <div>
+            <label class="plabel">{% trans "Слоган" %} (UZ)</label>{{ form.tagline_uz }}
+          </div>
+          <div>
+            <label class="plabel">{% trans "Описание" %} (RU)</label>{{ form.description_ru }}
+          </div>
+          <div>
+            <label class="plabel">{% trans "Описание" %} (UZ)</label>{{ form.description_uz }}
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="plabel">{% trans "Логотип" %}</label>
+          <label class="pbtn-ghost w-full cursor-pointer justify-center">
+            <input type="file" name="logo" accept="image/*" class="hidden" @change="setLogo($event.target.files)">
+            <span x-text="logoUrl ? '{% trans "Заменить логотип" %}' : '{% trans "Загрузить логотип" %}'"></span>
+          </label>
+        </div>
+      </div>
+
+      {# Оформление #}
+      <div class="pform-block">
+        <h2 class="mb-4 font-display text-lg font-extrabold text-ink">{% trans "Оформление" %}</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label class="plabel">{% trans "Тема" %}</label>{{ form.theme }}
+          </div>
+          <div>
+            <label class="plabel">{% trans "Основной цвет" %}</label>
+            <div class="flex gap-2">
+              <input type="color" :value="color || '#0E7A5A'" @input="color=$event.target.value" class="h-11 w-14 shrink-0 cursor-pointer rounded-xl border border-line bg-surface">
+              <input type="text" name="primary_color" x-model="color" placeholder="#0E7A5A" class="pfield">
+            </div>
+            <div class="phint">{% trans "Кнопки, акценты, ссылки. Пусто — цвет темы." %}</div>
+          </div>
+        </div>
+      </div>
+
+      {# Контакты #}
+      <div class="pform-block">
+        <h2 class="mb-4 font-display text-lg font-extrabold text-ink">{% trans "Контакты" %}</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div><label class="plabel">Telegram (username)</label>{{ form.telegram_username }}<div class="phint">{% trans "Без @. Заказы уходят сюда." %}</div></div>
+          <div><label class="plabel">WhatsApp</label>{{ form.whatsapp_phone }}<div class="phint">998901234567</div></div>
+          <div><label class="plabel">{% trans "Телефон" %}</label>{{ form.phone }}</div>
+          <div><label class="plabel">{% trans "Доп. телефон" %}</label>{{ form.phone_secondary }}</div>
+          <div><label class="plabel">Instagram</label>{{ form.instagram_url }}</div>
+          <div><label class="plabel">{% trans "Telegram-канал" %}</label>{{ form.telegram_channel_url }}</div>
+        </div>
+      </div>
+
+      {# Адрес и время #}
+      <div class="pform-block">
+        <h2 class="mb-4 font-display text-lg font-extrabold text-ink">{% trans "Адрес и время" %}</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div><label class="plabel">{% trans "Адрес" %} (RU)</label>{{ form.address_ru }}</div>
+          <div><label class="plabel">{% trans "Адрес" %} (UZ)</label>{{ form.address_uz }}</div>
+          <div><label class="plabel">{% trans "Часы работы" %} (RU)</label>{{ form.work_hours_ru }}</div>
+          <div><label class="plabel">{% trans "Часы работы" %} (UZ)</label>{{ form.work_hours_uz }}</div>
+          <div class="sm:col-span-2"><label class="plabel">{% trans "Ссылка на карту" %}</label>{{ form.map_link }}</div>
+        </div>
+      </div>
+
+      {# Витрина #}
+      <div class="pform-block">
+        <h2 class="mb-4 font-display text-lg font-extrabold text-ink">{% trans "Витрина" %}</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div><label class="plabel">{% trans "Валюта" %} (RU)</label>{{ form.currency_label_ru }}</div>
+          <div><label class="plabel">{% trans "Валюта" %} (UZ)</label>{{ form.currency_label_uz }}</div>
+          <div><label class="plabel">{% trans "Мин. сумма заказа" %}</label>{{ form.min_order_amount }}</div>
+          <div class="flex items-end">
+            <label class="flex cursor-pointer items-center gap-3" x-data="{ on: {{ form.show_prices.value|yesno:'true,false' }} }">
+              <input type="checkbox" name="show_prices" x-model="on" class="sr-only">
+              <span class="pswitch" :class="on && 'on'" @click="on=!on"><span></span></span>
+              <span class="text-sm font-bold text-ink">{% trans "Показывать цены" %}</span>
+            </label>
+          </div>
+          <div class="flex items-end sm:col-span-2">
+            <label class="flex cursor-pointer items-center gap-3" x-data="{ on: {{ form.banners_enabled.value|yesno:'true,false' }} }">
+              <input type="checkbox" name="banners_enabled" x-model="on" class="sr-only">
+              <span class="pswitch" :class="on && 'on'" @click="on=!on"><span></span></span>
+              <span class="text-sm font-bold text-ink">{% trans "Показывать баннеры на главной (hero)" %}</span>
+            </label>
+          </div>
+          <div class="sm:col-span-2"><label class="plabel">{% trans "Приветствие в заказе" %} (RU)</label>{{ form.order_message_header_ru }}</div>
+          <div class="sm:col-span-2"><label class="plabel">{% trans "Приветствие в заказе" %} (UZ)</label>{{ form.order_message_header_uz }}</div>
+          <div class="sm:col-span-2"><label class="plabel">{% trans "Подпись заказа" %} (RU)</label>{{ form.order_message_footer_ru }}</div>
+          <div class="sm:col-span-2"><label class="plabel">{% trans "Подпись заказа" %} (UZ)</label>{{ form.order_message_footer_uz }}</div>
+        </div>
+      </div>
+    </div>
+
+    {# ---------- Живое превью шапки ---------- #}
+    <div>
+      <div class="pform-block sticky top-5">
+        <div class="plabel">{% trans "Превью шапки сайта" %}</div>
+        <div class="overflow-hidden rounded-xl border border-line" :style="`--accent:${color}`">
+          <div class="flex items-center gap-2 bg-surface p-3">
+            <template x-if="logoUrl"><img :src="logoUrl" class="h-9 w-9 rounded-lg object-cover"></template>
+            <template x-if="!logoUrl"><span class="grid h-9 w-9 place-items-center rounded-lg font-display text-sm font-extrabold text-white" :style="`background:${color}`" x-text="(name || 'М').charAt(0).toUpperCase()"></span></template>
+            <span class="truncate font-display font-extrabold text-ink" x-text="name || 'Магазин'"></span>
+          </div>
+          <div class="bg-surface px-3 pb-3">
+            <div class="flex h-9 items-center rounded-full px-3 text-xs text-muted" style="background:var(--surface-sunken)">{% trans "Поиск товаров…" %}</div>
+            <button type="button" class="mt-3 w-full rounded-xl py-2.5 text-sm font-bold text-white" :style="`background:${color}`">{% trans "В корзину" %}</button>
+          </div>
+        </div>
+        <p class="phint">{% trans "Обновляется вживую при вводе названия и цвета." %}</p>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% load i18n %}
+{% comment %}Полка товаров на главной: заголовок + ссылка + компактная сетка (до 5 в ряд).
+Ожидает: shelf_title, shelf_products, shelf_url (необязательно).{% endcomment %}
+{% if shelf_products %}
+<section class="mt-12">
+  <div class="mb-4 flex items-end justify-between gap-3">
+    <h2 class="font-display text-xl font-extrabold text-ink sm:text-2xl">{{ shelf_title }}</h2>
+    <a href="{{ shelf_url|default:'' }}{% if not shelf_url %}{% url 'catalog:catalog' %}{% endif %}" class="shrink-0 whitespace-nowrap text-sm font-bold text-accent hover:underline">{% trans "Смотреть все" %} →</a>
+  </div>
+  <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+    {% for p in shelf_products %}{% include "catalog/partials/_product_card.html" %}{% endfor %}
+  </div>
+</section>
+{% endif %}

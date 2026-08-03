@@ -5,6 +5,7 @@
 
 {% block body %}
 <div class="shell max-w-2xl pt-6">
+  {% include "catalog/partials/_backlink.html" %}
   <div class="eyebrow mb-2">{% trans "Заказ" %}</div>
   <h1 class="nums text-3xl font-extrabold tracking-tight text-ink">{{ order.code }}</h1>
   <p class="mt-1 text-sm text-muted">{{ order.created_at|date:"d.m.Y H:i" }}</p>
