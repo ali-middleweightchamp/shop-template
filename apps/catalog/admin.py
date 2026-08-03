@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from easy_thumbnails.files import get_thumbnailer
 from modeltranslation.admin import TranslationAdmin
 
-from .models import Category, Product, ProductImage
+from .models import Category, Product, ProductAttribute, ProductImage
 
 # Прячем из админки лишнее, что продавцу не нужно
 for _model in (Group,):
@@ -56,6 +56,14 @@ class ProductImageInline(admin.TabularInline):
         return _thumb(obj.image)
 
 
+class ProductAttributeInline(admin.TabularInline):
+    """Характеристики товара (бренд, страна, ИКПУ и т.д.) — таблица на карточке."""
+
+    model = ProductAttribute
+    extra = 3
+    fields = ("name", "value", "order")
+
+
 @admin.register(Product)
 class ProductAdmin(TranslationAdmin):
     list_display = (
@@ -72,10 +80,10 @@ class ProductAdmin(TranslationAdmin):
     list_display_links = ("name", "sku")
     # Массовое редактирование цен и наличия прямо в списке
     list_editable = ("price", "in_stock", "is_active", "order")
-    list_filter = ("category", "in_stock", "is_active", "is_featured")
+    list_filter = ("category", "in_stock", "is_active", "is_featured", "is_new", "is_bestseller")
     search_fields = ("name_ru", "name_uz", "sku")
     list_per_page = 50
-    inlines = [ProductImageInline]
+    inlines = [ProductAttributeInline, ProductImageInline]
     autocomplete_fields = ("category",)
     actions = ("mark_in_stock", "mark_out_of_stock", "hide_from_site", "show_on_site")
 
@@ -85,7 +93,14 @@ class ProductAdmin(TranslationAdmin):
         (_("Описание и фото"), {"fields": ("description", "image")}),
         (
             _("Отображение"),
-            {"fields": ("in_stock", "is_active", "is_featured", "order")},
+            {
+                "fields": ("in_stock", "is_active", "order"),
+                "description": _("Полки на главной — отметьте, где показывать товар:"),
+            },
+        ),
+        (
+            _("Полки на главной"),
+            {"fields": ("is_featured", "is_bestseller", "is_new")},
         ),
     )
 

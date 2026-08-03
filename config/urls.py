@@ -15,6 +15,10 @@ admin.site.site_header = _("Управление магазином")
 admin.site.site_title = _("Магазин")
 admin.site.index_title = _("Панель управления")
 
+# Django-админка /admin/ — служебный вход ТОЛЬКО для суперпользователя (нас).
+# Продавцы (staff) сюда не заходят — у них своя панель /panel/.
+admin.site.has_permission = lambda request: request.user.is_active and request.user.is_superuser
+
 sitemaps = {
     "static": StaticSitemap,
     "products": ProductSitemap,
@@ -26,6 +30,8 @@ urlpatterns = [
     path("i18n/", include("django.conf.urls.i18n")),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
     path("robots.txt", catalog_views.robots_txt, name="robots"),
+    # Кастомная панель продавца (вне языкового префикса)
+    path("panel/", include("apps.panel.urls")),
 ]
 
 # Языковой префикс в URL (/ru/, /uz/). Админка живёт вне префикса.

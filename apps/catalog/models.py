@@ -76,12 +76,24 @@ class Product(models.Model):
     class Unit(models.TextChoices):
         PIECE = "шт", _("шт")
         PACK = "упак", _("упак")
+        SET = "набор", _("набор")
+        PAIR = "пара", _("пара")
         KG = "кг", _("кг")
+        GRAM = "г", _("г")
+        LITER = "л", _("л")
+        ML = "мл", _("мл")
         METER = "м", _("м")
+        ROLL = "рулон", _("рулон")
 
     name = models.CharField(_("Название"), max_length=255)
     slug = models.SlugField(_("Ссылка (slug)"), max_length=255, unique=True, blank=True)
-    sku = models.CharField(_("Артикул"), max_length=64, unique=True)
+    sku = models.CharField(
+        _("Артикул"),
+        max_length=64,
+        unique=True,
+        blank=True,
+        help_text=_("Ключ для импорта прайса. Оставьте пустым — сгенерируется автоматически."),
+    )
     category = models.ForeignKey(
         Category,
         verbose_name=_("Категория"),
@@ -106,7 +118,10 @@ class Product(models.Model):
 
     in_stock = models.BooleanField(_("В наличии"), default=True)
     is_active = models.BooleanField(_("Показывать на сайте"), default=True)
+    # Полки на главной: владелец сам отмечает товары для каждой из них
     is_featured = models.BooleanField(_("Популярный"), default=False)
+    is_new = models.BooleanField(_("Новинка"), default=False)
+    is_bestseller = models.BooleanField(_("Хит продаж"), default=False)
     order = models.PositiveIntegerField(_("Порядок"), default=0)
 
     created_at = models.DateTimeField(_("Создан"), auto_now_add=True)
@@ -130,6 +145,14 @@ class Product(models.Model):
         return f"{self.name} ({self.sku})"
 
     def save(self, *args, **kwargs):
+        # Артикул не задан вручную — генерируем уникальный (ART-XXXXXX).
+        # Если продавец указал свой (для сопоставления с Excel) — оставляем его.
+        if not self.sku:
+            for _attempt in range(10):
+                candidate = f"ART-{generate_order_code(6)}"
+                if not Product.objects.filter(sku=candidate).exists():
+                    self.sku = candidate
+                    break
         if not self.slug:
             base = slugify(self.sku) or slugify(self.name, allow_unicode=True)
             self.slug = unique_slug(Product, base, self.pk)
@@ -154,6 +177,77 @@ class Product(models.Model):
         if self.old_price and self.old_price > self.price and self.old_price > 0:
             return int(round((self.old_price - self.price) / self.old_price * 100))
         return None
+
+
+class Banner(models.Model):
+    """Слайд hero-баннера на главной. Продавец управляет ими из панели.
+
+    Показываются только активные и попадающие в период показа, максимум 3.
+    Весь блок включается тумблером ShopSettings.banners_enabled.
+    """
+
+    title = models.CharField(_("Заголовок"), max_length=60)
+    subtitle = models.CharField(_("Подзаголовок"), max_length=120, blank=True)
+    badge = models.CharField(_("Текст плашки"), max_length=30, blank=True)
+    button_text = models.CharField(_("Текст кнопки"), max_length=30, blank=True)
+    button_link = models.CharField(
+        _("Ссылка кнопки"), max_length=500, blank=True,
+        help_text=_("URL или путь, напр. /catalog/ или https://…"),
+    )
+    image = models.ImageField(_("Фон"), upload_to="banners/", blank=True)
+    is_active = models.BooleanField(_("Активен"), default=True)
+    order = models.PositiveIntegerField(_("Порядок"), default=0)
+    start_at = models.DateField(_("Показ с"), null=True, blank=True)
+    end_at = models.DateField(_("Показ по"), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("Баннер")
+        verbose_name_plural = _("Баннеры")
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return self.title
+
+    @classmethod
+    def active_now(cls):
+        """Активные баннеры в пределах периода показа, максимум 3."""
+        from django.db.models import Q
+        from django.utils import timezone
+
+        today = timezone.localdate()
+        return list(
+            cls.objects.filter(is_active=True)
+            .filter(Q(start_at__isnull=True) | Q(start_at__lte=today))
+            .filter(Q(end_at__isnull=True) | Q(end_at__gte=today))
+            .order_by("order", "id")[:3]
+        )
+
+
+class ProductAttribute(models.Model):
+    """Характеристика товара: название → значение (напр. «Бренд» → «Erich Krause»).
+
+    Гибкая замена жёстко заданным полям: владелец добавляет любые строки —
+    бренд, страна, код классификатора (ИКПУ), тип упаковки и т.д. Показываются
+    в таблице характеристик на странице товара.
+    """
+
+    product = models.ForeignKey(
+        Product,
+        verbose_name=_("Товар"),
+        on_delete=models.CASCADE,
+        related_name="attributes",
+    )
+    name = models.CharField(_("Характеристика"), max_length=100)
+    value = models.CharField(_("Значение"), max_length=255)
+    order = models.PositiveIntegerField(_("Порядок"), default=0)
+
+    class Meta:
+        verbose_name = _("Характеристика")
+        verbose_name_plural = _("Характеристики")
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return f"{self.name}: {self.value}"
 
 
 class ProductImage(models.Model):

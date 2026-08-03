@@ -1,0 +1,10 @@
+{% load i18n l10n %}
+<div class="flex items-center gap-3 p-3">
+  <div class="min-w-0 flex-1">
+    <a href="{% url 'panel:product_edit' p.id %}" class="block truncate font-bold text-ink hover:text-accent">{{ p.name }}</a>
+    <div class="nums text-sm text-muted">{{ p.category.name }} · {{ p.price|floatformat:0 }} {{ shop.currency_label }}</div>
+  </div>
+  <button @click="removeShelf({{ p.id }}, '{{ field }}')" class="grid h-8 w-8 place-items-center rounded-lg text-muted hover:text-ink" title="{% trans 'Убрать с полки' %}">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+</div>

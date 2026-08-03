@@ -14,4 +14,5 @@ class ShopSettingsTR(TranslationOptions):
         "work_hours",
         "currency_label",
         "order_message_header",
+        "order_message_footer",
     )

@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 
-from .models import Category, Product, ShortOrder
+from .models import Banner, Category, Product, ShortOrder
 
 PER_PAGE = 24
 
@@ -28,10 +28,17 @@ def _sidebar_categories():
 
 
 def home(request):
-    """Главная: блок о магазине, категории, популярные товары."""
+    """Главная: баннер, категории и три полки товаров (популярное, хиты, новинки)."""
+    from apps.shopsettings.models import ShopSettings
+
+    banners = Banner.active_now() if ShopSettings.get_solo().banners_enabled else []
     context = {
+        "banners": banners,
         "categories": _sidebar_categories(),
-        "featured": _active_products().filter(is_featured=True)[:8],
+        "featured": _active_products().filter(is_featured=True)[:10],
+        "bestsellers": _active_products().filter(is_bestseller=True)[:10],
+        # Новинки — по дате добавления (последние сверху)
+        "new_products": _active_products().filter(is_new=True).order_by("-created_at", "order")[:10],
     }
     return render(request, "catalog/home.html", context)
 
@@ -86,7 +93,7 @@ def category(request, slug):
 def product_detail(request, slug):
     """Карточка товара: галерея, описание, похожие товары."""
     product = get_object_or_404(
-        _active_products().prefetch_related("images"), slug=slug
+        _active_products().prefetch_related("images", "attributes"), slug=slug
     )
     related = (
         _active_products()

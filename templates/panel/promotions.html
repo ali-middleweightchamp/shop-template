@@ -1,0 +1,99 @@
+{% extends "panel/base.html" %}
+{% load i18n l10n %}
+{% block title %}{% trans "Акции" %}{% endblock %}
+
+{% block content %}
+{{ all_products|json_script:"allprods" }}
+<div class="mx-auto max-w-4xl" x-data="promoPage()">
+  <h1 class="font-display text-3xl font-extrabold tracking-tight text-ink">{% trans "Акции" %}</h1>
+  <p class="mt-1 text-muted">{% trans "Скидки и полки на главной странице" %}</p>
+
+  {# Вкладки #}
+  <div class="mt-5 flex flex-wrap gap-2">
+    <button @click="tab='discount'" class="chip" :class="tab==='discount' ? 'chip-on' : 'chip-off'">{% trans "Скидки" %} · {{ discounted|length }}</button>
+    <button @click="tab='featured'" class="chip" :class="tab==='featured' ? 'chip-on' : 'chip-off'">{% trans "Популярное" %} · {{ featured|length }}</button>
+    <button @click="tab='bestseller'" class="chip" :class="tab==='bestseller' ? 'chip-on' : 'chip-off'">{% trans "Хит продаж" %} · {{ bestsellers|length }}</button>
+    <button @click="tab='new'" class="chip" :class="tab==='new' ? 'chip-on' : 'chip-off'">{% trans "Новинки" %} · {{ new_products|length }}</button>
+  </div>
+
+  {# Добавление товара #}
+  <div class="relative mt-4">
+    <input type="search" x-model="query" placeholder="{% trans 'Найти товар и добавить…' %}" class="pfield">
+    <div x-show="results.length" x-cloak class="absolute z-20 mt-1 w-full overflow-hidden rounded-xl border border-line bg-surface shadow-card">
+      <template x-for="p in results" :key="p.id">
+        <button type="button" @click="add(p)" class="flex w-full items-center justify-between gap-2 px-4 py-2.5 text-left text-sm hover:bg-sunken">
+          <span class="min-w-0"><span class="font-semibold text-ink" x-text="p.name_ru"></span> <span class="text-muted" x-text="'#'+p.sku"></span></span>
+          <span class="shrink-0 font-bold text-accent">+ {% trans "добавить" %}</span>
+        </button>
+      </template>
+    </div>
+  </div>
+
+  {# ---------- Скидки ---------- #}
+  <div x-show="tab==='discount'" class="pcard-box mt-4 divide-y divide-line">
+    {% for p in discounted %}
+    <div class="flex items-center gap-3 p-3">
+      <div class="min-w-0 flex-1">
+        <a href="{% url 'panel:product_edit' p.id %}" class="block truncate font-bold text-ink hover:text-accent">{{ p.name }}</a>
+        <div class="nums text-sm text-muted">{{ p.price|floatformat:0 }} · <span class="line-through">{{ p.old_price|floatformat:0 }}</span></div>
+      </div>
+      <span class="rounded-lg px-2 py-0.5 text-xs font-extrabold text-white" style="background:var(--danger)">−{{ p.discount_percent }}%</span>
+      <button @click="removeDiscount({{ p.id }})" class="grid h-8 w-8 place-items-center rounded-lg text-muted hover:text-ink" title="{% trans 'Убрать скидку' %}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    {% empty %}
+    <div class="p-10 text-center text-muted">{% trans "Скидок нет. Найдите товар выше и задайте процент." %}</div>
+    {% endfor %}
+  </div>
+
+  {# ---------- Популярное ---------- #}
+  <div x-show="tab==='featured'" x-cloak class="pcard-box mt-4 divide-y divide-line">
+    {% for p in featured %}{% include "panel/_promo_row.html" with p=p field="is_featured" %}{% empty %}<div class="p-10 text-center text-muted">{% trans "Пусто. Добавьте товары в полку «Популярное»." %}</div>{% endfor %}
+  </div>
+
+  {# ---------- Хит продаж ---------- #}
+  <div x-show="tab==='bestseller'" x-cloak class="pcard-box mt-4 divide-y divide-line">
+    {% for p in bestsellers %}{% include "panel/_promo_row.html" with p=p field="is_bestseller" %}{% empty %}<div class="p-10 text-center text-muted">{% trans "Пусто. Добавьте товары в полку «Хит продаж»." %}</div>{% endfor %}
+  </div>
+
+  {# ---------- Новинки ---------- #}
+  <div x-show="tab==='new'" x-cloak class="pcard-box mt-4 divide-y divide-line">
+    {% for p in new_products %}{% include "panel/_promo_row.html" with p=p field="is_new" %}{% empty %}<div class="p-10 text-center text-muted">{% trans "Пусто. Добавьте товары в полку «Новинки»." %}</div>{% endfor %}
+  </div>
+</div>
+
+<script>
+function promoPage() {
+  return {
+    tab: 'discount',
+    query: '',
+    all: JSON.parse(document.getElementById('allprods').textContent),
+    fieldOf: { featured: 'is_featured', bestseller: 'is_bestseller', new: 'is_new' },
+    get results() {
+      const q = this.query.trim().toLowerCase();
+      if (!q) return [];
+      let list = this.all.filter(p => (p.name_ru + ' ' + p.sku).toLowerCase().includes(q));
+      if (this.tab !== 'discount') { const f = this.fieldOf[this.tab]; list = list.filter(p => !p[f]); }
+      return list.slice(0, 8);
+    },
+    csrf() { const m = document.cookie.match(/csrftoken=([^;]+)/); return m ? m[1] : ''; },
+    async post(url, data) {
+      const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRFToken': this.csrf() }, body: JSON.stringify(data) });
+      try { return await r.json(); } catch (e) { return null; }
+    },
+    async add(p) {
+      if (this.tab === 'discount') {
+        const pct = prompt("{% trans 'Скидка, % (1–90)' %}");
+        if (!pct) return;
+        const r = await this.post("{% url 'panel:product_discount' %}", { id: p.id, percent: parseInt(pct) });
+        if (!r || !r.ok) { alert("{% trans 'Введите процент от 1 до 90' %}"); return; }
+      } else {
+        await this.post("{% url 'panel:product_toggle' %}", { id: p.id, field: this.fieldOf[this.tab] });
+      }
+      location.reload();
+    },
+    async removeShelf(id, field) { await this.post("{% url 'panel:product_toggle' %}", { id, field }); location.reload(); },
+    async removeDiscount(id) { await this.post("{% url 'panel:product_discount' %}", { id, clear: true }); location.reload(); },
+  };
+}
+</script>
+{% endblock %}

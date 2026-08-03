@@ -4,15 +4,30 @@
 {% block title %}{% trans "Корзина" %} · {{ shop.name }}{% endblock %}
 
 {% block body %}
+{# Подписи для текста заказа — на языке сайта (ru/uz), поэтому сообщение уходит целиком на нужном языке #}
+{% trans "Итого" as l_total %}
+{% trans "Комментарий" as l_comment %}
+{% trans "…и ещё" as l_more %}
+{% trans "поз." as l_pos %}
+{% trans "Код заказа" as l_code %}
+{% trans "Полный список" as l_list %}
 <div class="shell max-w-2xl pt-6"
      x-data="cartPage({
        min: {{ shop.min_order_amount|default:0|unlocalize }},
        currency: '{{ shop.currency_label|escapejs }}',
        header: '{{ shop.order_message_header|escapejs }}',
+       footer: '{{ shop.order_message_footer|escapejs }}',
+       totalLabel: '{{ l_total|escapejs }}',
+       commentLabel: '{{ l_comment|escapejs }}',
+       moreLabel: '{{ l_more|escapejs }}',
+       posLabel: '{{ l_pos|escapejs }}',
+       codeLabel: '{{ l_code|escapejs }}',
+       listLabel: '{{ l_list|escapejs }}',
        tg: '{{ shop.telegram_username|escapejs }}',
        wa: '{{ shop.whatsapp_phone|escapejs }}',
        createUrl: '{% url 'catalog:order_create' %}'
      })">
+  {% include "catalog/partials/_backlink.html" %}
   <h1 class="font-display text-3xl font-extrabold tracking-tight text-ink">{% trans "Корзина" %}</h1>
 
   {# Пусто #}
@@ -104,8 +119,9 @@
       fullText() {
         const c = Alpine.store("cart");
         let t = this.header + "\n\n" + c.lines.map((l) => this.line(l)).join("\n");
-        t += `\n\nИтого: ${formatMoney(c.total)} ${this.currency}`;
-        if (this.comment.trim()) t += `\n\nКомментарий: ${this.comment.trim()}`;
+        t += `\n\n${this.totalLabel}: ${formatMoney(c.total)} ${this.currency}`;
+        if (this.comment.trim()) t += `\n\n${this.commentLabel}: ${this.comment.trim()}`;
+        if (this.footer) t += `\n\n${this.footer}`;
         return t;
       },
       shortText(code, url) {
@@ -113,9 +129,10 @@
         const head = c.lines.slice(0, 10).map((l) => this.line(l)).join("\n");
         const rest = c.lines.length - 10;
         let t = this.header + "\n\n" + head;
-        if (rest > 0) t += `\n…и ещё ${rest} позиц.`;
-        t += `\n\nИтого: ${formatMoney(c.total)} ${this.currency}\nКод заказа: ${code}\nПолный список: ${url}`;
-        if (this.comment.trim()) t += `\n\nКомментарий: ${this.comment.trim()}`;
+        if (rest > 0) t += `\n${this.moreLabel} ${rest} ${this.posLabel}`;
+        t += `\n\n${this.totalLabel}: ${formatMoney(c.total)} ${this.currency}\n${this.codeLabel}: ${code}\n${this.listLabel}: ${url}`;
+        if (this.comment.trim()) t += `\n\n${this.commentLabel}: ${this.comment.trim()}`;
+        if (this.footer) t += `\n\n${this.footer}`;
         return t;
       },
       async buildMessage() {

@@ -1,0 +1,107 @@
+{% extends "panel/base.html" %}
+{% load i18n thumbnail %}
+{% block title %}{% if instance %}{{ instance.title }}{% else %}{% trans "Новый баннер" %}{% endif %}{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="mx-auto max-w-4xl">
+  {% csrf_token %}
+
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <a href="{% url 'panel:banners' %}" class="grid h-10 w-10 place-items-center rounded-xl border border-line text-muted hover:text-ink">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <h1 class="font-display text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
+        {% if instance %}{% trans "Редактирование баннера" %}{% else %}{% trans "Новый баннер" %}{% endif %}
+      </h1>
+    </div>
+    <button type="submit" class="pbtn-primary">{% trans "Сохранить" %}</button>
+  </div>
+
+  <div class="mt-6 grid gap-5 lg:grid-cols-3">
+    {# Тексты #}
+    <div class="space-y-5 lg:col-span-2">
+      <div class="pform-block space-y-4">
+        <h2 class="font-display text-lg font-extrabold text-ink">{% trans "Текст слайда" %}</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div x-data="{ n: {{ form.title_ru.value|default:''|length }} }" @input="n = $event.target.value.length">
+            <label class="plabel">{% trans "Заголовок" %} (RU) <span class="font-normal text-muted" x-text="n + '/60'"></span></label>
+            {{ form.title_ru }}
+            {% for e in form.title_ru.errors %}<div class="perror">{{ e }}</div>{% endfor %}
+          </div>
+          <div x-data="{ n: {{ form.title_uz.value|default:''|length }} }" @input="n = $event.target.value.length">
+            <label class="plabel">{% trans "Заголовок" %} (UZ) <span class="font-normal text-muted" x-text="n + '/60'"></span></label>
+            {{ form.title_uz }}
+          </div>
+          <div x-data="{ n: {{ form.subtitle_ru.value|default:''|length }} }" @input="n = $event.target.value.length">
+            <label class="plabel">{% trans "Подзаголовок" %} (RU) <span class="font-normal text-muted" x-text="n + '/120'"></span></label>
+            {{ form.subtitle_ru }}
+          </div>
+          <div x-data="{ n: {{ form.subtitle_uz.value|default:''|length }} }" @input="n = $event.target.value.length">
+            <label class="plabel">{% trans "Подзаголовок" %} (UZ) <span class="font-normal text-muted" x-text="n + '/120'"></span></label>
+            {{ form.subtitle_uz }}
+          </div>
+          <div><label class="plabel">{% trans "Текст плашки" %} (RU)</label>{{ form.badge_ru }}</div>
+          <div><label class="plabel">{% trans "Текст плашки" %} (UZ)</label>{{ form.badge_uz }}</div>
+        </div>
+      </div>
+
+      <div class="pform-block space-y-4">
+        <h2 class="font-display text-lg font-extrabold text-ink">{% trans "Кнопка" %}</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div><label class="plabel">{% trans "Текст кнопки" %} (RU)</label>{{ form.button_text_ru }}</div>
+          <div><label class="plabel">{% trans "Текст кнопки" %} (UZ)</label>{{ form.button_text_uz }}</div>
+          <div class="sm:col-span-2"><label class="plabel">{% trans "Ссылка кнопки" %}</label>{{ form.button_link }}<div class="phint">{% trans "Напр. /catalog/ или https://…" %}</div></div>
+        </div>
+      </div>
+    </div>
+
+    {# Фон + показ #}
+    <div class="space-y-5">
+      <div class="pform-block">
+        <label class="plabel">{% trans "Фоновое изображение" %}</label>
+        <div x-data="{ preview: '{% if instance.image %}{% thumbnail instance.image '480x180' crop='smart' as im %}{{ im.url }}{% endif %}', over: false,
+                       handle(f){ if(f && f[0]){ this.$refs.file.files = f; this.preview = URL.createObjectURL(f[0]); } } }"
+             @dragover.prevent="over = true" @dragleave.prevent="over = false" @drop.prevent="over = false; handle($event.dataTransfer.files)">
+          <input type="file" name="image" accept="image/jpeg,image/png,image/webp" class="hidden" x-ref="file" @change="handle($event.target.files)">
+          <div class="pdrop !aspect-[8/3]" :class="over && 'over'" @click="$refs.file.click()">
+            <template x-if="preview"><img :src="preview" alt=""></template>
+            <template x-if="!preview">
+              <div class="px-4 text-muted">
+                <svg class="mx-auto" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+                <div class="mt-1 text-sm font-bold text-ink">{% trans "Перетащите фото" %}</div>
+              </div>
+            </template>
+          </div>
+        </div>
+        <p class="phint">{% trans "JPG/PNG/WebP, до 5 МБ. Кроп 8:3. Рекомендуем 1600×600px." %}</p>
+        {% if img_error %}<div class="perror">{{ img_error }}</div>{% endif %}
+      </div>
+
+      <div class="pform-block space-y-4">
+        <label class="flex cursor-pointer items-center gap-3" x-data="{ on: {{ form.is_active.value|yesno:'true,false' }} }">
+          <input type="checkbox" name="is_active" x-model="on" class="sr-only">
+          <span class="pswitch" :class="on && 'on'" @click="on = !on"><span></span></span>
+          <span class="text-sm font-bold text-ink">{% trans "Активен" %}</span>
+        </label>
+        <p class="phint">{% trans "Максимум 3 активных одновременно." %}</p>
+        <div>
+          <label class="plabel">{% trans "Показ с" %}</label>{{ form.start_at }}
+        </div>
+        <div>
+          <label class="plabel">{% trans "Показ по" %}</label>{{ form.end_at }}
+          <div class="phint">{% trans "Пусто — без ограничения по дате." %}</div>
+        </div>
+      </div>
+
+      {% if instance %}
+      <button type="submit" formaction="{% url 'panel:banner_delete' instance.id %}" formnovalidate
+              onclick="return confirm('{% trans "Удалить баннер?" %}')"
+              class="pbtn-ghost w-full justify-center" style="color:var(--danger)">
+        {% trans "Удалить баннер" %}
+      </button>
+      {% endif %}
+    </div>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "panel/base.html" %}
+{% load i18n thumbnail %}
+{% block title %}{% trans "Баннеры" %}{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-4xl">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="font-display text-3xl font-extrabold tracking-tight text-ink">{% trans "Баннеры" %}</h1>
+      <p class="mt-1 text-muted">{% blocktrans %}Слайды вверху главной. Активных: {{ active_count }} из {{ max_active }}.{% endblocktrans %}</p>
+    </div>
+    <a href="{% url 'panel:banner_new' %}" class="pbtn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+      {% trans "Добавить" %}
+    </a>
+  </div>
+
+  {# Статус блока (глобальный тумблер — в Настройках) #}
+  {% if not banners_enabled %}
+  <div class="mt-4 flex items-start gap-3 rounded-2xl p-4 text-sm" style="background:color-mix(in srgb,#D9812B 8%,transparent);border:1px solid color-mix(in srgb,#D9812B 25%,transparent)">
+    <svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4650F" stroke-width="1.9"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg>
+    <div>
+      <span class="font-bold" style="color:#B4650F">{% trans "Блок баннеров сейчас выключен" %}</span>
+      <span class="text-ink"> — {% trans "он не показывается на сайте." %}</span>
+      <a href="{% url 'panel:settings' %}" class="font-bold text-accent hover:underline">{% trans "Включить в настройках" %} →</a>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if banners %}
+  <p class="mt-4 text-sm text-muted">{% trans "Перетаскивайте за ручку, чтобы менять порядок слайдов." %}</p>
+  <div id="banlist" class="mt-2 space-y-3">
+    {% for b in banners %}
+    <div class="banrow flex items-center gap-3 rounded-2xl border border-line bg-surface p-3" data-id="{{ b.id }}"
+         x-data="{ on: {{ b.is_active|yesno:'true,false' }} }">
+      <span class="drag-handle cursor-grab text-muted hover:text-ink" title="{% trans 'Перетащить' %}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
+      </span>
+      <div class="aspect-[8/3] w-28 shrink-0 overflow-hidden rounded-lg bg-sunken">
+        {% if b.image %}{% thumbnail b.image "240x90" crop="smart" as im %}<img src="{{ im.url }}" alt="" class="h-full w-full object-cover">{% endif %}
+      </div>
+      <div class="min-w-0 flex-1">
+        <a href="{% url 'panel:banner_edit' b.id %}" class="block truncate font-bold text-ink hover:text-accent">{{ b.title }}</a>
+        <div class="truncate text-sm text-muted">
+          {{ b.subtitle|default:"—" }}{% if b.start_at or b.end_at %} · {{ b.start_at|date:"d.m.y"|default:"…" }}–{{ b.end_at|date:"d.m.y"|default:"…" }}{% endif %}
+        </div>
+      </div>
+      <button type="button" class="pswitch" :class="on && 'on'" @click="toggleBanner({{ b.id }}, $el, () => on = !on)"><span></span></button>
+      <a href="{% url 'panel:banner_edit' b.id %}" class="grid h-9 w-9 place-items-center rounded-lg text-muted hover:text-ink">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="pcard-box mt-4 flex flex-col items-center py-16 text-center">
+    <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sunken text-muted">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="10" r="1.5"/><path d="m2 16 5-4 4 3 3-2 8 5"/></svg>
+    </div>
+    <div class="mt-4 font-display text-lg font-extrabold text-ink">{% trans "Баннеров пока нет" %}</div>
+    <p class="mt-1 text-muted">{% trans "Добавьте слайд для hero-секции главной." %}</p>
+    <a href="{% url 'panel:banner_new' %}" class="pbtn-primary mt-5">{% trans "Добавить баннер" %}</a>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+(function () {
+  const csrf = (document.cookie.match(/csrftoken=([^;]+)/) || [])[1] || '';
+  window.toggleBanner = async function (id, el, flip) {
+    const r = await fetch("{% url 'panel:banner_toggle' %}", {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf }, body: JSON.stringify({ id }),
+    });
+    const data = await r.json().catch(() => null);
+    if (data && data.ok) { flip(); if (data.value) location.reload(); else location.reload(); }
+    else if (data && data.error === 'limit') { alert("{% blocktrans %}Активных баннеров может быть максимум {{ max_active }}.{% endblocktrans %}"); }
+  };
+
+  const list = document.getElementById('banlist');
+  if (!list) return;
+  let drag = null;
+  list.addEventListener('dragstart', e => { drag = e.target.closest('.banrow'); if (drag) drag.classList.add('opacity-50'); });
+  list.addEventListener('dragend', () => { if (drag) drag.classList.remove('opacity-50'); save(); });
+  list.addEventListener('dragover', e => {
+    e.preventDefault();
+    const rows = [...list.querySelectorAll('.banrow:not(.opacity-50)')];
+    const after = rows.find(r => { const box = r.getBoundingClientRect(); return e.clientY < box.top + box.height / 2; });
+    if (drag) { after ? list.insertBefore(drag, after) : list.appendChild(drag); }
+  });
+  // делаем строки перетаскиваемыми
+  list.querySelectorAll('.banrow').forEach(r => r.setAttribute('draggable', 'true'));
+  function save() {
+    const ids = [...list.querySelectorAll('.banrow')].map(r => r.dataset.id);
+    fetch("{% url 'panel:banner_reorder' %}", { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf }, body: JSON.stringify({ ids }) });
+  }
+})();
+</script>
+{% endblock %}

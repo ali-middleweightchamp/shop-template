@@ -1,0 +1,86 @@
+{% extends "panel/base.html" %}
+{% load i18n thumbnail %}
+{% block title %}{% if instance %}{{ instance.name }}{% else %}{% trans "Новая категория" %}{% endif %}{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="mx-auto max-w-3xl">
+  {% csrf_token %}
+
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <a href="{% url 'panel:categories' %}" class="grid h-10 w-10 place-items-center rounded-xl border border-line text-muted hover:text-ink">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <h1 class="font-display text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
+        {% if instance %}{% trans "Редактирование категории" %}{% else %}{% trans "Новая категория" %}{% endif %}
+      </h1>
+    </div>
+    <button type="submit" class="pbtn-primary">{% trans "Сохранить" %}</button>
+  </div>
+
+  {% if form.non_field_errors %}
+    <div class="mt-4 rounded-xl p-3 text-sm font-semibold" style="background: color-mix(in srgb, var(--danger) 10%, transparent); color: var(--danger)">
+      {% for e in form.non_field_errors %}{{ e }}{% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="mt-6 grid gap-5 lg:grid-cols-3">
+    <div class="pform-block space-y-4 lg:col-span-2">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="plabel">{% trans "Название" %} (RU)</label>
+          {{ form.name_ru }}
+          {% for e in form.name_ru.errors %}<div class="perror">{{ e }}</div>{% endfor %}
+        </div>
+        <div>
+          <label class="plabel">{% trans "Название" %} (UZ)</label>
+          {{ form.name_uz }}
+          <div class="phint">{% trans "Если пусто — покажется русское." %}</div>
+        </div>
+      </div>
+      <div>
+        <label class="plabel">{% trans "Родительская категория" %}</label>
+        {{ form.parent }}
+        <div class="phint">{% trans "Оставьте пустым для категории верхнего уровня. Максимум 2 уровня." %}</div>
+        {% for e in form.parent.errors %}<div class="perror">{{ e }}</div>{% endfor %}
+      </div>
+      <label class="flex cursor-pointer items-center gap-3" x-data="{ on: {{ form.is_active.value|yesno:'true,false' }} }">
+        <input type="checkbox" name="is_active" x-model="on" class="sr-only">
+        <span class="pswitch" :class="on && 'on'" @click="on = !on"><span></span></span>
+        <span class="text-sm font-bold text-ink">{% trans "Показывать на сайте" %}</span>
+      </label>
+    </div>
+
+    {# Картинка категории #}
+    <div class="pform-block">
+      <label class="plabel">{% trans "Картинка" %}</label>
+      <div x-data="{ preview: '{% if instance.image %}{% thumbnail instance.image '400x300' crop='smart' as im %}{{ im.url }}{% endif %}', over: false,
+                     handle(files){ if(files && files[0]){ this.$refs.file.files = files; this.preview = URL.createObjectURL(files[0]); } } }"
+           @dragover.prevent="over = true" @dragleave.prevent="over = false" @drop.prevent="over = false; handle($event.dataTransfer.files)">
+        <input type="file" name="image" accept="image/jpeg,image/png,image/webp" class="hidden" x-ref="file" @change="handle($event.target.files)">
+        <div class="pdrop !aspect-[4/3]" :class="over && 'over'" @click="$refs.file.click()">
+          <template x-if="preview"><img :src="preview" alt=""></template>
+          <template x-if="!preview">
+            <div class="px-4 text-muted">
+              <svg class="mx-auto" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+              <div class="mt-2 text-sm font-bold text-ink">{% trans "Перетащите фото" %}</div>
+              <div class="text-xs">{% trans "или нажмите" %}</div>
+            </div>
+          </template>
+        </div>
+        <button type="button" x-show="preview" @click="preview=''; $refs.file.value=''" class="mt-2 text-xs font-semibold text-muted hover:text-ink">{% trans "Убрать" %}</button>
+      </div>
+      <p class="phint">{% trans "JPG/PNG/WebP, до 5 МБ. Обрежется 4:3. Рекомендуем 800×600px." %}</p>
+      {% if img_error %}<div class="perror">{{ img_error }}</div>{% endif %}
+    </div>
+  </div>
+
+  {% if instance %}
+  <button type="submit" formaction="{% url 'panel:category_delete' instance.id %}" formnovalidate
+          onclick="return confirm('{% if instance.products.exists %}{% trans "Нельзя удалить: в категории есть товары. Сначала перенесите их." %}{% else %}{% trans "Удалить категорию?" %}{% endif %}')"
+          class="pbtn-ghost mt-5 justify-center" style="color:var(--danger)">
+    {% trans "Удалить категорию" %}
+  </button>
+  {% endif %}
+</form>
+{% endblock %}

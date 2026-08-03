@@ -40,6 +40,7 @@ LOCAL_APPS = [
     "apps.shopsettings",
     "apps.catalog",
     "apps.importer",
+    "apps.panel",
 ]
 
 # jazzmin и modeltranslation обязаны идти перед django.contrib.admin
@@ -57,6 +58,8 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     # LocaleMiddleware — двуязычность ru/uz, ставится после Session, до Common
     "django.middleware.locale.LocaleMiddleware",
+    # Язык панели /panel/ из куки (перебивает принудительный дефолт для no-prefix URL)
+    "apps.panel.middleware.PanelLocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -107,6 +110,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Локализация: язык по умолчанию — русский, доступен узбекский (латиница)
+# Вход в панель продавца (кастомная админка на /panel/)
+LOGIN_URL = "/panel/login/"
+LOGIN_REDIRECT_URL = "/panel/"
+LOGOUT_REDIRECT_URL = "/panel/login/"
+
 LANGUAGE_CODE = "ru"
 LANGUAGES = [
     ("ru", "Русский"),
