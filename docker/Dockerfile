@@ -45,8 +45,13 @@ ENV DJANGO_SETTINGS_MODULE=config.settings.prod \
     DATABASE_URL=postgres://u:p@db:5432/db
 RUN python manage.py collectstatic --noinput
 
-# Пользователь без root-прав
-RUN useradd --create-home appuser && chown -R appuser:appuser /app
+# Пользователь без root-прав.
+# Заранее создаём media/staticfiles и отдаём их appuser, чтобы именованные
+# тома Docker наследовали правильного владельца (иначе загрузка фото на
+# сервере падает с Permission denied — том монтируется под root).
+RUN useradd --create-home appuser \
+    && mkdir -p /app/media /app/staticfiles \
+    && chown -R appuser:appuser /app
 USER appuser
 
 EXPOSE 8000
