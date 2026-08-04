@@ -78,7 +78,7 @@
         <h2 class="mb-4 font-display text-lg font-extrabold text-ink">{% trans "Контакты" %}</h2>
         <div class="grid gap-4 sm:grid-cols-2">
           <div><label class="plabel">Telegram (username)</label>{{ form.telegram_username }}<div class="phint">{% trans "Без @. Заказы уходят сюда." %}</div></div>
-          <div><label class="plabel">WhatsApp</label>{{ form.whatsapp_phone }}<div class="phint">998901234567</div></div>
+          <div><label class="plabel">WhatsApp</label>{{ form.whatsapp_phone }}<div class="phint">{% trans "Например" %}: 998901234567 ({% trans "без + и пробелов" %})</div></div>
           <div><label class="plabel">{% trans "Телефон" %}</label>{{ form.phone }}</div>
           <div><label class="plabel">{% trans "Доп. телефон" %}</label>{{ form.phone_secondary }}</div>
           <div><label class="plabel">Instagram</label>{{ form.instagram_url }}</div>
