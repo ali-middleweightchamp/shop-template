@@ -8,6 +8,26 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 
+# Кириллица → латиница (RU + UZ). Slug в URL должен быть ASCII, иначе
+# reverse() по кириллическому slug падает с NoReverseMatch.
+_TRANSLIT = {
+    "а": "a", "б": "b", "в": "v", "г": "g", "д": "d", "е": "e", "ё": "yo",
+    "ж": "zh", "з": "z", "и": "i", "й": "y", "к": "k", "л": "l", "м": "m",
+    "н": "n", "о": "o", "п": "p", "р": "r", "с": "s", "т": "t", "у": "u",
+    "ф": "f", "х": "h", "ц": "ts", "ч": "ch", "ш": "sh", "щ": "sch", "ъ": "",
+    "ы": "y", "ь": "", "э": "e", "ю": "yu", "я": "ya",
+    # узбекская кириллица
+    "қ": "q", "ғ": "g", "ҳ": "h", "ў": "o", "ъ ": "",
+}
+
+
+def slugify_translit(text):
+    """Транслитерирует кириллицу в латиницу и делает ASCII-slug."""
+    text = (text or "").lower()
+    latin = "".join(_TRANSLIT.get(ch, ch) for ch in text)
+    return slugify(latin)
+
+
 def unique_slug(model, base, instance_pk=None):
     """Уникальный slug на основе base (с числовым суффиксом при коллизии)."""
     base = (base or "item").strip("-") or "item"
@@ -54,7 +74,7 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            base = slugify(self.name, allow_unicode=True) or slugify(self.name)
+            base = slugify_translit(self.name) or "category"
             self.slug = unique_slug(Category, base, self.pk)
         super().save(*args, **kwargs)
 
@@ -154,7 +174,7 @@ class Product(models.Model):
                     self.sku = candidate
                     break
         if not self.slug:
-            base = slugify(self.sku) or slugify(self.name, allow_unicode=True)
+            base = slugify(self.sku) or slugify_translit(self.name) or "item"
             self.slug = unique_slug(Product, base, self.pk)
         parts = [self.name_ru, self.name_uz, self.sku, self.description_ru, self.pack_size]
         self.search_blob = " ".join(p for p in parts if p).lower()
