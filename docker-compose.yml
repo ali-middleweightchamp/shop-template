@@ -20,7 +20,7 @@ services:
       dockerfile: docker/Dockerfile
     restart: unless-stopped
     entrypoint: ["/app/docker/entrypoint.sh"]
-    command: ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
+    command: ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "${GUNICORN_WORKERS:-3}"]
     env_file: .env
     environment:
       DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-config.settings.prod}
