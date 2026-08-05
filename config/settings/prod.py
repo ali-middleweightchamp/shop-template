@@ -12,6 +12,16 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
+# Файловый кэш общий для всех воркеров gunicorn (в одном контейнере они делят
+# ФС). LocMemCache у каждого воркера свой → сброс кэша настроек не долетал до
+# остальных, и изменения в админке «не применялись» до истечения TTL.
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/tmp/django_cache",
+    }
+}
+
 # --- Безопасность ---
 # Редирект на HTTPS. За nginx учитываем заголовок X-Forwarded-Proto.
 SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=True)
