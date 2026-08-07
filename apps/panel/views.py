@@ -438,6 +438,12 @@ _STUB_TITLES = {
 
 
 @panel_required
+def styleguide(request):
+    """Витрина компонентов (только staff): проверить новую тему за минуту."""
+    return render(request, "panel/styleguide.html", {})
+
+
+@panel_required
 def stub(request, section):
     return render(
         request,

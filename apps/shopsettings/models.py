@@ -20,8 +20,9 @@ class ShopSettings(models.Model):
     CACHE_KEY = "shop_settings"
 
     class Theme(models.TextChoices):
-        EMERALD = "emerald", _("Изумруд")
-        # Позже сюда добавятся другие пресеты без переделки
+        EMERALD = "emerald", _("Изумруд (зелёная, мягкая)")
+        SUNSET = "sunset", _("Sunset (тёплая, с засечками)")
+        # Новый пресет = блок в themes.css + строка здесь, без переделки логики
 
     # --- Бренд ---
     name = models.CharField(_("Название магазина"), max_length=255, default="Магазин")

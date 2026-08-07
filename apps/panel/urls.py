@@ -19,6 +19,7 @@ urlpatterns = [
     ),
     path("logout/", auth_views.LogoutView.as_view(next_page="panel:login"), name="logout"),
     path("", views.dashboard, name="dashboard"),
+    path("styleguide/", views.styleguide, name="styleguide"),
     # Товары
     path("products/", views.products, name="products"),
     path("products/new/", views.product_edit, name="product_new"),

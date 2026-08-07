@@ -23,6 +23,12 @@
   --danger: #C0392B;
   --border-input: #E3E7ED;
   --shadow-card: 0 1px 3px rgba(15, 27, 45, 0.08);
+  /* Типографика и форма — тоже часть темы */
+  --font-display: "Onest", "Manrope", system-ui, sans-serif;
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius-card: 14px;
+  --radius-control: 10px;
+  --radius-pill: 9999px;
 }
 
 /* ---------- Emerald · тёмная ---------- */
@@ -40,5 +46,47 @@
   --border-input: #2A343E;
   /* В тёмной теме теней нет: карточка отделяется от фона тем,
      что --surface светлее --bg. */
+  --shadow-card: none;
+}
+
+/* ================================================================== *
+ * Sunset · вторая тема (доказывает, что система работает).
+ * Тёплая палитра, шрифт с засечками, острые углы — максимально
+ * непохоже на Emerald (холодный зелёный, скруглённый, гротеск).
+ * ================================================================== */
+/* ---------- Sunset · светлая ---------- */
+[data-preset="sunset"] {
+  --bg: #FBF6EF;
+  --surface: #FFFFFF;
+  --surface-sunken: #F3EADD;
+  --text: #2A211B;
+  --text-muted: #8A7B6D;
+  --accent: #C2410C;
+  --accent-hover: #9A330A;
+  --accent-2: #EA7A3B;
+  --on-accent: #FFFFFF;
+  --danger: #B4241C;
+  --border-input: #E7DCCC;
+  --shadow-card: 0 1px 3px rgba(80, 50, 25, 0.12);
+  --font-display: Georgia, "Times New Roman", "Playfair Display", serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --radius-card: 3px;
+  --radius-control: 2px;
+  --radius-pill: 3px;
+}
+
+/* ---------- Sunset · тёмная ---------- */
+[data-preset="sunset"][data-theme="dark"] {
+  --bg: #1A1512;
+  --surface: #241D18;
+  --surface-sunken: #1E1813;
+  --text: #F0E7DC;
+  --text-muted: #A99B8B;
+  --accent: #F2793C;
+  --accent-hover: #F59A69;
+  --accent-2: #F7A968;
+  --on-accent: #1A0F08;
+  --danger: #E5766B;
+  --border-input: #392E26;
   --shadow-card: none;
 }

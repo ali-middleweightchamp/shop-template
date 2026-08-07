@@ -76,7 +76,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 @layer base {
   html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body { @apply bg-bg text-ink font-sans antialiased; }
-  h1, h2, h3 { font-family: "Onest", "Manrope", system-ui, sans-serif; }
+  h1, h2, h3 { font-family: var(--font-display); }
 
   /* Плавная смена цвета у ссылок/иконок в шапке и футере */
   .site-header a, .site-footer a { transition: color .16s ease, background-color .16s ease; }
@@ -154,7 +154,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
 
   /* Чипы категорий — акцент только на активном */
-  .chip { @apply inline-flex min-h-[44px] items-center whitespace-nowrap rounded-full border px-4 text-sm font-semibold; transition: border-color .18s ease, background-color .18s ease, color .18s ease; }
+  .chip { @apply inline-flex min-h-[44px] items-center whitespace-nowrap rounded-pill border px-4 text-sm font-semibold; transition: border-color .18s ease, background-color .18s ease, color .18s ease; }
   .chip-on { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
   .chip-off { @apply border-line bg-surface text-ink; }
   .chip-off:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--border-input)); color: var(--accent); }
@@ -226,7 +226,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* Pill-поиск */
   .search-pill input {
-    @apply w-full rounded-full border border-transparent bg-sunken py-3 pl-11 pr-4 text-sm text-ink
+    @apply w-full rounded-control border border-transparent bg-sunken py-3 pl-11 pr-4 text-sm text-ink
            placeholder:text-muted;
   }
   .search-pill input:focus {
@@ -255,7 +255,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
     color: #fff;
   }
   .btn-white {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-base font-extrabold;
+    @apply inline-flex items-center justify-center gap-2 rounded-control bg-white px-7 py-4 text-base font-extrabold;
     color: var(--accent);
     box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.45);
     transition: transform .12s ease, box-shadow .12s ease;
@@ -322,7 +322,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* --- Богатая карточка товара --- */
   .pcard {
-    @apply relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface;
+    @apply relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface;
     box-shadow: 0 1px 2px rgba(15, 27, 45, 0.05);
     transition: transform .24s cubic-bezier(.4,0,.2,1), box-shadow .24s ease, border-color .24s ease;
   }
@@ -361,7 +361,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* --- Плитка категории с фото/градиентом --- */
   .ccard {
-    @apply relative flex aspect-[4/3] items-end overflow-hidden rounded-2xl;
+    @apply relative flex aspect-[4/3] items-end overflow-hidden rounded-card;
     box-shadow: 0 1px 2px rgba(15, 27, 45, 0.05);
     transition: transform .24s cubic-bezier(.4,0,.2,1), box-shadow .24s ease;
   }
