@@ -10,13 +10,16 @@
 
   {# Пусто #}
   <template x-if="$store.fav.count === 0">
-    <div class="flex flex-col items-center py-16 text-center">
-      <div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-sunken text-muted">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    <div class="relative mt-4 flex flex-col items-center overflow-hidden rounded-card border border-line bg-surface py-16 text-center">
+      <div class="aurora"></div>
+      <div class="relative z-10 flex flex-col items-center">
+        <div class="flex h-20 w-20 items-center justify-center rounded-2xl" style="background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger)">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </div>
+        <div class="mt-5 font-display text-xl font-extrabold text-ink">{% trans "В избранном пусто" %}</div>
+        <p class="mt-1 text-muted">{% trans "Нажимайте на сердечко у товара" %}</p>
+        <a href="{% url 'catalog:catalog' %}" class="btn-brand mt-6 rounded-xl px-6">{% trans "Перейти в каталог" %}</a>
       </div>
-      <div class="mt-5 font-display text-xl font-extrabold text-ink">{% trans "В избранном пусто" %}</div>
-      <p class="mt-1 text-muted">{% trans "Нажимайте на сердечко у товара" %}</p>
-      <a href="{% url 'catalog:catalog' %}" class="btn-brand mt-6 rounded-xl px-6">{% trans "Перейти в каталог" %}</a>
     </div>
   </template>
 

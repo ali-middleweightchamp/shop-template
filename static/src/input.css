@@ -413,6 +413,30 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .fav-btn.is-fav { color: #fff; background: var(--danger); border-color: var(--danger); }
   .fav-btn.is-fav svg { fill: #fff; }
 
+  /* ---- Aurora: мягкое анимированное свечение (CSS-порт React-компонента,
+     без framer-motion). Лёгкий: один слой, анимируется только позиция
+     градиента, уважает prefers-reduced-motion. Кладётся точечно (hero,
+     пустые экраны), НЕ на всю страницу — бережём слабые телефоны. ---- */
+  .aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  .aurora::after {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background-image: repeating-linear-gradient(100deg,
+      var(--aurora-1, #5B8DEF) 0%, var(--aurora-1, #5B8DEF) 6%,
+      transparent 9%, transparent 12%,
+      var(--aurora-2, #9B7BF0) 16%, var(--aurora-2, #9B7BF0) 20%,
+      transparent 24%, transparent 28%,
+      var(--aurora-3, #3FD8D2) 32%);
+    background-size: 200% 200%;
+    filter: blur(44px) saturate(1.15);
+    opacity: .45;
+    animation: aurora 55s linear infinite;
+    will-change: background-position;
+  }
+  @keyframes aurora { from { background-position: 0% 50%; } to { background-position: 200% 50%; } }
+  @media (prefers-reduced-motion: reduce) { .aurora::after { animation: none; } }
+
   /* Плавающая кнопка корзины (иконка + счётчик + «Корзина» + сумма) */
   .cart-fab {
     @apply fixed bottom-5 right-5 z-40 flex items-center gap-3 rounded-2xl px-5;
