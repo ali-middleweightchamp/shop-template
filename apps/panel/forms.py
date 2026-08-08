@@ -113,7 +113,7 @@ class ShopSettingsForm(forms.ModelForm):
         widgets = {
             "description_ru": forms.Textarea(attrs={"rows": 3}),
             "description_uz": forms.Textarea(attrs={"rows": 3}),
-            "primary_color": forms.TextInput(attrs={"placeholder": "#0E7A5A"}),
+            "primary_color": forms.TextInput(attrs={"placeholder": "необязательно, напр. #2563EB"}),
         }
 
     def __init__(self, *args, **kwargs):

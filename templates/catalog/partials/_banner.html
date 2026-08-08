@@ -34,7 +34,7 @@
     {% for b in banners %}
     <a href="{{ b.button_link|default:'#' }}" class="banner-slide"
        {% if b.image %}{% thumbnail b.image "1600x600" crop="smart" as im %}style="background-image:url('{{ im.url }}'); background-size:cover; background-position:center"{% endif %}
-       {% if not b.image %}style="background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 94%, #000) 0%, var(--accent-2) 100%)"{% endif %}>
+       {% if not b.image %}style="background: var(--banner-grad)"{% endif %}>
       {% if b.image %}<span class="pointer-events-none absolute inset-0" style="background: linear-gradient(90deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.28) 45%, rgba(0,0,0,.08) 100%)"></span>{% endif %}
       <span class="relative z-10 flex max-w-lg flex-col items-start">
         {% if b.badge %}<span class="mb-3 inline-flex w-fit items-center rounded-full bg-white/20 px-3 py-1 text-xs font-bold backdrop-blur">{{ b.badge }}</span>{% endif %}

@@ -23,6 +23,10 @@
   --danger: #DC2626;
   --border-input: #E4E4E7;
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  /* Фон hero-баннера без картинки. Всегда тёмный — текст на нём белый,
+     поэтому НЕ завязан на инвертирующийся --accent (иначе в тёмной теме
+     стал бы светлым). Один на светлую и тёмную. */
+  --banner-grad: linear-gradient(120deg, #18181B 0%, #3F3F46 100%);
   /* Форма и типографика — общие дефолты, темы могут переопределить */
   --font-display: "Onest", "Manrope", system-ui, sans-serif;
   --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -59,6 +63,7 @@
   --danger: #C0392B;
   --border-input: #E3E7ED;
   --shadow-card: 0 1px 3px rgba(15, 27, 45, 0.08);
+  --banner-grad: linear-gradient(120deg, #064E3B 0%, #0E7A5A 100%);
   --radius-card: 14px;
   --radius-control: 10px;
 }
@@ -91,6 +96,7 @@
   --danger: #DC2626;
   --border-input: #DCE3EC;
   --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --banner-grad: linear-gradient(120deg, #0B2A6B 0%, #2563EB 100%);
 }
 [data-preset="ocean"][data-theme="dark"] {
   --bg: #0A1120;
@@ -121,6 +127,7 @@
   --danger: #DC2626;
   --border-input: #E7E0F3;
   --shadow-card: 0 1px 3px rgba(30, 27, 46, 0.08);
+  --banner-grad: linear-gradient(120deg, #3B0A6B 0%, #7C3AED 100%);
 }
 [data-preset="violet"][data-theme="dark"] {
   --bg: #120E1C;
@@ -151,6 +158,7 @@
   --danger: #B91C1C;
   --border-input: #F0DFE5;
   --shadow-card: 0 1px 3px rgba(42, 21, 32, 0.08);
+  --banner-grad: linear-gradient(120deg, #7A0A2A 0%, #E11D48 100%);
 }
 [data-preset="rose"][data-theme="dark"] {
   --bg: #170A0F;
@@ -183,6 +191,7 @@
   --danger: #B4241C;
   --border-input: #E7DCCC;
   --shadow-card: 0 1px 3px rgba(80, 50, 25, 0.12);
+  --banner-grad: linear-gradient(120deg, #7A2410 0%, #C2410C 100%);
   --font-display: Georgia, "Times New Roman", "Playfair Display", serif;
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --radius-card: 3px;
