@@ -256,7 +256,9 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   .btn-white {
     @apply inline-flex items-center justify-center gap-2 rounded-control bg-white px-7 py-4 text-base font-extrabold;
-    color: var(--accent);
+    /* Белая кнопка на баннере — текст всегда тёмный, чтобы читался при любой теме
+       (в тёмной теме акцент становится белым, поэтому var(--accent) тут нельзя). */
+    color: #18181B;
     box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.45);
     transition: transform .12s ease, box-shadow .12s ease;
   }
@@ -342,7 +344,8 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .pbadge-hit  { @apply pbadge top-2.5 text-white; background: var(--text); }
 
   .pcard-add {
-    @apply mt-2 w-full rounded-lg py-2 text-sm font-bold text-white transition;
+    @apply mt-2 w-full rounded-lg py-2 text-sm font-bold transition;
+    color: var(--on-accent);
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--accent) 55%, transparent);
   }
@@ -354,7 +357,8 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
     border: 1px solid var(--accent);
   }
   .qty-row button {
-    @apply flex h-8 w-10 items-center justify-center rounded-md text-lg font-extrabold text-white;
+    @apply flex h-8 w-10 items-center justify-center rounded-md text-lg font-extrabold;
+    color: var(--on-accent);
     background: var(--accent);
   }
   .qty-row .qv { @apply nums flex-1 text-center text-base font-extrabold text-ink; }
@@ -411,7 +415,8 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* Плавающая кнопка корзины (иконка + счётчик + «Корзина» + сумма) */
   .cart-fab {
-    @apply fixed bottom-5 right-5 z-40 flex items-center gap-3 rounded-2xl px-5 text-white;
+    @apply fixed bottom-5 right-5 z-40 flex items-center gap-3 rounded-2xl px-5;
+    color: var(--on-accent);
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     box-shadow: 0 16px 34px -12px color-mix(in srgb, var(--accent) 65%, transparent);
     padding-top: .7rem;
@@ -427,7 +432,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   .cart-step button:first-child { border: 1.5px solid var(--accent); color: var(--accent); }
   .cart-step button:first-child:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
-  .cart-step button:last-child { background: var(--accent); color: #fff; }
+  .cart-step button:last-child { background: var(--accent); color: var(--on-accent); }
   .cart-step button:last-child:hover { background: var(--accent-hover); }
 
   /* Кнопки мессенджеров (фирменные цвета TG/WA) */
@@ -464,7 +469,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* Кнопка в панели */
   .pbtn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition; }
-  .pbtn-primary { @apply pbtn text-white; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--accent) 55%, transparent); }
+  .pbtn-primary { @apply pbtn; color: var(--on-accent); background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--accent) 55%, transparent); }
   .pbtn-primary:hover { filter: brightness(1.04); }
   .pbtn-ghost { @apply pbtn border border-line bg-surface text-ink; }
   .pbtn-ghost:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-input)); }
