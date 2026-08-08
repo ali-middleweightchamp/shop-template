@@ -418,7 +418,10 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
      градиента, уважает prefers-reduced-motion. Кладётся точечно (hero,
      пустые экраны), НЕ на всю страницу — бережём слабые телефоны. ---- */
   .aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-  .aurora::after {
+  /* Полноэкранный фон: фиксированный слой позади всего контента (не
+     перерисовывается при скролле). Прозрачность ниже, чтобы контент читался. */
+  .aurora-fixed { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; }
+  .aurora::after, .aurora-fixed::after {
     content: "";
     position: absolute;
     inset: -40%;
@@ -434,8 +437,9 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
     animation: aurora 55s linear infinite;
     will-change: background-position;
   }
+  .aurora-fixed::after { opacity: .28; filter: blur(60px) saturate(1.1); }
   @keyframes aurora { from { background-position: 0% 50%; } to { background-position: 200% 50%; } }
-  @media (prefers-reduced-motion: reduce) { .aurora::after { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .aurora::after, .aurora-fixed::after { animation: none; } }
 
   /* Плавающая кнопка корзины (иконка + счётчик + «Корзина» + сумма) */
   .cart-fab {

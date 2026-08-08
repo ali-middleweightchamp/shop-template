@@ -2,10 +2,6 @@
 {% load i18n thumbnail %}
 
 {% block body %}
-<div class="relative">
-  {# Мягкое aurora-свечение только в верхней части главной (под hero). #}
-  <div class="pointer-events-none absolute inset-x-0 top-0 z-0 h-[540px] overflow-hidden"><div class="aurora"></div></div>
-  <div class="relative z-10">
 {# ---------- Баннер-слайдер: слайды из админки (панель → Баннеры). Скрыт, если выключен/пуст ---------- #}
 {% if banners %}
 <div class="shell pt-4">
@@ -50,7 +46,5 @@
 
   {% translate "Новинки" as t_new %}
   {% include "catalog/partials/_shelf.html" with shelf_title=t_new shelf_products=new_products %}
-</div>
-  </div>
 </div>
 {% endblock %}
