@@ -1,15 +1,51 @@
 /* ================================================================== *
  * Темы оформления. Семантические переменные — единственный источник
- * цвета в проекте. Пресет задаётся на <html data-preset="...">,
- * светлая/тёмная — через data-theme (переключатель в шапке).
+ * цвета/формы/шрифта в проекте. Пресет задаётся на <html data-preset>,
+ * светлая/тёмная — через data-theme.
  *
- * Добавление нового пресета = ещё пара блоков, без переделки:
- *   [data-preset="ocean"]                    { светлая }
- *   [data-preset="ocean"][data-theme="dark"] { тёмная  }
+ * По умолчанию — Noir (чёрная). Остальные пресеты выбираются в
+ * настройках магазина (ShopSettings.theme).
+ * Новый пресет = ещё пара блоков, без переделки логики.
  * ================================================================== */
 
-/* ---------- Emerald · светлая (по умолчанию) ---------- */
+/* ---------- Noir · светлая (ПО УМОЛЧАНИЮ) ---------- */
 :root,
+[data-preset="noir"] {
+  --bg: #F4F4F5;
+  --surface: #FFFFFF;
+  --surface-sunken: #ECECEE;
+  --text: #0A0A0A;
+  --text-muted: #71717A;
+  --accent: #111111;
+  --accent-hover: #000000;
+  --accent-2: #3F3F46;
+  --on-accent: #FFFFFF;
+  --danger: #DC2626;
+  --border-input: #E4E4E7;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  /* Форма и типографика — общие дефолты, темы могут переопределить */
+  --font-display: "Onest", "Manrope", system-ui, sans-serif;
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius-card: 12px;
+  --radius-control: 8px;
+  --radius-pill: 9999px;
+}
+[data-preset="noir"][data-theme="dark"] {
+  --bg: #0A0A0A;
+  --surface: #171717;
+  --surface-sunken: #111111;
+  --text: #FAFAFA;
+  --text-muted: #A1A1AA;
+  --accent: #FAFAFA;
+  --accent-hover: #FFFFFF;
+  --accent-2: #D4D4D8;
+  --on-accent: #0A0A0A;
+  --danger: #F87171;
+  --border-input: #27272A;
+  --shadow-card: none;
+}
+
+/* ---------- Emerald · зелёная ---------- */
 [data-preset="emerald"] {
   --bg: #F6F7F9;
   --surface: #FFFFFF;
@@ -23,15 +59,9 @@
   --danger: #C0392B;
   --border-input: #E3E7ED;
   --shadow-card: 0 1px 3px rgba(15, 27, 45, 0.08);
-  /* Типографика и форма — тоже часть темы */
-  --font-display: "Onest", "Manrope", system-ui, sans-serif;
-  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
   --radius-card: 14px;
   --radius-control: 10px;
-  --radius-pill: 9999px;
 }
-
-/* ---------- Emerald · тёмная ---------- */
 [data-preset="emerald"][data-theme="dark"] {
   --bg: #0E1418;
   --surface: #18212A;
@@ -44,17 +74,102 @@
   --on-accent: #06120E;
   --danger: #E5766B;
   --border-input: #2A343E;
-  /* В тёмной теме теней нет: карточка отделяется от фона тем,
-     что --surface светлее --bg. */
+  --shadow-card: none;
+}
+
+/* ---------- Ocean · синяя ---------- */
+[data-preset="ocean"] {
+  --bg: #F4F7FB;
+  --surface: #FFFFFF;
+  --surface-sunken: #E8EEF6;
+  --text: #0F172A;
+  --text-muted: #64748B;
+  --accent: #2563EB;
+  --accent-hover: #1D4ED8;
+  --accent-2: #3B82F6;
+  --on-accent: #FFFFFF;
+  --danger: #DC2626;
+  --border-input: #DCE3EC;
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+[data-preset="ocean"][data-theme="dark"] {
+  --bg: #0A1120;
+  --surface: #131C2E;
+  --surface-sunken: #0F1626;
+  --text: #E7EDF6;
+  --text-muted: #8A98AD;
+  --accent: #3B82F6;
+  --accent-hover: #60A5FA;
+  --accent-2: #60A5FA;
+  --on-accent: #08101F;
+  --danger: #F87171;
+  --border-input: #26324A;
+  --shadow-card: none;
+}
+
+/* ---------- Violet · фиолетовая ---------- */
+[data-preset="violet"] {
+  --bg: #F7F5FC;
+  --surface: #FFFFFF;
+  --surface-sunken: #EFEAF8;
+  --text: #1E1B2E;
+  --text-muted: #6B7280;
+  --accent: #7C3AED;
+  --accent-hover: #6D28D9;
+  --accent-2: #9333EA;
+  --on-accent: #FFFFFF;
+  --danger: #DC2626;
+  --border-input: #E7E0F3;
+  --shadow-card: 0 1px 3px rgba(30, 27, 46, 0.08);
+}
+[data-preset="violet"][data-theme="dark"] {
+  --bg: #120E1C;
+  --surface: #1C1630;
+  --surface-sunken: #161125;
+  --text: #EEE9F7;
+  --text-muted: #A093B8;
+  --accent: #A78BFA;
+  --accent-hover: #C4B5FD;
+  --accent-2: #C4B5FD;
+  --on-accent: #0F0A1A;
+  --danger: #F87171;
+  --border-input: #2E2542;
+  --shadow-card: none;
+}
+
+/* ---------- Rose · розовая ---------- */
+[data-preset="rose"] {
+  --bg: #FCF5F7;
+  --surface: #FFFFFF;
+  --surface-sunken: #F7E9EE;
+  --text: #2A1520;
+  --text-muted: #7A6B72;
+  --accent: #E11D48;
+  --accent-hover: #BE123C;
+  --accent-2: #F43F5E;
+  --on-accent: #FFFFFF;
+  --danger: #B91C1C;
+  --border-input: #F0DFE5;
+  --shadow-card: 0 1px 3px rgba(42, 21, 32, 0.08);
+}
+[data-preset="rose"][data-theme="dark"] {
+  --bg: #170A0F;
+  --surface: #221319;
+  --surface-sunken: #1A0E13;
+  --text: #F6E7EC;
+  --text-muted: #B79AA3;
+  --accent: #FB7185;
+  --accent-hover: #FDA4AF;
+  --accent-2: #FDA4AF;
+  --on-accent: #1A0509;
+  --danger: #F87171;
+  --border-input: #3A222A;
   --shadow-card: none;
 }
 
 /* ================================================================== *
- * Sunset · вторая тема (доказывает, что система работает).
- * Тёплая палитра, шрифт с засечками, острые углы — максимально
- * непохоже на Emerald (холодный зелёный, скруглённый, гротеск).
+ * Sunset · тёплая, с засечками, острые углы (другой характер).
  * ================================================================== */
-/* ---------- Sunset · светлая ---------- */
 [data-preset="sunset"] {
   --bg: #FBF6EF;
   --surface: #FFFFFF;
@@ -74,8 +189,6 @@
   --radius-control: 2px;
   --radius-pill: 3px;
 }
-
-/* ---------- Sunset · тёмная ---------- */
 [data-preset="sunset"][data-theme="dark"] {
   --bg: #1A1512;
   --surface: #241D18;

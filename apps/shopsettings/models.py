@@ -20,7 +20,11 @@ class ShopSettings(models.Model):
     CACHE_KEY = "shop_settings"
 
     class Theme(models.TextChoices):
-        EMERALD = "emerald", _("Изумруд (зелёная, мягкая)")
+        NOIR = "noir", _("Noir (чёрная, по умолчанию)")
+        EMERALD = "emerald", _("Emerald (зелёная)")
+        OCEAN = "ocean", _("Ocean (синяя)")
+        VIOLET = "violet", _("Violet (фиолетовая)")
+        ROSE = "rose", _("Rose (розовая)")
         SUNSET = "sunset", _("Sunset (тёплая, с засечками)")
         # Новый пресет = блок в themes.css + строка здесь, без переделки логики
 
@@ -36,7 +40,7 @@ class ShopSettings(models.Model):
         _("Тема оформления"),
         max_length=32,
         choices=Theme.choices,
-        default=Theme.EMERALD,
+        default=Theme.NOIR,
         help_text=_("Цветовой пресет витрины (светлая/тёмная переключаются на сайте)"),
     )
     primary_color = models.CharField(
