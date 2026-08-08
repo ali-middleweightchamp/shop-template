@@ -128,7 +128,7 @@
 
   {# ---------- Подвал ---------- #}
   <footer class="site-footer mt-4">
-    <div class="shell grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="shell grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
       <div class="lg:col-span-1">
         <div class="flex items-center gap-2.5">
           {% if shop.logo %}
@@ -197,6 +197,20 @@
           <a href="{% url 'catalog:contacts' %}" class="hover:text-white">{% trans "Контакты" %}</a>
         </div>
       </div>
+
+      {% comment %}Мини-карта: превью без интерактива (pointer-events off), клик ведёт
+      на полную карту. Легче второго живого iframe в футере.{% endcomment %}
+      {% if shop.address %}
+      <div class="text-sm">
+        <div class="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em]" style="color:#64748b">{% trans "Мы на карте" %}</div>
+        <a href="{% if shop.map_link %}{{ shop.map_link }}{% else %}https://yandex.ru/maps/?text={{ shop.address|urlencode }}{% endif %}"
+           target="_blank" rel="noopener" class="group relative block overflow-hidden rounded-xl border border-white/10">
+          <iframe src="https://yandex.ru/map-widget/v1/?text={{ shop.address|urlencode }}&z=15"
+                  loading="lazy" tabindex="-1" class="pointer-events-none h-36 w-full" style="border:0" title="{% trans 'Карта' %} — {{ shop.name }}"></iframe>
+          <span class="absolute inset-0 ring-1 ring-inset ring-white/5 transition group-hover:ring-white/20"></span>
+        </a>
+      </div>
+      {% endif %}
     </div>
     <div class="border-t border-white/10 py-4 text-center text-xs" style="color:#64748b">
       © {% now "Y" %} {{ shop.name }}
