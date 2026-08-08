@@ -52,7 +52,16 @@
     </div>
     {% include "catalog/partials/_pagination.html" %}
   {% else %}
-    <p class="py-16 text-center text-muted">{% trans "Ничего не найдено." %}</p>
+    <div class="relative mt-5 flex flex-col items-center overflow-hidden rounded-card border border-line bg-surface py-16 text-center">
+      <div class="aurora"></div>
+      <div class="relative z-10 flex flex-col items-center">
+        <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-sunken text-muted">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        </div>
+        <div class="mt-4 font-display text-lg font-extrabold text-ink">{% trans "Ничего не найдено" %}</div>
+        <p class="mt-1 text-muted">{% trans "Попробуйте изменить запрос или категорию" %}</p>
+      </div>
+    </div>
   {% endif %}
 </div>
 {% endblock %}
