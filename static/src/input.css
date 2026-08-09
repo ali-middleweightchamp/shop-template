@@ -267,20 +267,18 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   /* --- Баннер-слайдер на главной --- */
   .banner { @apply relative overflow-hidden rounded-card; }
   .banner-track { @apply flex; transition: transform .5s cubic-bezier(.4,0,.2,1); }
-  .banner-slide {
-    @apply relative flex min-w-full flex-col justify-center overflow-hidden px-5 py-6 sm:px-12 sm:py-8;
-    /* На узких экранах 3:1 слишком низкий для текста — даём комфортную высоту,
-       контент её при необходимости увеличивает (текст не режется, есть воздух). */
-    min-height: 15rem;
-    color: #fff;
-  }
-  /* С планшета высоту задаёт формат баннера (ShopSettings.banner_format):
-     все слайды одной пропорции, карусель не прыгает. */
+  .banner-slide { @apply relative min-w-full overflow-hidden; color: #fff; }
+  /* Цветной баннер без картинки: высоту задаёт формат. На мобилке — комфортный
+     min-height (текст дышит), с планшета — aspect-ratio выбранного формата. */
+  .banner-slide--gradient { min-height: 15rem; }
   @media (min-width: 640px) {
-    .banner-slide {
-      aspect-ratio: var(--banner-aspect, 3 / 1);
-      max-height: 30rem;
-    }
+    .banner-slide--gradient { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 30rem; }
+  }
+  /* Картинка-баннер: высоту диктует само изображение (natural aspect), без кропа. */
+  .banner-slide--image img { display: block; width: 100%; height: auto; }
+  /* Текст-оверлей одинаково поверх картинки и градиента. */
+  .banner-text {
+    @apply absolute inset-y-0 left-0 z-10 flex w-full max-w-lg flex-col items-start justify-center px-5 py-6 sm:px-12 sm:py-8;
   }
   .banner-slide h2, .banner-slide p { color: #fff; }
   /* Пометка «заглушка»: рамка справа, где потом будет реальная картинка баннера */
