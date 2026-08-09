@@ -269,12 +269,18 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .banner-track { @apply flex; transition: transform .5s cubic-bezier(.4,0,.2,1); }
   .banner-slide {
     @apply relative flex min-w-full flex-col justify-center overflow-hidden px-5 py-6 sm:px-12 sm:py-8;
-    /* Высота задаётся форматом баннера (ShopSettings.banner_format) — все слайды
-       одинаковой пропорции, поэтому карусель не прыгает. */
-    aspect-ratio: var(--banner-aspect, 3 / 1);
-    min-height: 9rem;
-    max-height: 30rem;
+    /* На узких экранах 3:1 слишком низкий для текста — даём комфортную высоту,
+       контент её при необходимости увеличивает (текст не режется, есть воздух). */
+    min-height: 15rem;
     color: #fff;
+  }
+  /* С планшета высоту задаёт формат баннера (ShopSettings.banner_format):
+     все слайды одной пропорции, карусель не прыгает. */
+  @media (min-width: 640px) {
+    .banner-slide {
+      aspect-ratio: var(--banner-aspect, 3 / 1);
+      max-height: 30rem;
+    }
   }
   .banner-slide h2, .banner-slide p { color: #fff; }
   /* Пометка «заглушка»: рамка справа, где потом будет реальная картинка баннера */
@@ -449,11 +455,11 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
     position: absolute;
     inset: -40%;
     background-image: repeating-linear-gradient(100deg,
-      var(--aurora-1, #5B8DEF) 0%, var(--aurora-1, #5B8DEF) 6%,
+      var(--aurora-1, #FAFAFA) 0%, var(--aurora-1, #FAFAFA) 6%,
       transparent 9%, transparent 12%,
-      var(--aurora-2, #9B7BF0) 16%, var(--aurora-2, #9B7BF0) 20%,
+      var(--aurora-2, #A1A1AA) 16%, var(--aurora-2, #A1A1AA) 20%,
       transparent 24%, transparent 28%,
-      var(--aurora-3, #3FD8D2) 32%);
+      var(--aurora-3, #52525B) 32%);
     background-size: 200% 200%;
     filter: blur(44px) saturate(1.15);
     opacity: .45;

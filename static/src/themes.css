@@ -27,10 +27,11 @@
      поэтому НЕ завязан на инвертирующийся --accent (иначе в тёмной теме
      стал бы светлым). Один на светлую и тёмную. */
   --banner-grad: linear-gradient(120deg, #18181B 0%, #3F3F46 100%);
-  /* Палитра aurora-фона под тему (нейтральная Noir — прохладное свечение). */
-  --aurora-1: #5B8DEF;
-  --aurora-2: #9B7BF0;
-  --aurora-3: #3FD8D2;
+  /* Палитра aurora-фона под тему. Noir монохромный — серебристо-серое свечение
+     без цветных оттенков, чтобы не спорить с чёрно-белой темой. */
+  --aurora-1: #FAFAFA;
+  --aurora-2: #A1A1AA;
+  --aurora-3: #52525B;
   /* Форма и типографика — общие дефолты, темы могут переопределить */
   --font-display: "Onest", "Manrope", system-ui, sans-serif;
   --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
