@@ -149,6 +149,10 @@
               <span class="text-sm font-bold text-ink">{% trans "Показывать баннеры на главной (hero)" %}</span>
             </label>
           </div>
+          <div class="sm:col-span-2">
+            <label class="plabel">{% trans "Формат баннеров" %}</label>{{ form.banner_format }}
+            <div class="phint">{% trans "Один размер для всех слайдов — карусель ровная. Новые картинки режутся под него." %}</div>
+          </div>
           <div class="sm:col-span-2"><label class="plabel">{% trans "Приветствие в заказе" %} (RU)</label>{{ form.order_message_header_ru }}</div>
           <div class="sm:col-span-2"><label class="plabel">{% trans "Приветствие в заказе" %} (UZ)</label>{{ form.order_message_header_uz }}</div>
           <div class="sm:col-span-2"><label class="plabel">{% trans "Подпись заказа" %} (RU)</label>{{ form.order_message_footer_ru }}</div>

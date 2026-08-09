@@ -291,7 +291,9 @@ def banner_edit(request, pk=None):
                     banner.is_active = False
                     messages.error(request, f"Активных баннеров может быть максимум {MAX_ACTIVE_BANNERS}. Слайд сохранён выключенным.")
             if img_file:
-                banner.image = imaging.process_image(img_file, ratio=(8, 3), width=1600, name="banner")
+                # Кроп под выбранный в настройках формат баннера.
+                ratio = ShopSettings.get_solo().banner_ratio
+                banner.image = imaging.process_image(img_file, ratio=ratio, width=1600, name="banner")
             banner.save()
             return redirect("panel:banners")
     else:

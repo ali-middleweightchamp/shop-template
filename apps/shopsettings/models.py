@@ -111,6 +111,33 @@ class ShopSettings(models.Model):
         help_text=_("Hero-слайдер вверху главной. По умолчанию выключен."),
     )
 
+    class BannerFormat(models.TextChoices):
+        WIDE = "wide", _("Широкий (3:1)")
+        CLASSIC = "classic", _("Классический (12:5)")
+        MOBILE = "mobile", _("Высокий (16:9)")
+
+    banner_format = models.CharField(
+        _("Формат баннеров"),
+        max_length=16,
+        choices=BannerFormat.choices,
+        default=BannerFormat.WIDE,
+        help_text=_("Один размер для всех слайдов — карусель не прыгает по высоте."),
+    )
+
+    # Пропорции под каждый формат: для кропа при загрузке и для CSS aspect-ratio.
+    _BANNER_RATIOS = {"wide": (3, 1), "classic": (12, 5), "mobile": (16, 9)}
+
+    @property
+    def banner_ratio(self):
+        """Кортеж (w, h) для обрезки изображения баннера."""
+        return self._BANNER_RATIOS.get(self.banner_format, (3, 1))
+
+    @property
+    def banner_aspect_css(self):
+        """Строка для CSS aspect-ratio, напр. '3 / 1'."""
+        w, h = self.banner_ratio
+        return f"{w} / {h}"
+
     class Meta:
         verbose_name = _("Настройки магазина")
         verbose_name_plural = _("Настройки магазина")

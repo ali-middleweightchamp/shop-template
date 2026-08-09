@@ -269,10 +269,13 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .banner-track { @apply flex; transition: transform .5s cubic-bezier(.4,0,.2,1); }
   .banner-slide {
     @apply relative flex min-w-full flex-col justify-center overflow-hidden px-5 py-6 sm:px-12 sm:py-8;
-    height: 15rem; color: #fff;
+    /* Высота задаётся форматом баннера (ShopSettings.banner_format) — все слайды
+       одинаковой пропорции, поэтому карусель не прыгает. */
+    aspect-ratio: var(--banner-aspect, 3 / 1);
+    min-height: 9rem;
+    max-height: 30rem;
+    color: #fff;
   }
-  @media (min-width: 640px) { .banner-slide { height: 16rem; } }
-  @media (min-width: 1024px) { .banner-slide { height: 18rem; } }
   .banner-slide h2, .banner-slide p { color: #fff; }
   /* Пометка «заглушка»: рамка справа, где потом будет реальная картинка баннера */
   .banner-ph {
@@ -378,6 +381,26 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   .ccard-fallback .ci { position: absolute; right: 10px; top: 10px; opacity: .5; color: #fff; }
   .ccard-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(15,27,45,.72)); }
+
+  /* --- Фрост-шапка: полупрозрачный фон + размытие того, что скроллится под ней --- */
+  .site-header {
+    background: color-mix(in srgb, var(--surface) 72%, transparent);
+    backdrop-filter: saturate(1.5) blur(16px);
+    -webkit-backdrop-filter: saturate(1.5) blur(16px);
+  }
+  /* Тонкий глянцевый блик сверху для «стеклянности» */
+  .site-header::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text) 12%, transparent), transparent);
+    pointer-events: none;
+  }
+  /* Фолбэк: если backdrop-filter не поддерживается — сплошной фон */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .site-header { background: var(--surface); }
+  }
 
   /* --- Тёмный подвал (как в референсе) --- */
   .site-footer { background: #111a2e; color: #cbd5e1; }

@@ -49,10 +49,10 @@
   {# Полноэкранный aurora-фон позади всего контента (лёгкий, prefers-reduced-motion) #}
   <div class="aurora-fixed" aria-hidden="true"></div>
 
-  {# ---------- Шапка ---------- #}
-  <header class="sticky top-0 z-30 border-b border-line bg-surface">
+  {# ---------- Шапка: фрост-стекло (полупрозрачный фон + размытие) ---------- #}
+  <header class="site-header sticky top-0 z-30 border-b border-line">
     <div class="shell flex h-16 items-center gap-3 sm:gap-5">
-      <a href="{% url 'catalog:home' %}" class="flex shrink-0 items-center gap-2.5">
+      <a href="{% url 'catalog:home' %}" class="-ml-1 flex shrink-0 items-center gap-2.5 sm:-ml-2">
         {% if shop.logo %}
           <img src="{{ shop.logo.url }}" alt="{{ shop.name }}" class="h-10 w-auto">
         {% else %}

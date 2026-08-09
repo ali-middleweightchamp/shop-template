@@ -206,7 +206,8 @@ class Banner(models.Model):
     Весь блок включается тумблером ShopSettings.banners_enabled.
     """
 
-    title = models.CharField(_("Заголовок"), max_length=60)
+    # Текст необязателен: чаще всего заливают готовую картинку с впечатанным текстом.
+    title = models.CharField(_("Заголовок"), max_length=60, blank=True)
     subtitle = models.CharField(_("Подзаголовок"), max_length=120, blank=True)
     badge = models.CharField(_("Текст плашки"), max_length=30, blank=True)
     button_text = models.CharField(_("Текст кнопки"), max_length=30, blank=True)
@@ -226,7 +227,7 @@ class Banner(models.Model):
         ordering = ["order", "id"]
 
     def __str__(self):
-        return self.title
+        return self.title or _("Баннер без текста")
 
     @classmethod
     def active_now(cls):
