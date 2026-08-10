@@ -121,7 +121,7 @@ class ShopSettings(models.Model):
         max_length=16,
         choices=BannerFormat.choices,
         default=BannerFormat.WIDE,
-        help_text=_("Пропорция для баннеров без картинки. Картинки-баннеры показываются целиком."),
+        help_text=_("Единый размер всех баннеров. Делайте картинки под эту пропорцию — без обрезки."),
     )
 
     # Пропорции под каждый формат: для кропа при загрузке и для CSS aspect-ratio.
