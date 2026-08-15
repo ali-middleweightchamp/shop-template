@@ -537,9 +537,21 @@ def product_delete(request, pk):
 @panel_required
 @ensure_csrf_cookie
 def categories(request):
-    """Список категорий: число товаров + ручная сортировка перетаскиванием."""
-    cats = Category.objects.annotate(num=Count("products")).order_by("order", "name")
-    return render(request, "panel/categories.html", {"section": "categories", "categories": cats})
+    """Список категорий с иерархией: подкатегории идут под своим родителем."""
+    qs = list(
+        Category.objects.annotate(num=Count("products")).select_related("parent")
+    )
+    tops = sorted((c for c in qs if c.parent_id is None), key=lambda c: (c.order, c.name))
+    kids = {}
+    for c in qs:
+        if c.parent_id:
+            kids.setdefault(c.parent_id, []).append(c)
+    ordered = []
+    for t in tops:
+        ordered.append(t)
+        for ch in sorted(kids.get(t.id, []), key=lambda c: (c.order, c.name)):
+            ordered.append(ch)
+    return render(request, "panel/categories.html", {"section": "categories", "categories": ordered})
 
 
 @panel_required
@@ -572,7 +584,12 @@ def category_edit(request, pk=None):
                 cat.save()
                 return redirect("panel:categories")
     else:
-        form = CategoryForm(instance=instance)
+        # Префилл родителя при переходе «+ подкатегория»
+        initial = {}
+        pid = request.GET.get("parent")
+        if pid:
+            initial["parent"] = pid
+        form = CategoryForm(instance=instance, initial=initial)
         img_error = None
     return render(
         request,
