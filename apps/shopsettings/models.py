@@ -138,6 +138,27 @@ class ShopSettings(models.Model):
         w, h = self.banner_ratio
         return f"{w} / {h}"
 
+    # --- Верхняя инфо-полоса (top bar) над шапкой ---
+    topbar_enabled = models.BooleanField(
+        _("Показывать инфо-полосу сверху"),
+        default=False,
+        help_text=_("Тонкая полоса над шапкой: город, доставка, часы, телефон."),
+    )
+    topbar_location = models.CharField(
+        _("Город/локация в полосе"),
+        max_length=80,
+        blank=True,
+        default="",
+        help_text=_("Например: Ташкент. Кликается на карту, если задана ссылка на карту."),
+    )
+    delivery_note = models.CharField(
+        _("Доставка (текст в полосе)"),
+        max_length=120,
+        blank=True,
+        default="",
+        help_text=_("Например: Доставка по городу от 1 дня"),
+    )
+
     # --- Плавающая кнопка заказа в Telegram ---
     telegram_float_enabled = models.BooleanField(
         _("Плавающая кнопка Telegram"),

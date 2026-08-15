@@ -167,6 +167,25 @@
         </div>
       </div>
 
+      {# Инфо-полоса сверху #}
+      <div class="pform-block">
+        <div class="mb-2 flex items-center justify-between gap-3">
+          <h2 class="font-display text-lg font-extrabold text-ink">{% trans "Инфо-полоса сверху" %}</h2>
+          <label class="flex cursor-pointer items-center gap-3" x-data="{ on: {{ form.topbar_enabled.value|yesno:'true,false' }} }">
+            <input type="checkbox" name="topbar_enabled" x-model="on" class="sr-only">
+            <span class="pswitch" :class="on && 'on'" @click="on=!on"><span></span></span>
+            <span class="text-sm font-bold text-ink">{% trans "Показывать" %}</span>
+          </label>
+        </div>
+        <p class="phint mb-4">{% trans "Тонкая полоса над шапкой: город, доставка, часы работы, телефон. Часы и телефон берутся из блоков «Адрес и время» и «Контакты»." %}</p>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div><label class="plabel">{% trans "Город/локация" %} (RU)</label>{{ form.topbar_location_ru }}<div class="phint">{% trans "Кликается на карту, если задана ссылка." %}</div></div>
+          <div><label class="plabel">{% trans "Город/локация" %} (UZ)</label>{{ form.topbar_location_uz }}</div>
+          <div><label class="plabel">{% trans "Доставка" %} (RU)</label>{{ form.delivery_note_ru }}<div class="phint">{% trans "Напр.: Доставка по городу от 1 дня" %}</div></div>
+          <div><label class="plabel">{% trans "Доставка" %} (UZ)</label>{{ form.delivery_note_uz }}</div>
+        </div>
+      </div>
+
       {# Плашки доверия #}
       <div class="pform-block">
         <div class="mb-2 flex items-center justify-between gap-3">

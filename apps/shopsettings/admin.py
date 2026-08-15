@@ -47,6 +47,10 @@ class ShopSettingsAdmin(TranslationAdmin):
             },
         ),
         (
+            _("Инфо-полоса сверху"),
+            {"fields": ("topbar_enabled", "topbar_location", "delivery_note")},
+        ),
+        (
             _("Блок «О нас»"),
             {"fields": ("about_enabled", "about_title", "about_text", "about_image")},
         ),

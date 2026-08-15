@@ -109,6 +109,9 @@ class ShopSettingsForm(forms.ModelForm):
             "min_order_amount", "show_prices", "banners_enabled", "banner_format",
             "order_message_header_ru", "order_message_header_uz",
             "order_message_footer_ru", "order_message_footer_uz",
+            # Инфо-полоса сверху
+            "topbar_enabled", "topbar_location_ru", "topbar_location_uz",
+            "delivery_note_ru", "delivery_note_uz",
             # Плавающая кнопка Telegram
             "telegram_float_enabled",
             # Блок «О нас»

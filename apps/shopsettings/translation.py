@@ -15,6 +15,8 @@ class ShopSettingsTR(TranslationOptions):
         "currency_label",
         "order_message_header",
         "order_message_footer",
+        "topbar_location",
+        "delivery_note",
         "about_title",
         "about_text",
         "trust1_text",
