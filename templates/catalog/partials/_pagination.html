@@ -1,14 +1,32 @@
-{% load i18n %}
+{% load i18n catalog_extras %}
 {% if page_obj.has_other_pages %}
-<nav class="mt-8 flex items-center justify-center gap-2" aria-label="{% trans 'Страницы' %}">
+{# Номера страниц с многоточиями; параметры поиска/сортировки/наличия тянем в ссылки #}
+<nav class="pagination" aria-label="{% trans 'Страницы' %}">
   {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="btn-ghost">← {% trans "Назад" %}</a>
+    <a href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}{% if in_stock %}&stock=1{% endif %}" class="pg-nav" rel="prev" aria-label="{% trans 'Назад' %}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
+    </a>
+  {% else %}
+    <span class="pg-nav is-disabled" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg></span>
   {% endif %}
-  <span class="nums px-2 text-sm text-muted">
-    {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
-  </span>
+
+  {% elided_pages page_obj 1 1 as pages %}
+  {% for p in pages %}
+    {% if p == page_obj.paginator.ELLIPSIS %}
+      <span class="pg-gap">…</span>
+    {% elif p == page_obj.number %}
+      <span class="pg-item is-current" aria-current="page">{{ p }}</span>
+    {% else %}
+      <a href="?page={{ p }}{% if q %}&q={{ q }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}{% if in_stock %}&stock=1{% endif %}" class="pg-item">{{ p }}</a>
+    {% endif %}
+  {% endfor %}
+
   {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="btn-ghost">{% trans "Ещё" %} →</a>
+    <a href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}{% if in_stock %}&stock=1{% endif %}" class="pg-nav" rel="next" aria-label="{% trans 'Вперёд' %}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 18 6-6-6-6"/></svg>
+    </a>
+  {% else %}
+    <span class="pg-nav is-disabled" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 18 6-6-6-6"/></svg></span>
   {% endif %}
 </nav>
 {% endif %}

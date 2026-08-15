@@ -29,6 +29,35 @@ def shop_settings(request):
     return {"shop": shop}
 
 
+def catalog_menu(request):
+    """Дерево категорий для мега-меню «Каталог» в шапке.
+
+    Кэшируем сами ORM-объекты: modeltranslation отдаёт `name` под текущий язык
+    при обращении, поэтому один кэш безопасен для ru и uz. TTL короткий —
+    правки категорий подхватятся быстро (панель к тому же чистит ключ явно).
+    """
+    from django.core.cache import cache
+    from django.db.models import Prefetch
+
+    key = "catalog_menu_v1"
+    tops = cache.get(key)
+    if tops is None:
+        try:
+            from apps.catalog.models import Category
+
+            tops = list(
+                Category.objects.filter(parent__isnull=True, is_active=True)
+                .prefetch_related(
+                    Prefetch("children", queryset=Category.objects.filter(is_active=True))
+                )
+                .order_by("order", "name")
+            )
+            cache.set(key, tops, 60)
+        except Exception:
+            tops = []
+    return {"catalog_menu": tops}
+
+
 def asset_version(request):
     """Версия для сброса кэша CSS/JS в dev (в проде статика и так хэшируется)."""
     import os
