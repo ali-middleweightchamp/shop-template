@@ -30,9 +30,11 @@
   <div class="mt-4 flex items-center gap-2">
     <form method="get" class="search-pill relative flex-1">
       <input type="search" name="q" value="{{ q }}" placeholder="{% trans 'Поиск по каталогу…' %}">
-      <svg class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
       {% if sort %}<input type="hidden" name="sort" value="{{ sort }}">{% endif %}
       {% if in_stock %}<input type="hidden" name="stock" value="1">{% endif %}
+      <button type="submit" class="search-go" aria-label="{% trans 'Найти' %}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+      </button>
     </form>
     <div class="relative shrink-0">
       <button type="button" @click="sortOpen = !sortOpen" aria-label="{% trans 'Сортировка' %}"
