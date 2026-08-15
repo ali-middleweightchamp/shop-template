@@ -37,7 +37,7 @@
 
 {% block body %}
 {% if product.image %}{% thumbnail product.image "800x800" as main_im %}{% endif %}
-<div class="shell pt-4"
+<div class="mx-auto w-full max-w-[1120px] px-4 pt-4"
      x-data="{
        qty: 1,
        showDetails: false,
@@ -73,7 +73,7 @@
   {# Заголовок на всю ширину #}
   <h1 class="text-xl font-extrabold leading-tight tracking-tight text-ink sm:text-2xl lg:text-[28px]">{{ product.name }}</h1>
 
-  <div class="mt-5 grid gap-6 lg:grid-cols-[minmax(0,380px)_1fr] lg:gap-10">
+  <div class="mt-5 grid gap-6 lg:grid-cols-[minmax(0,440px)_1fr] lg:gap-10">
     {# ---------- Галерея ---------- #}
     <div x-data="{ main: '{% if product.image %}{{ main_im.url }}{% endif %}' }" class="relative">
       {# Кнопки: избранное и поделиться #}

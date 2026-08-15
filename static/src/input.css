@@ -315,6 +315,10 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
      карусель не прыгает). object-cover заполняет контейнер; если картинка сделана
      под формат — обрезки нет. Высоту держим компактной (не на весь экран). */
   .banner-slide--image { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 22rem; }
+  /* На десктопе баннер компактнее — не занимает пол-экрана */
+  @media (min-width: 1024px) {
+    .banner-slide--image, .banner-slide--gradient { max-height: 18rem; }
+  }
   .banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   /* Текст-оверлей одинаково поверх картинки и градиента. */
   .banner-text {
@@ -348,7 +352,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* --- Страница товара --- */
   .pd-imgcard {
-    @apply flex aspect-square items-center justify-center overflow-hidden rounded-card border border-line bg-surface p-5;
+    @apply flex aspect-square items-center justify-center overflow-hidden rounded-card border border-line bg-surface p-2 sm:p-3;
   }
   .pd-imgcard img { @apply h-full w-full object-contain; }
   .pd-iconbtn {
@@ -359,7 +363,8 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .pd-iconbtn:hover { @apply text-ink; transform: translateY(-1px); }
   .pd-iconbtn.is-fav { color: var(--danger); }
   .pd-iconbtn.is-fav svg { fill: var(--danger); }
-  .pd-thumb { @apply h-16 w-16 shrink-0 overflow-hidden rounded-control border border-line; }
+  .pd-thumb { @apply h-[70px] w-[70px] shrink-0 overflow-hidden rounded-control border border-line transition; }
+  .pd-thumb:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--border-input)); }
   .price-card {
     @apply rounded-card border border-line bg-surface p-5;
     box-shadow: 0 1px 2px rgba(15,27,45,.05);
