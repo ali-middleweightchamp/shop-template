@@ -410,9 +410,13 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
 
   /* --- Тёмный подвал (как в референсе) --- */
-  .site-footer { background: #111a2e; color: #cbd5e1; }
+  /* Футер тёмный во всех темах, но оттенок берём из пресета (--banner-grad),
+     иначе в noir он выглядел синим. */
+  .site-footer { background: var(--banner-grad); color: #cbd5e1; }
   .site-footer a { color: #cbd5e1; }
-  .site-footer .fi { color: var(--accent); }
+  /* Иконки-контакты: фиксированный светлый цвет — var(--accent) в светлом noir
+     становится чёрным и пропадает на тёмном футере. */
+  .site-footer .fi { color: #94a3b8; }
 }
 
 /* ==================== Доработки: избранное, корзина, герой ============= */

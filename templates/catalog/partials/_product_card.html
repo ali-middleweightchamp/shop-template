@@ -4,10 +4,11 @@
 <article class="pcard {% if not p.in_stock %}is-out{% endif %}"
          x-data="{ p: {sku:'{{ p.sku }}', name:'{{ p.name|escapejs }}', price:{{ p.price|unlocalize }}, unit:'{{ p.get_unit_display|escapejs }}', image:'{{ im.url }}', url:'{{ p.get_absolute_url }}', in_stock:{{ p.in_stock|yesno:'true,false' }}} }">
   <div class="pcard-media">
-    <div class="absolute left-2.5 top-2.5 z-10 flex flex-col items-start gap-1">
-      {% if p.discount_percent %}<span class="rounded-lg px-2 py-0.5 text-[11px] font-extrabold text-white" style="background: var(--danger)">−{{ p.discount_percent }}%</span>{% endif %}
-      {% if p.is_featured %}<span class="rounded-lg bg-ink px-2 py-0.5 text-[11px] font-extrabold text-white">{% trans "ХИТ" %}</span>{% endif %}
-      {% if p.is_new and not p.is_featured %}<span class="rounded-lg px-2 py-0.5 text-[11px] font-extrabold text-white" style="background: var(--accent)">NEW</span>{% endif %}
+    {# Бейджи в углу: свой отступ + тень, чтобы два бейджа не слипались и читались на любой картинке #}
+    <div class="absolute left-2.5 top-2.5 z-10 flex flex-col items-start gap-2">
+      {% if p.discount_percent %}<span class="rounded-lg px-2 py-0.5 text-[11px] font-extrabold text-white shadow-sm" style="background: var(--danger)">−{{ p.discount_percent }}%</span>{% endif %}
+      {% if p.is_featured %}<span class="rounded-lg px-2 py-0.5 text-[11px] font-extrabold shadow-sm" style="background:#F59E0B; color:#1A1206">{% trans "ХИТ" %}</span>{% endif %}
+      {% if p.is_new and not p.is_featured %}<span class="rounded-lg px-2 py-0.5 text-[11px] font-extrabold text-white shadow-sm" style="background: var(--accent)">NEW</span>{% endif %}
     </div>
     <button type="button" @click.prevent="$store.fav.toggle(p)" :class="$store.fav.has(p.sku) && 'is-fav'"
             class="fav-btn absolute right-2.5 top-2.5 z-10" aria-label="{% trans 'В избранное' %}">
