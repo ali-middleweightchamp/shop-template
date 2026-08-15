@@ -23,4 +23,9 @@ class ShopSettingsTR(TranslationOptions):
         "trust2_text",
         "trust3_text",
         "trust4_text",
+        "faq1_q", "faq1_a",
+        "faq2_q", "faq2_a",
+        "faq3_q", "faq3_a",
+        "faq4_q", "faq4_a",
+        "faq5_q", "faq5_a",
     )

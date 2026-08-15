@@ -561,6 +561,62 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   .tg-fab:hover { filter: brightness(1.05); transform: translateY(-2px); }
 
+  /* ---------- Анимированная строка (rotate-words) ---------- */
+  .rotate-words {
+    display: inline-block;
+    height: 1.4em;
+    line-height: 1.4em;
+    overflow: hidden;
+    vertical-align: bottom;
+    text-align: left;
+    color: var(--accent);
+    font-weight: 800;
+  }
+  .rotate-words > span {
+    display: block;
+    animation: rotateWords 9s cubic-bezier(.22, 1, .36, 1) infinite;
+  }
+  @keyframes rotateWords {
+    0%, 17%   { transform: translateY(0); }
+    22%, 40%  { transform: translateY(-1.4em); }
+    45%, 62%  { transform: translateY(-2.8em); }
+    67%, 84%  { transform: translateY(-4.2em); }
+    89%, 100% { transform: translateY(-5.6em); }
+  }
+
+  /* ---------- Блок «Как заказать» ---------- */
+  .howto-step {
+    @apply relative rounded-2xl border border-line bg-surface p-5 text-center;
+    box-shadow: var(--shadow-card);
+    animation: howtoIn .5s ease both;
+    animation-delay: var(--d, 0ms);
+  }
+  .howto-num {
+    @apply absolute right-4 top-4 grid h-7 w-7 place-items-center rounded-full text-xs font-extrabold;
+    color: var(--on-accent);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  }
+  .howto-ico {
+    @apply mx-auto mb-3 h-10 w-10;
+    color: var(--accent);
+  }
+  .howto-title { @apply font-display text-base font-extrabold text-ink; }
+  .howto-text { @apply mt-1.5 text-sm leading-relaxed text-muted; }
+  @keyframes howtoIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- FAQ-аккордеон ---------- */
+  .faq-item { @apply overflow-hidden rounded-2xl border border-line bg-surface; box-shadow: var(--shadow-card); }
+  .faq-q {
+    @apply flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-bold text-ink sm:text-base;
+    transition: color .15s ease;
+  }
+  .faq-q:hover { color: var(--accent); }
+  .faq-chev { color: var(--accent); }
+  .faq-a { @apply px-5 pb-4 text-sm leading-relaxed text-muted; }
+
   /* ---------- Инфо-полоса над шапкой ---------- */
   .topbar {
     border-bottom: 1px solid var(--border-input);
@@ -646,7 +702,11 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .msg-btn:hover { filter: brightness(.96); }
   .msg-btn:disabled { opacity: .45; cursor: not-allowed; }
 }
-@media (prefers-reduced-motion: reduce) { .hero-anim { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim, .rotate-words > span, .howto-step { animation: none; }
+  /* Без анимации показываем первую фразу */
+  .rotate-words > span { transform: none; }
+}
 
 /* ================================================================== *
  * Панель продавца (/panel/)

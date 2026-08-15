@@ -123,6 +123,15 @@ class ShopSettingsForm(forms.ModelForm):
             "trust2_icon", "trust2_text_ru", "trust2_text_uz",
             "trust3_icon", "trust3_text_ru", "trust3_text_uz",
             "trust4_icon", "trust4_text_ru", "trust4_text_uz",
+            # Как заказать
+            "howto_enabled",
+            # FAQ
+            "faq_enabled",
+            "faq1_q_ru", "faq1_q_uz", "faq1_a_ru", "faq1_a_uz",
+            "faq2_q_ru", "faq2_q_uz", "faq2_a_ru", "faq2_a_uz",
+            "faq3_q_ru", "faq3_q_uz", "faq3_a_ru", "faq3_a_uz",
+            "faq4_q_ru", "faq4_q_uz", "faq4_a_ru", "faq4_a_uz",
+            "faq5_q_ru", "faq5_q_uz", "faq5_a_ru", "faq5_a_uz",
         ]
         widgets = {
             "description_ru": forms.Textarea(attrs={"rows": 3}),
@@ -135,6 +144,12 @@ class ShopSettingsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["name_ru"].required = True
+        # Ответы FAQ — многострочные
+        for i in range(1, 6):
+            for lang in ("ru", "uz"):
+                fn = f"faq{i}_a_{lang}"
+                if fn in self.fields:
+                    self.fields[fn].widget = forms.Textarea(attrs={"rows": 2})
         for name, field in self.fields.items():
             if isinstance(field.widget, forms.CheckboxInput):
                 continue
