@@ -311,10 +311,14 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   @media (min-width: 640px) {
     .banner-slide--gradient { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 30rem; }
   }
-  /* Картинка-баннер: во всю ширину, высота = ширина ÷ пропорция формата.
-     Высоту НЕ ограничиваем — иначе object-cover режет картинку сверху/снизу.
-     Хотите ниже — выберите более широкий формат (4:1 «полоса»). */
+  /* Картинка-баннер: высота = ширина ÷ пропорция формата.
+     Высоту НЕ ограничиваем — иначе object-cover режет картинку сверху/снизу. */
   .banner-slide--image { aspect-ratio: var(--banner-aspect, 3 / 1); }
+  /* На десктопе баннер комфортной ширины (как раньше, ~1200px), по центру —
+     не на все 1440, чтобы не был слишком большим по высоте. Без обрезки. */
+  @media (min-width: 1024px) {
+    .banner { max-width: 75rem; margin-inline: auto; }
+  }
   .banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   /* Текст-оверлей одинаково поверх картинки и градиента. */
   .banner-text {
