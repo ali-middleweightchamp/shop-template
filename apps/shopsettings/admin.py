@@ -41,7 +41,6 @@ class ShopSettingsAdmin(TranslationAdmin):
                     "order_message_footer",
                     "show_prices",
                     "banners_enabled",
-                    "banner_format",
                     "telegram_float_enabled",
                 )
             },

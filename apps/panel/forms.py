@@ -106,7 +106,7 @@ class ShopSettingsForm(forms.ModelForm):
             "instagram_url", "telegram_channel_url",
             # Витрина
             "currency_label_ru", "currency_label_uz",
-            "min_order_amount", "show_prices", "banners_enabled", "banner_format",
+            "min_order_amount", "show_prices", "banners_enabled",
             "order_message_header_ru", "order_message_header_uz",
             "order_message_footer_ru", "order_message_footer_uz",
             # Инфо-полоса сверху
