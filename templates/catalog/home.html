@@ -31,9 +31,11 @@
       <h2 class="font-display text-2xl font-extrabold text-ink">{% trans "Категории" %}</h2>
       <a href="{% url 'catalog:catalog' %}" class="text-sm font-bold text-accent hover:underline">{% trans "Смотреть все" %} →</a>
     </div>
-    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-      {% for c in categories %}
-        <a href="{{ c.get_absolute_url }}" class="ccard group">
+    {# Слайдер категорий: горизонтальная лента + стрелки на десктопе #}
+    <div class="relative" x-data>
+      <div class="no-scrollbar flex snap-x scroll-smooth gap-3 overflow-x-auto pb-1" x-ref="cattrack">
+        {% for c in categories %}
+        <a href="{{ c.get_absolute_url }}" class="ccard ccard-slide group snap-start">
           {% if c.image %}
             {% thumbnail c.image "400x300" crop="smart" as im %}
             <img src="{{ im.url }}" alt="{{ c.name }}" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105">
@@ -46,7 +48,14 @@
             <div class="nums mt-0.5 text-xs text-white/70">{% blocktrans count n=c.num %}{{ n }} товар{% plural %}{{ n }} товаров{% endblocktrans %}</div>
           </div>
         </a>
-      {% endfor %}
+        {% endfor %}
+      </div>
+      <button type="button" class="cat-arrow left" @click="$refs.cattrack.scrollBy({ left: -360, behavior: 'smooth' })" aria-label="{% trans 'Назад' %}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <button type="button" class="cat-arrow right" @click="$refs.cattrack.scrollBy({ left: 360, behavior: 'smooth' })" aria-label="{% trans 'Вперёд' %}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
     </div>
   </section>
   {% endif %}
