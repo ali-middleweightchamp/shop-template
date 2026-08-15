@@ -475,6 +475,9 @@ def product_edit(request, pk=None):
                 product.image = imaging.process_image(
                     main_file, ratio=(1, 1), width=1000, name=(product.sku or "product")
                 )
+            elif request.POST.get("image_clear") and product.image:
+                # Пользователь убрал фото — удаляем файл и оставляем поле пустым
+                product.image.delete(save=False)
             product.save()
 
             # Галерея: удаление отмеченных и обновление порядка
@@ -557,6 +560,9 @@ def category_edit(request, pk=None):
                 cat.image = imaging.process_image(
                     img_file, ratio=(4, 3), width=800, name=(slugify(cat.name) or "category")
                 )
+            elif request.POST.get("image_clear") and cat.image:
+                # Пользователь убрал картинку — удаляем файл и оставляем поле пустым
+                cat.image.delete(save=False)
             try:
                 cat.full_clean(exclude=["slug", "image"])
             except ValidationError as e:
