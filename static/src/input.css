@@ -352,7 +352,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* --- Страница товара --- */
   .pd-imgcard {
-    @apply flex aspect-square items-center justify-center overflow-hidden rounded-card border border-line bg-surface p-2 sm:p-3;
+    @apply relative flex aspect-square items-center justify-center overflow-hidden rounded-card border border-line bg-surface p-2 sm:p-3;
   }
   .pd-imgcard img { @apply h-full w-full object-contain; }
   .pd-iconbtn {
@@ -387,7 +387,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   .pcard.is-out { opacity: .6; }
 
-  .pcard-media { @apply relative flex aspect-square items-center justify-center overflow-hidden bg-sunken p-4; }
+  .pcard-media { @apply relative flex aspect-square items-center justify-center overflow-hidden bg-sunken p-3; }
   .pcard-media img { @apply h-full w-full object-contain; transition: transform .45s cubic-bezier(.4,0,.2,1); }
   .pcard:hover .pcard-media img { transform: scale(1.06); }
 
@@ -396,7 +396,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .pbadge-hit  { @apply pbadge top-2.5 text-white; background: var(--text); }
 
   .pcard-add {
-    @apply mt-2 w-full rounded-lg py-2 text-sm font-bold transition;
+    @apply mt-2 w-full rounded-xl py-2.5 text-sm font-bold transition;
     color: var(--on-accent);
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--accent) 55%, transparent);
@@ -405,11 +405,11 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* Счётчик внутри карточки (после добавления) */
   .qty-row {
-    @apply mt-2 flex w-full items-center justify-between rounded-lg p-1;
+    @apply mt-2 flex w-full items-center justify-between rounded-xl p-1;
     border: 1px solid var(--accent);
   }
   .qty-row button {
-    @apply flex h-8 w-10 items-center justify-center rounded-md text-lg font-extrabold;
+    @apply flex h-8 w-10 items-center justify-center rounded-lg text-lg font-extrabold;
     color: var(--on-accent);
     background: var(--accent);
   }
