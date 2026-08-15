@@ -50,6 +50,20 @@ class ShopSettingsAdmin(TranslationAdmin):
             _("Инфо-полоса сверху"),
             {"fields": ("topbar_enabled", "topbar_location", "delivery_note")},
         ),
+        (_("Как заказать"), {"fields": ("howto_enabled",)}),
+        (
+            _("FAQ"),
+            {
+                "fields": (
+                    "faq_enabled",
+                    "faq1_q", "faq1_a",
+                    "faq2_q", "faq2_a",
+                    "faq3_q", "faq3_a",
+                    "faq4_q", "faq4_a",
+                    "faq5_q", "faq5_a",
+                )
+            },
+        ),
         (
             _("Блок «О нас»"),
             {"fields": ("about_enabled", "about_title", "about_text", "about_image")},

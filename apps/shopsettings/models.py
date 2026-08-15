@@ -207,6 +207,33 @@ class ShopSettings(models.Model):
                 out.append({"icon": getattr(self, f"trust{i}_icon", ""), "text": text})
         return out
 
+    # --- Блок «Как заказать» (3 шага, универсальный флоу шаблона) ---
+    howto_enabled = models.BooleanField(_("Показывать блок «Как заказать»"), default=False)
+
+    # --- FAQ (часто задаваемые вопросы) ---
+    faq_enabled = models.BooleanField(_("Показывать FAQ"), default=False)
+    faq1_q = models.CharField(_("Вопрос 1"), max_length=200, blank=True, default="")
+    faq1_a = models.TextField(_("Ответ 1"), blank=True, default="")
+    faq2_q = models.CharField(_("Вопрос 2"), max_length=200, blank=True, default="")
+    faq2_a = models.TextField(_("Ответ 2"), blank=True, default="")
+    faq3_q = models.CharField(_("Вопрос 3"), max_length=200, blank=True, default="")
+    faq3_a = models.TextField(_("Ответ 3"), blank=True, default="")
+    faq4_q = models.CharField(_("Вопрос 4"), max_length=200, blank=True, default="")
+    faq4_a = models.TextField(_("Ответ 4"), blank=True, default="")
+    faq5_q = models.CharField(_("Вопрос 5"), max_length=200, blank=True, default="")
+    faq5_a = models.TextField(_("Ответ 5"), blank=True, default="")
+
+    @property
+    def faq_items(self):
+        """Заполненные пары вопрос-ответ: [{q, a}, …]."""
+        out = []
+        for i in (1, 2, 3, 4, 5):
+            q = getattr(self, f"faq{i}_q", "")
+            a = getattr(self, f"faq{i}_a", "")
+            if q and a:
+                out.append({"q": q, "a": a})
+        return out
+
     class Meta:
         verbose_name = _("Настройки магазина")
         verbose_name_plural = _("Настройки магазина")

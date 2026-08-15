@@ -245,6 +245,55 @@
           </div>
         </div>
       </div>
+
+      {# Как заказать #}
+      <div class="pform-block">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <h2 class="font-display text-lg font-extrabold text-ink">{% trans "Блок «Как заказать»" %}</h2>
+            <p class="phint mt-1">{% trans "3 шага: собрать корзину → «Заказать» → заказ уходит в Telegram. Текст готовый, только включите." %}</p>
+          </div>
+          <label class="flex shrink-0 cursor-pointer items-center gap-3" x-data="{ on: {{ form.howto_enabled.value|yesno:'true,false' }} }">
+            <input type="checkbox" name="howto_enabled" x-model="on" class="sr-only">
+            <span class="pswitch" :class="on && 'on'" @click="on=!on"><span></span></span>
+          </label>
+        </div>
+      </div>
+
+      {# FAQ #}
+      <div class="pform-block">
+        <div class="mb-2 flex items-center justify-between gap-3">
+          <h2 class="font-display text-lg font-extrabold text-ink">{% trans "Частые вопросы (FAQ)" %}</h2>
+          <label class="flex cursor-pointer items-center gap-3" x-data="{ on: {{ form.faq_enabled.value|yesno:'true,false' }} }">
+            <input type="checkbox" name="faq_enabled" x-model="on" class="sr-only">
+            <span class="pswitch" :class="on && 'on'" @click="on=!on"><span></span></span>
+            <span class="text-sm font-bold text-ink">{% trans "Показывать" %}</span>
+          </label>
+        </div>
+        <p class="phint mb-4">{% trans "До 5 пар «вопрос — ответ»: как оформить заказ, доставка, оплата и т.п. Пустые не показываются." %}</p>
+        <div class="space-y-3">
+          <div class="space-y-2 rounded-xl border border-line p-3">
+            <div class="grid gap-2 sm:grid-cols-2"><div><label class="plabel">{% trans "Вопрос 1" %} (RU)</label>{{ form.faq1_q_ru }}</div><div><label class="plabel">(UZ)</label>{{ form.faq1_q_uz }}</div></div>
+            <div class="grid gap-2 sm:grid-cols-2"><div><label class="plabel">{% trans "Ответ" %} (RU)</label>{{ form.faq1_a_ru }}</div><div><label class="plabel">(UZ)</label>{{ form.faq1_a_uz }}</div></div>
+          </div>
+          <div class="space-y-2 rounded-xl border border-line p-3">
+            <div class="grid gap-2 sm:grid-cols-2"><div><label class="plabel">{% trans "Вопрос 2" %} (RU)</label>{{ form.faq2_q_ru }}</div><div><label class="plabel">(UZ)</label>{{ form.faq2_q_uz }}</div></div>
+            <div class="grid gap-2 sm:grid-cols-2"><div><label class="plabel">{% trans "Ответ" %} (RU)</label>{{ form.faq2_a_ru }}</div><div><label class="plabel">(UZ)</label>{{ form.faq2_a_uz }}</div></div>
+          </div>
+          <div class="space-y-2 rounded-xl border border-line p-3">
+            <div class="grid gap-2 sm:grid-cols-2"><div><label class="plabel">{% trans "Вопрос 3" %} (RU)</label>{{ form.faq3_q_ru }}</div><div><label class="plabel">(UZ)</label>{{ form.faq3_q_uz }}</div></div>
+            <div class="grid gap-2 sm:grid-cols-2"><div><label class="plabel">{% trans "Ответ" %} (RU)</label>{{ form.faq3_a_ru }}</div><div><label class="plabel">(UZ)</label>{{ form.faq3_a_uz }}</div></div>
+          </div>
+          <div class="space-y-2 rounded-xl border border-line p-3">
+            <div class="grid gap-2 sm:grid-cols-2"><div><label class="plabel">{% trans "Вопрос 4" %} (RU)</label>{{ form.faq4_q_ru }}</div><div><label class="plabel">(UZ)</label>{{ form.faq4_q_uz }}</div></div>
+            <div class="grid gap-2 sm:grid-cols-2"><div><label class="plabel">{% trans "Ответ" %} (RU)</label>{{ form.faq4_a_ru }}</div><div><label class="plabel">(UZ)</label>{{ form.faq4_a_uz }}</div></div>
+          </div>
+          <div class="space-y-2 rounded-xl border border-line p-3">
+            <div class="grid gap-2 sm:grid-cols-2"><div><label class="plabel">{% trans "Вопрос 5" %} (RU)</label>{{ form.faq5_q_ru }}</div><div><label class="plabel">(UZ)</label>{{ form.faq5_q_uz }}</div></div>
+            <div class="grid gap-2 sm:grid-cols-2"><div><label class="plabel">{% trans "Ответ" %} (RU)</label>{{ form.faq5_a_ru }}</div><div><label class="plabel">(UZ)</label>{{ form.faq5_a_uz }}</div></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     {# ---------- Живое превью шапки ---------- #}
