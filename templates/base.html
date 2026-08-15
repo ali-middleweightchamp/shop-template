@@ -143,7 +143,7 @@
           <span class="font-display text-lg font-extrabold text-white">{{ shop.name }}</span>
         </div>
         {% if shop.description %}
-          <p class="mt-4 max-w-xs text-sm leading-relaxed" style="color:#94a3b8">{{ shop.description|striptags|truncatewords:26 }}</p>
+          <p class="mt-4 max-w-xs text-sm leading-relaxed" style="color:rgba(255,255,255,.75)">{{ shop.description|striptags|truncatewords:26 }}</p>
         {% endif %}
         <div class="mt-5 flex flex-wrap gap-2.5">
           {% if shop.telegram_username %}
@@ -195,7 +195,7 @@
       </div>
 
       <div class="text-sm">
-        <div class="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em]" style="color:#64748b">{% trans "Навигация" %}</div>
+        <div class="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em]" style="color:rgba(255,255,255,.7)">{% trans "Навигация" %}</div>
         <div class="flex flex-col gap-2">
           <a href="{% url 'catalog:catalog' %}" class="hover:text-white">{% trans "Каталог" %}</a>
           <a href="{% url 'catalog:contacts' %}" class="hover:text-white">{% trans "Контакты" %}</a>
@@ -206,7 +206,7 @@
       на полную карту. Легче второго живого iframe в футере.{% endcomment %}
       {% if shop.address %}
       <div class="text-sm">
-        <div class="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em]" style="color:#64748b">{% trans "Мы на карте" %}</div>
+        <div class="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em]" style="color:rgba(255,255,255,.7)">{% trans "Мы на карте" %}</div>
         <a href="{% if shop.map_link %}{{ shop.map_link }}{% else %}https://yandex.ru/maps/?text={{ shop.address|urlencode }}{% endif %}"
            target="_blank" rel="noopener" class="group relative block overflow-hidden rounded-xl border border-white/10">
           <iframe src="https://yandex.ru/map-widget/v1/?text={{ shop.address|urlencode }}&z=15"
@@ -216,7 +216,7 @@
       </div>
       {% endif %}
     </div>
-    <div class="border-t border-white/10 py-4 text-center text-xs" style="color:#64748b">
+    <div class="border-t border-white/10 py-4 text-center text-xs" style="color:rgba(255,255,255,.7)">
       © {% now "Y" %} {{ shop.name }}
     </div>
   </footer>
