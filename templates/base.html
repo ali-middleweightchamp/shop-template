@@ -63,11 +63,54 @@
         <span class="hidden font-display text-lg font-extrabold tracking-tight text-ink lg:block">{{ shop.name }}</span>
       </a>
 
-      {# Кнопка «Каталог» с бургером — сразу после логотипа, только на десктопе #}
+      {# Кнопка «Каталог» с бургером + выпадающее мега-меню категорий (десктоп) #}
+      {% if catalog_menu %}
+      <div class="relative hidden md:block" x-data="{ open: false, active: {{ catalog_menu.0.id }} }"
+           @click.outside="open = false" @keydown.escape.window="open = false">
+        <button type="button" class="cat-btn" @click="open = !open" :aria-expanded="open ? 'true' : 'false'">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          {% trans "Каталог" %}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="transition-transform" :class="open && 'rotate-180'"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div x-show="open" x-cloak x-transition class="cat-mega">
+          {# Слева — родительские категории #}
+          <div class="cat-mega-side">
+            {% for c in catalog_menu %}
+            <a href="{{ c.get_absolute_url }}" class="cat-mega-parent" :class="active === {{ c.id }} && 'is-active'" @mouseenter="active = {{ c.id }}">
+              <span class="cat-mega-ico">{% include "catalog/partials/_cat_icon.html" with name=c.name_ru size="h-5 w-5" %}</span>
+              <span class="min-w-0 flex-1 truncate">{{ c.name }}</span>
+              {% if c.children.all %}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="shrink-0 opacity-60"><path d="m9 6 6 6-6 6"/></svg>{% endif %}
+            </a>
+            {% endfor %}
+          </div>
+          {# Справа — подкатегории активной категории #}
+          <div class="cat-mega-main">
+            {% for c in catalog_menu %}
+            <div x-show="active === {{ c.id }}">
+              <div class="cat-mega-head">
+                <span class="font-display text-base font-extrabold text-ink">{{ c.name }}</span>
+                <a href="{{ c.get_absolute_url }}" class="text-xs font-bold text-accent hover:underline">{% trans "Смотреть все" %} →</a>
+              </div>
+              {% if c.children.all %}
+              <div class="cat-mega-cols">
+                {% for ch in c.children.all %}
+                <a href="{{ ch.get_absolute_url }}" class="cat-mega-child">{{ ch.name }}</a>
+                {% endfor %}
+              </div>
+              {% else %}
+              <a href="{{ c.get_absolute_url }}" class="cat-mega-child">{% trans "Все товары категории" %} →</a>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% else %}
       <a href="{% url 'catalog:catalog' %}" class="cat-btn hidden md:inline-flex">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
         {% trans "Каталог" %}
       </a>
+      {% endif %}
 
       {# Инлайн-поиск — только на десктопе; на мобиле он отдельной строкой ниже #}
       <form action="{% url 'catalog:search' %}" method="get" class="search-pill relative hidden min-w-0 flex-1 md:block">

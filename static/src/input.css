@@ -204,6 +204,11 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .cat-tile:hover .cat-tile-icon { transform: translateY(-2px); }
 
   /* Переключатель темы: показываем нужную иконку */
+  /* Тумблер темы: тонкий контур + мягкая тень, чтобы кнопка не сливалась (особенно noir) */
+  .theme-toggle {
+    border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+  }
   .theme-toggle .i-sun { display: none; }
   [data-theme="dark"] .theme-toggle .i-sun { display: block; }
   [data-theme="dark"] .theme-toggle .i-moon { display: none; }
@@ -556,6 +561,52 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   .tg-fab:hover { filter: brightness(1.05); transform: translateY(-2px); }
 
+  /* ---------- Пагинация: номера страниц ---------- */
+  .pagination { @apply mt-8 flex flex-wrap items-center justify-center gap-1.5; }
+  .pg-item {
+    @apply inline-flex h-10 min-w-[2.5rem] items-center justify-center rounded-xl border border-transparent px-3 text-sm font-bold text-ink;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+  }
+  .pg-item:hover { background: var(--surface-sunken); }
+  .pg-item.is-current {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+  .pg-gap { @apply inline-flex h-10 min-w-[2rem] items-center justify-center text-sm font-bold text-muted; }
+  .pg-nav {
+    @apply inline-flex h-10 w-10 items-center justify-center rounded-xl text-muted;
+    transition: background-color .15s ease, color .15s ease;
+  }
+  .pg-nav:hover { background: var(--surface-sunken); color: var(--text); }
+  .pg-nav.is-disabled { opacity: .3; pointer-events: none; }
+
+  /* ---------- Мега-меню «Каталог» в шапке ---------- */
+  .cat-mega {
+    @apply absolute left-0 top-full z-50 mt-2 flex overflow-hidden rounded-2xl border border-line bg-surface;
+    width: min(880px, 92vw);
+    box-shadow: 0 26px 64px -22px rgba(0, 0, 0, .38);
+  }
+  .cat-mega-side { @apply w-64 shrink-0 border-r border-line p-2; max-height: 72vh; overflow-y: auto; }
+  .cat-mega-parent {
+    @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink;
+    transition: background-color .15s ease, color .15s ease;
+  }
+  .cat-mega-parent:hover, .cat-mega-parent.is-active {
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    color: var(--accent);
+  }
+  .cat-mega-ico {
+    @apply grid h-8 w-8 shrink-0 place-items-center rounded-lg;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+  .cat-mega-main { @apply flex-1 p-5; max-height: 72vh; overflow-y: auto; }
+  .cat-mega-head { @apply mb-3 flex items-center justify-between gap-3; }
+  .cat-mega-cols { @apply grid grid-cols-2 gap-x-6 gap-y-1; }
+  .cat-mega-child { @apply block truncate rounded-lg py-1.5 text-sm text-muted; transition: color .15s ease; }
+  .cat-mega-child:hover { color: var(--accent); }
+
   /* Круглый счётчик в корзине */
   .cart-step { @apply inline-flex items-center gap-3; }
   .cart-step > span { @apply nums min-w-[1.5rem] text-center text-base font-extrabold text-ink; }
@@ -621,9 +672,14 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .pfield { @apply w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted focus:border-accent; }
 
   /* Переключатель (наличие / показ на сайте) */
-  .pswitch { @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition; background: var(--border-input); }
-  .pswitch.on { background: var(--accent); }
-  .pswitch span { @apply absolute left-0.5 h-5 w-5 rounded-full bg-white transition; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+  .pswitch {
+    @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition;
+    background: var(--border-input);
+    /* Контур, чтобы дорожка читалась в noir (тёмное на тёмном / белое на белом) */
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 16%, transparent);
+  }
+  .pswitch.on { background: var(--accent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 8%, transparent); }
+  .pswitch span { @apply absolute left-0.5 h-5 w-5 rounded-full bg-white transition; box-shadow: 0 1px 3px rgba(0,0,0,.35); }
   .pswitch.on span { transform: translateX(20px); }
 
   /* Чип-полка (Хит / Новинка / Популярное) — кликабельный тумблер */
