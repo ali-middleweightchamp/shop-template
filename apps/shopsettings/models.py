@@ -111,34 +111,16 @@ class ShopSettings(models.Model):
         help_text=_("Hero-слайдер вверху главной. По умолчанию выключен."),
     )
 
-    class BannerFormat(models.TextChoices):
-        STRIP = "strip", _("Полоса (4:1) — самый низкий")
-        WIDE = "wide", _("Широкий (3:1)")
-        CLASSIC = "classic", _("Классический (12:5)")
-        HALF = "half", _("Средний (2:1)")
-        MOBILE = "mobile", _("Высокий (16:9)")
-
-    banner_format = models.CharField(
-        _("Формат баннеров"),
-        max_length=16,
-        choices=BannerFormat.choices,
-        default=BannerFormat.WIDE,
-        help_text=_("Единый размер всех баннеров. Делайте картинки под эту пропорцию — без обрезки. Чем шире формат, тем ниже баннер."),
-    )
-
-    # Пропорции под каждый формат: для кропа при загрузке и для CSS aspect-ratio.
-    _BANNER_RATIOS = {"strip": (4, 1), "wide": (3, 1), "classic": (12, 5), "half": (2, 1), "mobile": (16, 9)}
-
+    # Все баннеры — единый выверенный формат 3:1 (без выбора в панели).
     @property
     def banner_ratio(self):
-        """Кортеж (w, h) для обрезки изображения баннера."""
-        return self._BANNER_RATIOS.get(self.banner_format, (3, 1))
+        """Кортеж (w, h) пропорции баннера."""
+        return (3, 1)
 
     @property
     def banner_aspect_css(self):
-        """Строка для CSS aspect-ratio, напр. '3 / 1'."""
-        w, h = self.banner_ratio
-        return f"{w} / {h}"
+        """Строка для CSS aspect-ratio."""
+        return "3 / 1"
 
     # --- Верхняя инфо-полоса (top bar) над шапкой ---
     topbar_enabled = models.BooleanField(

@@ -150,8 +150,9 @@
             </label>
           </div>
           <div class="sm:col-span-2">
-            <label class="plabel">{% trans "Формат баннеров" %}</label>{{ form.banner_format }}
-            <div class="phint">{% trans "Все слайды одного размера по этой пропорции. Делайте баннеры под неё — тогда без обрезки." %}</div>
+            <div class="rounded-xl border border-line bg-sunken px-4 py-3 text-sm text-muted">
+              {% trans "Размер баннера: делайте картинку в пропорции 3:1, рекомендуем 1500×500px (или 1600×533). Важное — по центру: тонкие края сверху/снизу могут слегка обрезаться на десктопе. Баннеры добавляются в разделе «Баннеры»." %}
+            </div>
           </div>
           <div class="sm:col-span-2"><label class="plabel">{% trans "Приветствие в заказе" %} (RU)</label>{{ form.order_message_header_ru }}</div>
           <div class="sm:col-span-2"><label class="plabel">{% trans "Приветствие в заказе" %} (UZ)</label>{{ form.order_message_header_uz }}</div>
