@@ -20,8 +20,13 @@ class ShopSettings(models.Model):
     CACHE_KEY = "shop_settings"
 
     class Theme(models.TextChoices):
-        EMERALD = "emerald", _("Изумруд")
-        # Позже сюда добавятся другие пресеты без переделки
+        NOIR = "noir", _("Noir (чёрная, по умолчанию)")
+        EMERALD = "emerald", _("Emerald (зелёная)")
+        OCEAN = "ocean", _("Ocean (синяя)")
+        VIOLET = "violet", _("Violet (фиолетовая)")
+        ROSE = "rose", _("Rose (розовая)")
+        SUNSET = "sunset", _("Sunset (тёплая, с засечками)")
+        # Новый пресет = блок в themes.css + строка здесь, без переделки логики
 
     # --- Бренд ---
     name = models.CharField(_("Название магазина"), max_length=255, default="Магазин")
@@ -35,7 +40,7 @@ class ShopSettings(models.Model):
         _("Тема оформления"),
         max_length=32,
         choices=Theme.choices,
-        default=Theme.EMERALD,
+        default=Theme.NOIR,
         help_text=_("Цветовой пресет витрины (светлая/тёмная переключаются на сайте)"),
     )
     primary_color = models.CharField(
@@ -105,6 +110,33 @@ class ShopSettings(models.Model):
         default=False,
         help_text=_("Hero-слайдер вверху главной. По умолчанию выключен."),
     )
+
+    class BannerFormat(models.TextChoices):
+        WIDE = "wide", _("Широкий (3:1)")
+        CLASSIC = "classic", _("Классический (12:5)")
+        MOBILE = "mobile", _("Высокий (16:9)")
+
+    banner_format = models.CharField(
+        _("Формат баннеров"),
+        max_length=16,
+        choices=BannerFormat.choices,
+        default=BannerFormat.WIDE,
+        help_text=_("Единый размер всех баннеров. Делайте картинки под эту пропорцию — без обрезки."),
+    )
+
+    # Пропорции под каждый формат: для кропа при загрузке и для CSS aspect-ratio.
+    _BANNER_RATIOS = {"wide": (3, 1), "classic": (12, 5), "mobile": (16, 9)}
+
+    @property
+    def banner_ratio(self):
+        """Кортеж (w, h) для обрезки изображения баннера."""
+        return self._BANNER_RATIOS.get(self.banner_format, (3, 1))
+
+    @property
+    def banner_aspect_css(self):
+        """Строка для CSS aspect-ratio, напр. '3 / 1'."""
+        w, h = self.banner_ratio
+        return f"{w} / {h}"
 
     class Meta:
         verbose_name = _("Настройки магазина")

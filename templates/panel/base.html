@@ -1,5 +1,5 @@
 {% load static i18n %}<!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}" data-preset="{{ shop.theme|default:'emerald' }}"{% if shop.primary_color %} style="--accent: {{ shop.primary_color }}; --accent-hover: {{ shop.primary_color }}; --accent-2: color-mix(in srgb, {{ shop.primary_color }} 78%, #ffffff);"{% endif %}>
+<html lang="{{ LANGUAGE_CODE }}" data-preset="{{ shop.theme|default:'noir' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,8 +8,10 @@
   <title>{% block title %}Панель{% endblock %} · {{ shop.name }}</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="{% static 'css/app.css' %}?v={{ asset_version }}">
+  {% if shop.primary_color %}<style>[data-theme="light"]{--accent:{{ shop.primary_color }};--accent-hover:{{ shop.primary_color }};--accent-2:color-mix(in srgb,{{ shop.primary_color }} 78%,#ffffff);}</style>{% endif %}
   <script>function toggleTheme(){var h=document.documentElement,n=h.getAttribute("data-theme")==="dark"?"light":"dark";h.setAttribute("data-theme",n);try{localStorage.setItem("theme",n);}catch(e){}}</script>
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  {# Alpine self-hosted (не CDN): быстрее на слабом мобильном интернете #}
+  <script defer src="{% static 'js/alpine.min.js' %}?v={{ asset_version }}"></script>
 </head>
 <body class="bg-bg" x-data="{ nav: false }">
 <div class="flex min-h-screen">

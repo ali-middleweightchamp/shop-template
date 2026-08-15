@@ -76,7 +76,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 @layer base {
   html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body { @apply bg-bg text-ink font-sans antialiased; }
-  h1, h2, h3 { font-family: "Onest", "Manrope", system-ui, sans-serif; }
+  h1, h2, h3 { font-family: var(--font-display); }
 
   /* Плавная смена цвета у ссылок/иконок в шапке и футере */
   .site-header a, .site-footer a { transition: color .16s ease, background-color .16s ease; }
@@ -154,7 +154,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
 
   /* Чипы категорий — акцент только на активном */
-  .chip { @apply inline-flex min-h-[44px] items-center whitespace-nowrap rounded-full border px-4 text-sm font-semibold; transition: border-color .18s ease, background-color .18s ease, color .18s ease; }
+  .chip { @apply inline-flex min-h-[44px] items-center whitespace-nowrap rounded-pill border px-4 text-sm font-semibold; transition: border-color .18s ease, background-color .18s ease, color .18s ease; }
   .chip-on { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
   .chip-off { @apply border-line bg-surface text-ink; }
   .chip-off:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--border-input)); color: var(--accent); }
@@ -226,7 +226,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* Pill-поиск */
   .search-pill input {
-    @apply w-full rounded-full border border-transparent bg-sunken py-3 pl-11 pr-4 text-sm text-ink
+    @apply w-full rounded-control border border-transparent bg-sunken py-3 pl-11 pr-4 text-sm text-ink
            placeholder:text-muted;
   }
   .search-pill input:focus {
@@ -255,8 +255,10 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
     color: #fff;
   }
   .btn-white {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-base font-extrabold;
-    color: var(--accent);
+    @apply inline-flex items-center justify-center gap-2 rounded-control bg-white px-7 py-4 text-base font-extrabold;
+    /* Белая кнопка на баннере — текст всегда тёмный, чтобы читался при любой теме
+       (в тёмной теме акцент становится белым, поэтому var(--accent) тут нельзя). */
+    color: #18181B;
     box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.45);
     transition: transform .12s ease, box-shadow .12s ease;
   }
@@ -265,12 +267,22 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   /* --- Баннер-слайдер на главной --- */
   .banner { @apply relative overflow-hidden rounded-card; }
   .banner-track { @apply flex; transition: transform .5s cubic-bezier(.4,0,.2,1); }
-  .banner-slide {
-    @apply relative flex min-w-full flex-col justify-center overflow-hidden px-5 py-6 sm:px-12 sm:py-8;
-    height: 15rem; color: #fff;
+  .banner-slide { @apply relative min-w-full overflow-hidden; color: #fff; }
+  /* Цветной баннер без картинки: высоту задаёт формат. На мобилке — комфортный
+     min-height (текст дышит), с планшета — aspect-ratio выбранного формата. */
+  .banner-slide--gradient { min-height: 15rem; }
+  @media (min-width: 640px) {
+    .banner-slide--gradient { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 30rem; }
   }
-  @media (min-width: 640px) { .banner-slide { height: 16rem; } }
-  @media (min-width: 1024px) { .banner-slide { height: 18rem; } }
+  /* Картинка-баннер: ФИКСИРОВАННЫЙ размер по формату (одинаковый у всех слайдов,
+     карусель не прыгает). object-cover заполняет контейнер; если картинка сделана
+     под формат — обрезки нет. */
+  .banner-slide--image { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 30rem; }
+  .banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /* Текст-оверлей одинаково поверх картинки и градиента. */
+  .banner-text {
+    @apply absolute inset-y-0 left-0 z-10 flex w-full max-w-lg flex-col items-start justify-center px-5 py-6 sm:px-12 sm:py-8;
+  }
   .banner-slide h2, .banner-slide p { color: #fff; }
   /* Пометка «заглушка»: рамка справа, где потом будет реальная картинка баннера */
   .banner-ph {
@@ -322,7 +334,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* --- Богатая карточка товара --- */
   .pcard {
-    @apply relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface;
+    @apply relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface;
     box-shadow: 0 1px 2px rgba(15, 27, 45, 0.05);
     transition: transform .24s cubic-bezier(.4,0,.2,1), box-shadow .24s ease, border-color .24s ease;
   }
@@ -342,7 +354,8 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .pbadge-hit  { @apply pbadge top-2.5 text-white; background: var(--text); }
 
   .pcard-add {
-    @apply mt-2 w-full rounded-lg py-2 text-sm font-bold text-white transition;
+    @apply mt-2 w-full rounded-lg py-2 text-sm font-bold transition;
+    color: var(--on-accent);
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--accent) 55%, transparent);
   }
@@ -354,14 +367,15 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
     border: 1px solid var(--accent);
   }
   .qty-row button {
-    @apply flex h-8 w-10 items-center justify-center rounded-md text-lg font-extrabold text-white;
+    @apply flex h-8 w-10 items-center justify-center rounded-md text-lg font-extrabold;
+    color: var(--on-accent);
     background: var(--accent);
   }
   .qty-row .qv { @apply nums flex-1 text-center text-base font-extrabold text-ink; }
 
   /* --- Плитка категории с фото/градиентом --- */
   .ccard {
-    @apply relative flex aspect-[4/3] items-end overflow-hidden rounded-2xl;
+    @apply relative flex aspect-[4/3] items-end overflow-hidden rounded-card;
     box-shadow: 0 1px 2px rgba(15, 27, 45, 0.05);
     transition: transform .24s cubic-bezier(.4,0,.2,1), box-shadow .24s ease;
   }
@@ -374,6 +388,26 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   .ccard-fallback .ci { position: absolute; right: 10px; top: 10px; opacity: .5; color: #fff; }
   .ccard-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(15,27,45,.72)); }
+
+  /* --- Фрост-шапка: полупрозрачный фон + размытие того, что скроллится под ней --- */
+  .site-header {
+    background: color-mix(in srgb, var(--surface) 72%, transparent);
+    backdrop-filter: saturate(1.5) blur(16px);
+    -webkit-backdrop-filter: saturate(1.5) blur(16px);
+  }
+  /* Тонкий глянцевый блик сверху для «стеклянности» */
+  .site-header::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text) 12%, transparent), transparent);
+    pointer-events: none;
+  }
+  /* Фолбэк: если backdrop-filter не поддерживается — сплошной фон */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .site-header { background: var(--surface); }
+  }
 
   /* --- Тёмный подвал (как в референсе) --- */
   .site-footer { background: #111a2e; color: #cbd5e1; }
@@ -409,9 +443,38 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .fav-btn.is-fav { color: #fff; background: var(--danger); border-color: var(--danger); }
   .fav-btn.is-fav svg { fill: #fff; }
 
+  /* ---- Aurora: мягкое анимированное свечение (CSS-порт React-компонента,
+     без framer-motion). Лёгкий: один слой, анимируется только позиция
+     градиента, уважает prefers-reduced-motion. Кладётся точечно (hero,
+     пустые экраны), НЕ на всю страницу — бережём слабые телефоны. ---- */
+  .aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  /* Полноэкранный фон: фиксированный слой позади всего контента (не
+     перерисовывается при скролле). Прозрачность ниже, чтобы контент читался. */
+  .aurora-fixed { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; }
+  .aurora::after, .aurora-fixed::after {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background-image: repeating-linear-gradient(100deg,
+      var(--aurora-1, #FAFAFA) 0%, var(--aurora-1, #FAFAFA) 6%,
+      transparent 9%, transparent 12%,
+      var(--aurora-2, #A1A1AA) 16%, var(--aurora-2, #A1A1AA) 20%,
+      transparent 24%, transparent 28%,
+      var(--aurora-3, #52525B) 32%);
+    background-size: 200% 200%;
+    filter: blur(44px) saturate(1.15);
+    opacity: .45;
+    animation: aurora 55s linear infinite;
+    will-change: background-position;
+  }
+  .aurora-fixed::after { opacity: .28; filter: blur(60px) saturate(1.1); }
+  @keyframes aurora { from { background-position: 0% 50%; } to { background-position: 200% 50%; } }
+  @media (prefers-reduced-motion: reduce) { .aurora::after, .aurora-fixed::after { animation: none; } }
+
   /* Плавающая кнопка корзины (иконка + счётчик + «Корзина» + сумма) */
   .cart-fab {
-    @apply fixed bottom-5 right-5 z-40 flex items-center gap-3 rounded-2xl px-5 text-white;
+    @apply fixed bottom-5 right-5 z-40 flex items-center gap-3 rounded-2xl px-5;
+    color: var(--on-accent);
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     box-shadow: 0 16px 34px -12px color-mix(in srgb, var(--accent) 65%, transparent);
     padding-top: .7rem;
@@ -427,7 +490,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   .cart-step button:first-child { border: 1.5px solid var(--accent); color: var(--accent); }
   .cart-step button:first-child:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
-  .cart-step button:last-child { background: var(--accent); color: #fff; }
+  .cart-step button:last-child { background: var(--accent); color: var(--on-accent); }
   .cart-step button:last-child:hover { background: var(--accent-hover); }
 
   /* Кнопки мессенджеров (фирменные цвета TG/WA) */
@@ -452,10 +515,11 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .pnav:hover { background: rgba(255, 255, 255, .06); color: #fff; }
   .pnav.is-active {
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff;
+    /* Текст поверх акцента: в тёмном noir акцент светлый, поэтому берём контрастный --on-accent */
+    color: var(--on-accent);
     box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--accent) 60%, transparent);
   }
-  .pnav.is-active svg { color: #fff; }
+  .pnav.is-active svg { color: var(--on-accent); }
 
   /* Карточка-показатель на дашборде */
   .pstat { @apply rounded-2xl border border-line bg-surface p-6; box-shadow: 0 1px 2px rgba(15,27,45,.04); }
@@ -464,7 +528,7 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* Кнопка в панели */
   .pbtn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition; }
-  .pbtn-primary { @apply pbtn text-white; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--accent) 55%, transparent); }
+  .pbtn-primary { @apply pbtn; color: var(--on-accent); background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--accent) 55%, transparent); }
   .pbtn-primary:hover { filter: brightness(1.04); }
   .pbtn-ghost { @apply pbtn border border-line bg-surface text-ink; }
   .pbtn-ghost:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-input)); }

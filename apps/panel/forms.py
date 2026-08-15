@@ -106,14 +106,14 @@ class ShopSettingsForm(forms.ModelForm):
             "instagram_url", "telegram_channel_url",
             # Витрина
             "currency_label_ru", "currency_label_uz",
-            "min_order_amount", "show_prices", "banners_enabled",
+            "min_order_amount", "show_prices", "banners_enabled", "banner_format",
             "order_message_header_ru", "order_message_header_uz",
             "order_message_footer_ru", "order_message_footer_uz",
         ]
         widgets = {
             "description_ru": forms.Textarea(attrs={"rows": 3}),
             "description_uz": forms.Textarea(attrs={"rows": 3}),
-            "primary_color": forms.TextInput(attrs={"placeholder": "#0E7A5A"}),
+            "primary_color": forms.TextInput(attrs={"placeholder": "необязательно, напр. #2563EB"}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -146,10 +146,9 @@ class BannerForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["title_ru"].required = True
-        for name, field in self.fields.items():
+        # Всё необязательно: баннер может быть просто картинкой без текста.
+        for field in self.fields.values():
             if isinstance(field.widget, forms.CheckboxInput):
                 continue
-            if name != "title_ru":
-                field.required = False
+            field.required = False
             field.widget.attrs["class"] = "pfield"

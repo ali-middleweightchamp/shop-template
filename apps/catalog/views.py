@@ -47,19 +47,22 @@ SORTS = {"price": "price", "-price": "-price"}
 
 
 def _filter_sort(products, request):
-    """Поиск по каталогу (q) и сортировка (sort) из GET-параметров."""
+    """Поиск (q), фильтр «в наличии» (stock) и сортировка (sort) из GET."""
     q = (request.GET.get("q") or "").strip()
     if q:
         products = products.filter(search_blob__contains=q.lower())
+    in_stock = request.GET.get("stock") == "1"
+    if in_stock:
+        products = products.filter(in_stock=True)
     sort = request.GET.get("sort", "")
     if sort in SORTS:
         products = products.order_by(SORTS[sort])
-    return products, q, sort
+    return products, q, sort, in_stock
 
 
 def catalog(request):
     """Весь каталог: чипы категорий, поиск по каталогу, сортировка, сетка."""
-    products, q, sort = _filter_sort(_active_products(), request)
+    products, q, sort, in_stock = _filter_sort(_active_products(), request)
     page = Paginator(products, PER_PAGE).get_page(request.GET.get("page"))
     context = {
         "categories": _sidebar_categories(),
@@ -68,6 +71,7 @@ def catalog(request):
         "title": _("Весь каталог"),
         "q": q,
         "sort": sort,
+        "in_stock": in_stock,
     }
     return render(request, "catalog/catalog.html", context)
 
@@ -76,7 +80,7 @@ def category(request, slug):
     """Товары одной категории (включая подкатегории). Тот же шаблон, что и каталог."""
     cat = get_object_or_404(Category, slug=slug, is_active=True)
     products = _active_products().filter(Q(category=cat) | Q(category__parent=cat))
-    products, q, sort = _filter_sort(products, request)
+    products, q, sort, in_stock = _filter_sort(products, request)
     page = Paginator(products, PER_PAGE).get_page(request.GET.get("page"))
     context = {
         "categories": _sidebar_categories(),
@@ -86,6 +90,7 @@ def category(request, slug):
         "title": cat.name,
         "q": q,
         "sort": sort,
+        "in_stock": in_stock,
     }
     return render(request, "catalog/catalog.html", context)
 

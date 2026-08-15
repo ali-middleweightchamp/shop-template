@@ -1,15 +1,60 @@
 /* ================================================================== *
  * Темы оформления. Семантические переменные — единственный источник
- * цвета в проекте. Пресет задаётся на <html data-preset="...">,
- * светлая/тёмная — через data-theme (переключатель в шапке).
+ * цвета/формы/шрифта в проекте. Пресет задаётся на <html data-preset>,
+ * светлая/тёмная — через data-theme.
  *
- * Добавление нового пресета = ещё пара блоков, без переделки:
- *   [data-preset="ocean"]                    { светлая }
- *   [data-preset="ocean"][data-theme="dark"] { тёмная  }
+ * По умолчанию — Noir (чёрная). Остальные пресеты выбираются в
+ * настройках магазина (ShopSettings.theme).
+ * Новый пресет = ещё пара блоков, без переделки логики.
  * ================================================================== */
 
-/* ---------- Emerald · светлая (по умолчанию) ---------- */
+/* ---------- Noir · светлая (ПО УМОЛЧАНИЮ) ---------- */
 :root,
+[data-preset="noir"] {
+  --bg: #F4F4F5;
+  --surface: #FFFFFF;
+  --surface-sunken: #ECECEE;
+  --text: #0A0A0A;
+  --text-muted: #71717A;
+  --accent: #111111;
+  --accent-hover: #000000;
+  --accent-2: #3F3F46;
+  --on-accent: #FFFFFF;
+  --danger: #DC2626;
+  --border-input: #E4E4E7;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  /* Фон hero-баннера без картинки. Всегда тёмный — текст на нём белый,
+     поэтому НЕ завязан на инвертирующийся --accent (иначе в тёмной теме
+     стал бы светлым). Один на светлую и тёмную. */
+  --banner-grad: linear-gradient(120deg, #18181B 0%, #3F3F46 100%);
+  /* Палитра aurora-фона под тему. Noir монохромный — серебристо-серое свечение
+     без цветных оттенков, чтобы не спорить с чёрно-белой темой. */
+  --aurora-1: #FAFAFA;
+  --aurora-2: #A1A1AA;
+  --aurora-3: #52525B;
+  /* Форма и типографика — общие дефолты, темы могут переопределить */
+  --font-display: "Onest", "Manrope", system-ui, sans-serif;
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius-card: 12px;
+  --radius-control: 8px;
+  --radius-pill: 9999px;
+}
+[data-preset="noir"][data-theme="dark"] {
+  --bg: #0A0A0A;
+  --surface: #171717;
+  --surface-sunken: #111111;
+  --text: #FAFAFA;
+  --text-muted: #A1A1AA;
+  --accent: #FAFAFA;
+  --accent-hover: #FFFFFF;
+  --accent-2: #D4D4D8;
+  --on-accent: #0A0A0A;
+  --danger: #F87171;
+  --border-input: #27272A;
+  --shadow-card: none;
+}
+
+/* ---------- Emerald · зелёная ---------- */
 [data-preset="emerald"] {
   --bg: #F6F7F9;
   --surface: #FFFFFF;
@@ -23,9 +68,13 @@
   --danger: #C0392B;
   --border-input: #E3E7ED;
   --shadow-card: 0 1px 3px rgba(15, 27, 45, 0.08);
+  --banner-grad: linear-gradient(120deg, #064E3B 0%, #0E7A5A 100%);
+  --aurora-1: #10B981;
+  --aurora-2: #34D399;
+  --aurora-3: #22D3EE;
+  --radius-card: 14px;
+  --radius-control: 10px;
 }
-
-/* ---------- Emerald · тёмная ---------- */
 [data-preset="emerald"][data-theme="dark"] {
   --bg: #0E1418;
   --surface: #18212A;
@@ -38,7 +87,148 @@
   --on-accent: #06120E;
   --danger: #E5766B;
   --border-input: #2A343E;
-  /* В тёмной теме теней нет: карточка отделяется от фона тем,
-     что --surface светлее --bg. */
+  --shadow-card: none;
+}
+
+/* ---------- Ocean · синяя ---------- */
+[data-preset="ocean"] {
+  --bg: #F4F7FB;
+  --surface: #FFFFFF;
+  --surface-sunken: #E8EEF6;
+  --text: #0F172A;
+  --text-muted: #64748B;
+  --accent: #2563EB;
+  --accent-hover: #1D4ED8;
+  --accent-2: #3B82F6;
+  --on-accent: #FFFFFF;
+  --danger: #DC2626;
+  --border-input: #DCE3EC;
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --banner-grad: linear-gradient(120deg, #0B2A6B 0%, #2563EB 100%);
+  --aurora-1: #3B82F6;
+  --aurora-2: #60A5FA;
+  --aurora-3: #22D3EE;
+}
+[data-preset="ocean"][data-theme="dark"] {
+  --bg: #0A1120;
+  --surface: #131C2E;
+  --surface-sunken: #0F1626;
+  --text: #E7EDF6;
+  --text-muted: #8A98AD;
+  --accent: #3B82F6;
+  --accent-hover: #60A5FA;
+  --accent-2: #60A5FA;
+  --on-accent: #08101F;
+  --danger: #F87171;
+  --border-input: #26324A;
+  --shadow-card: none;
+}
+
+/* ---------- Violet · фиолетовая ---------- */
+[data-preset="violet"] {
+  --bg: #F7F5FC;
+  --surface: #FFFFFF;
+  --surface-sunken: #EFEAF8;
+  --text: #1E1B2E;
+  --text-muted: #6B7280;
+  --accent: #7C3AED;
+  --accent-hover: #6D28D9;
+  --accent-2: #9333EA;
+  --on-accent: #FFFFFF;
+  --danger: #DC2626;
+  --border-input: #E7E0F3;
+  --shadow-card: 0 1px 3px rgba(30, 27, 46, 0.08);
+  --banner-grad: linear-gradient(120deg, #3B0A6B 0%, #7C3AED 100%);
+  --aurora-1: #7C3AED;
+  --aurora-2: #A78BFA;
+  --aurora-3: #D946EF;
+}
+[data-preset="violet"][data-theme="dark"] {
+  --bg: #120E1C;
+  --surface: #1C1630;
+  --surface-sunken: #161125;
+  --text: #EEE9F7;
+  --text-muted: #A093B8;
+  --accent: #A78BFA;
+  --accent-hover: #C4B5FD;
+  --accent-2: #C4B5FD;
+  --on-accent: #0F0A1A;
+  --danger: #F87171;
+  --border-input: #2E2542;
+  --shadow-card: none;
+}
+
+/* ---------- Rose · розовая ---------- */
+[data-preset="rose"] {
+  --bg: #FCF5F7;
+  --surface: #FFFFFF;
+  --surface-sunken: #F7E9EE;
+  --text: #2A1520;
+  --text-muted: #7A6B72;
+  --accent: #E11D48;
+  --accent-hover: #BE123C;
+  --accent-2: #F43F5E;
+  --on-accent: #FFFFFF;
+  --danger: #B91C1C;
+  --border-input: #F0DFE5;
+  --shadow-card: 0 1px 3px rgba(42, 21, 32, 0.08);
+  --banner-grad: linear-gradient(120deg, #7A0A2A 0%, #E11D48 100%);
+  --aurora-1: #E11D48;
+  --aurora-2: #FB7185;
+  --aurora-3: #F472B6;
+}
+[data-preset="rose"][data-theme="dark"] {
+  --bg: #170A0F;
+  --surface: #221319;
+  --surface-sunken: #1A0E13;
+  --text: #F6E7EC;
+  --text-muted: #B79AA3;
+  --accent: #FB7185;
+  --accent-hover: #FDA4AF;
+  --accent-2: #FDA4AF;
+  --on-accent: #1A0509;
+  --danger: #F87171;
+  --border-input: #3A222A;
+  --shadow-card: none;
+}
+
+/* ================================================================== *
+ * Sunset · тёплая, с засечками, острые углы (другой характер).
+ * ================================================================== */
+[data-preset="sunset"] {
+  --bg: #FBF6EF;
+  --surface: #FFFFFF;
+  --surface-sunken: #F3EADD;
+  --text: #2A211B;
+  --text-muted: #8A7B6D;
+  --accent: #C2410C;
+  --accent-hover: #9A330A;
+  --accent-2: #EA7A3B;
+  --on-accent: #FFFFFF;
+  --danger: #B4241C;
+  --border-input: #E7DCCC;
+  --shadow-card: 0 1px 3px rgba(80, 50, 25, 0.12);
+  --banner-grad: linear-gradient(120deg, #7A2410 0%, #C2410C 100%);
+  --aurora-1: #EA580C;
+  --aurora-2: #F59E0B;
+  --aurora-3: #FB7185;
+  --font-display: Georgia, "Times New Roman", "Playfair Display", serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --radius-card: 3px;
+  --radius-control: 2px;
+  --radius-pill: 3px;
+}
+[data-preset="sunset"][data-theme="dark"] {
+  --bg: #1A1512;
+  --surface: #241D18;
+  --surface-sunken: #1E1813;
+  --text: #F0E7DC;
+  --text-muted: #A99B8B;
+  --accent: #F2793C;
+  --accent-hover: #F59A69;
+  --accent-2: #F7A968;
+  --on-accent: #1A0F08;
+  --danger: #E5766B;
+  --border-input: #392E26;
   --shadow-card: none;
 }

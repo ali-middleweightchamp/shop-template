@@ -1,5 +1,5 @@
 {% load static i18n %}<!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}" data-preset="{{ shop.theme|default:'emerald' }}"{% if shop.primary_color %} style="--accent: {{ shop.primary_color }}; --accent-hover: {{ shop.primary_color }}; --accent-2: color-mix(in srgb, {{ shop.primary_color }} 78%, #ffffff);"{% endif %}>
+<html lang="{{ LANGUAGE_CODE }}" data-preset="{{ shop.theme|default:'noir' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,6 +17,8 @@
       }
     })();
   </script>
+  {% comment %}Фирменный цвет перебивает акцент только в светлой теме: в тёмной берём выверенный тёмный акцент пресета, чтобы контраст не ломался.{% endcomment %}
+  {% if shop.primary_color %}<style>[data-theme="light"]{--accent:{{ shop.primary_color }};--accent-hover:{{ shop.primary_color }};--accent-2:color-mix(in srgb,{{ shop.primary_color }} 78%,#ffffff);}</style>{% endif %}
   <title>{% block title %}{{ shop.name }}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ shop.description|striptags|truncatewords:24 }}{% endblock %}">
   <link rel="canonical" href="{{ request.build_absolute_uri }}">
@@ -39,14 +41,19 @@
 
   {# Корзина: стор регистрируется до инициализации Alpine #}
   <script defer src="{% static 'js/cart.js' %}?v={{ asset_version }}"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  {# Alpine self-hosted (не CDN): одна DNS-цепочка меньше, кэшируется, быстрее на слабом мобильном #}
+  <script defer src="{% static 'js/alpine.min.js' %}?v={{ asset_version }}"></script>
   {% block head %}{% endblock %}
 </head>
 <body class="min-h-screen">
 
-  {# ---------- Шапка ---------- #}
-  <header class="sticky top-0 z-30 border-b border-line bg-surface">
-    <div class="shell flex h-16 items-center gap-3 sm:gap-5">
+  {# Полноэкранный aurora-фон позади всего контента (лёгкий, prefers-reduced-motion) #}
+  <div class="aurora-fixed" aria-hidden="true"></div>
+
+  {# ---------- Шапка: фрост-стекло (полупрозрачный фон + размытие) ---------- #}
+  <header class="site-header sticky top-0 z-30 border-b border-line">
+    {# Шапка во всю ширину (не центрируем в .shell), чтобы логотип прижимался к левому краю на десктопе #}
+    <div class="flex h-16 w-full items-center gap-3 px-4 sm:gap-5 sm:px-6">
       <a href="{% url 'catalog:home' %}" class="flex shrink-0 items-center gap-2.5">
         {% if shop.logo %}
           <img src="{{ shop.logo.url }}" alt="{{ shop.name }}" class="h-10 w-auto">
@@ -123,7 +130,7 @@
 
   {# ---------- Подвал ---------- #}
   <footer class="site-footer mt-4">
-    <div class="shell grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="shell grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
       <div class="lg:col-span-1">
         <div class="flex items-center gap-2.5">
           {% if shop.logo %}
@@ -192,6 +199,20 @@
           <a href="{% url 'catalog:contacts' %}" class="hover:text-white">{% trans "Контакты" %}</a>
         </div>
       </div>
+
+      {% comment %}Мини-карта: превью без интерактива (pointer-events off), клик ведёт
+      на полную карту. Легче второго живого iframe в футере.{% endcomment %}
+      {% if shop.address %}
+      <div class="text-sm">
+        <div class="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em]" style="color:#64748b">{% trans "Мы на карте" %}</div>
+        <a href="{% if shop.map_link %}{{ shop.map_link }}{% else %}https://yandex.ru/maps/?text={{ shop.address|urlencode }}{% endif %}"
+           target="_blank" rel="noopener" class="group relative block overflow-hidden rounded-xl border border-white/10">
+          <iframe src="https://yandex.ru/map-widget/v1/?text={{ shop.address|urlencode }}&z=15"
+                  loading="lazy" tabindex="-1" class="pointer-events-none h-36 w-full" style="border:0" title="{% trans 'Карта' %} — {{ shop.name }}"></iframe>
+          <span class="absolute inset-0 ring-1 ring-inset ring-white/5 transition group-hover:ring-white/20"></span>
+        </a>
+      </div>
+      {% endif %}
     </div>
     <div class="border-t border-white/10 py-4 text-center text-xs" style="color:#64748b">
       © {% now "Y" %} {{ shop.name }}
@@ -207,7 +228,7 @@
         <path d="M3 3h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 7H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>
       </svg>
       <span x-text="$store.cart.count"
-            class="nums absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-white px-1 text-[11px] font-extrabold shadow" style="color: var(--accent)"></span>
+            class="nums absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[11px] font-extrabold shadow" style="background: var(--on-accent); color: var(--accent)"></span>
     </span>
     <span class="flex flex-col items-start leading-tight">
       <span class="text-[11px] font-semibold uppercase tracking-wide" style="opacity:.85">{% trans "Корзина" %}</span>

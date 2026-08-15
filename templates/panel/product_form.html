@@ -140,9 +140,11 @@
         <h2 class="mb-4 font-display text-lg font-extrabold text-ink">{% trans "Фото" %}</h2>
 
         {# Главное фото — перетаскивание #}
-        <div x-data="{ preview: '{% if instance.image %}{% thumbnail instance.image '400x400' crop='smart' as im %}{{ im.url }}{% endif %}', over: false,
-                       handle(files){ if(files && files[0]){ this.$refs.file.files = files; this.preview = URL.createObjectURL(files[0]); } } }"
+        <div x-data="{ preview: '{% if instance.image %}{% thumbnail instance.image '400x400' crop='smart' as im %}{{ im.url }}{% endif %}', over: false, cleared: false,
+                       handle(files){ if(files && files[0]){ this.$refs.file.files = files; this.preview = URL.createObjectURL(files[0]); this.cleared = false; } } }"
              @dragover.prevent="over = true" @dragleave.prevent="over = false" @drop.prevent="over = false; handle($event.dataTransfer.files)">
+          {# Флаг удаления существующего фото при сохранении #}
+          <input type="hidden" name="image_clear" :value="cleared ? '1' : ''">
           <input type="file" name="image" accept="image/jpeg,image/png,image/webp" class="hidden" x-ref="file" @change="handle($event.target.files)">
           <div class="pdrop" :class="over && 'over'" @click="$refs.file.click()">
             <template x-if="preview"><img :src="preview" alt=""></template>
@@ -154,7 +156,7 @@
               </div>
             </template>
           </div>
-          <button type="button" x-show="preview" @click="preview=''; $refs.file.value=''" class="mt-2 text-xs font-semibold text-muted hover:text-ink">{% trans "Убрать фото" %}</button>
+          <button type="button" x-show="preview" @click="preview=''; $refs.file.value=''; cleared = true" class="mt-2 text-xs font-semibold text-muted hover:text-ink">{% trans "Убрать фото" %}</button>
         </div>
         <p class="phint">{% trans "JPG, PNG или WebP, до 5 МБ. Обрежется в квадрат. Рекомендуем 1000×1000px." %}</p>
         {% if img_error %}<div class="perror">{{ img_error }}</div>{% endif %}

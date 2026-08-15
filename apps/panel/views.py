@@ -291,7 +291,8 @@ def banner_edit(request, pk=None):
                     banner.is_active = False
                     messages.error(request, f"Активных баннеров может быть максимум {MAX_ACTIVE_BANNERS}. Слайд сохранён выключенным.")
             if img_file:
-                banner.image = imaging.process_image(img_file, ratio=(8, 3), width=1600, name="banner")
+                # Готовый баннер не кропим — показываем целиком, какие пропорции залили.
+                banner.image = imaging.process_image(img_file, ratio=None, width=1600, name="banner")
             banner.save()
             return redirect("panel:banners")
     else:
@@ -438,6 +439,12 @@ _STUB_TITLES = {
 
 
 @panel_required
+def styleguide(request):
+    """Витрина компонентов (только staff): проверить новую тему за минуту."""
+    return render(request, "panel/styleguide.html", {})
+
+
+@panel_required
 def stub(request, section):
     return render(
         request,
@@ -468,6 +475,9 @@ def product_edit(request, pk=None):
                 product.image = imaging.process_image(
                     main_file, ratio=(1, 1), width=1000, name=(product.sku or "product")
                 )
+            elif request.POST.get("image_clear") and product.image:
+                # Пользователь убрал фото — удаляем файл и оставляем поле пустым
+                product.image.delete(save=False)
             product.save()
 
             # Галерея: удаление отмеченных и обновление порядка
@@ -550,6 +560,9 @@ def category_edit(request, pk=None):
                 cat.image = imaging.process_image(
                     img_file, ratio=(4, 3), width=800, name=(slugify(cat.name) or "category")
                 )
+            elif request.POST.get("image_clear") and cat.image:
+                # Пользователь убрал картинку — удаляем файл и оставляем поле пустым
+                cat.image.delete(save=False)
             try:
                 cat.full_clean(exclude=["slug", "image"])
             except ValidationError as e:

@@ -23,6 +23,7 @@
     <div class="space-y-5 lg:col-span-2">
       <div class="pform-block space-y-4">
         <h2 class="font-display text-lg font-extrabold text-ink">{% trans "Текст слайда" %}</h2>
+        <p class="-mt-2 text-sm text-muted">{% trans "Всё необязательно. Если текст уже впечатан в картинку — оставьте поля пустыми." %}</p>
         <div class="grid gap-4 sm:grid-cols-2">
           <div x-data="{ n: {{ form.title_ru.value|default:''|length }} }" @input="n = $event.target.value.length">
             <label class="plabel">{% trans "Заголовок" %} (RU) <span class="font-normal text-muted" x-text="n + '/60'"></span></label>
@@ -74,7 +75,8 @@
             </template>
           </div>
         </div>
-        <p class="phint">{% trans "JPG/PNG/WebP, до 5 МБ. Кроп 8:3. Рекомендуем 1600×600px." %}</p>
+        <p class="phint">{% trans "JPG/PNG/WebP, до 5 МБ. Все слайды одного размера по формату из Настроек. Делайте баннеры под него, чтобы без обрезки:" %}
+          3:1 → 1500×500, 12:5 → 1440×600, 16:9 → 1600×900.</p>
         {% if img_error %}<div class="perror">{{ img_error }}</div>{% endif %}
       </div>
 

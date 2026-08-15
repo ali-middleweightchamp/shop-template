@@ -25,12 +25,15 @@ module.exports = {
         danger: "var(--danger)",
       },
       fontFamily: {
-        sans: ['Manrope', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
-        display: ['Onest', 'Manrope', 'system-ui', 'sans-serif'],
+        // Шрифты — из темы (themes.css), пресет может их менять
+        sans: ['var(--font-sans)'],
+        display: ['var(--font-display)'],
       },
       borderRadius: {
-        card: "14px",
-        control: "10px",
+        // Скругления — из темы: emerald мягкие, sunset острые
+        card: "var(--radius-card)",
+        control: "var(--radius-control)",
+        pill: "var(--radius-pill)",
       },
       boxShadow: {
         card: "var(--shadow-card)",

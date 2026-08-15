@@ -35,29 +35,32 @@ def validate_image(f, min_side=600):
 
 
 def process_image(f, ratio=(1, 1), width=1000, name="image"):
-    """Центр-кроп до пропорции ratio, ужатие до width по ширине, WebP.
+    """Ужатие до width по ширине и WebP. При заданном ratio — центр-кроп до него.
 
-    Возвращает ContentFile (<name>.webp). Оригинал не сохраняется.
+    ratio=None — не кропить, сохранить исходные пропорции (для готовых баннеров,
+    где картинку нельзя резать). Возвращает ContentFile (<name>.webp).
     """
     img = Image.open(f)
     img = ImageOps.exif_transpose(img)  # учесть поворот из EXIF
     if img.mode not in ("RGB",):
         img = img.convert("RGB")
 
-    target = ratio[0] / ratio[1]
-    w, h = img.size
-    cur = w / h
-    if cur > target:  # слишком широкое — режем по бокам
-        new_w = int(h * target)
-        left = (w - new_w) // 2
-        img = img.crop((left, 0, left + new_w, h))
-    elif cur < target:  # слишком высокое — режем сверху/снизу
-        new_h = int(w / target)
-        top = (h - new_h) // 2
-        img = img.crop((0, top, w, top + new_h))
+    if ratio is not None:
+        target = ratio[0] / ratio[1]
+        w, h = img.size
+        cur = w / h
+        if cur > target:  # слишком широкое — режем по бокам
+            new_w = int(h * target)
+            left = (w - new_w) // 2
+            img = img.crop((left, 0, left + new_w, h))
+        elif cur < target:  # слишком высокое — режем сверху/снизу
+            new_h = int(w / target)
+            top = (h - new_h) // 2
+            img = img.crop((0, top, w, top + new_h))
 
     if img.width > width:
-        img = img.resize((width, int(width / target)), Image.LANCZOS)
+        # высоту считаем из текущих пропорций (после возможного кропа)
+        img = img.resize((width, round(width * img.height / img.width)), Image.LANCZOS)
 
     buf = BytesIO()
     img.save(buf, "WEBP", quality=82, method=4)

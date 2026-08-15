@@ -1,0 +1,110 @@
+{% load static %}<!DOCTYPE html>
+<html lang="ru" data-preset="emerald" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Styleguide · {{ shop.name }}</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}?v={{ asset_version }}">
+</head>
+<body class="bg-bg text-ink">
+  {# Переключатели темы/пресета — по ним проверяем новую тему #}
+  <div class="sticky top-0 z-10 flex flex-wrap items-center gap-3 border-b border-line bg-surface px-5 py-3">
+    <span class="font-display text-lg font-extrabold">Styleguide</span>
+    <span class="text-sm text-muted">пресет:</span>
+    <div class="flex gap-1">
+      <button onclick="document.documentElement.dataset.preset='emerald'" class="chip chip-off !min-h-0 py-1">Emerald</button>
+      <button onclick="document.documentElement.dataset.preset='sunset'" class="chip chip-off !min-h-0 py-1">Sunset</button>
+    </div>
+    <span class="ml-3 text-sm text-muted">тема:</span>
+    <div class="flex gap-1">
+      <button onclick="document.documentElement.dataset.theme='light'" class="chip chip-off !min-h-0 py-1">Светлая</button>
+      <button onclick="document.documentElement.dataset.theme='dark'" class="chip chip-off !min-h-0 py-1">Тёмная</button>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-5xl space-y-10 p-6">
+
+    <section>
+      <h2 class="mb-3 font-display text-2xl font-extrabold">Типографика</h2>
+      <h1 class="font-display text-4xl font-extrabold">Заголовок H1 — {{ shop.name }}</h1>
+      <h3 class="mt-2 font-display text-xl font-extrabold">Заголовок H3</h3>
+      <p class="mt-2 text-ink">Обычный текст. <span class="text-muted">Приглушённый текст.</span> <a href="#" class="text-accent">Ссылка-акцент.</a></p>
+      <p class="nums mt-1 text-2xl font-extrabold text-ink">48 000 <span class="text-base font-normal text-muted">сум</span></p>
+    </section>
+
+    <section>
+      <h2 class="mb-3 font-display text-2xl font-extrabold">Кнопки</h2>
+      <div class="flex flex-wrap items-center gap-3">
+        <button class="btn-brand">Основная</button>
+        <button class="btn-ghost">Вторичная</button>
+        <span class="rounded-card p-4" style="background:var(--accent)"><button class="btn-white">На акценте</button></span>
+        <button class="pbtn-primary">Панель — primary</button>
+        <button class="pbtn-ghost">Панель — ghost</button>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="mb-3 font-display text-2xl font-extrabold">Чипы и бейджи</h2>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="chip chip-on">Все товары</span>
+        <span class="chip chip-off">Категория</span>
+        <span class="pchip on">Поп.</span>
+        <span class="pchip">Хит</span>
+        <span class="rounded-lg px-2 py-0.5 text-[11px] font-extrabold text-white" style="background:var(--danger)">−30%</span>
+        <span class="rounded-lg bg-ink px-2 py-0.5 text-[11px] font-extrabold text-white">ХИТ</span>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="mb-3 font-display text-2xl font-extrabold">Поля и переключатели</h2>
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="search-pill relative w-72">
+          <input type="search" placeholder="Поиск товаров…">
+        </div>
+        <input class="pfield w-48" placeholder="Поле формы">
+        <span class="pswitch on"><span></span></span>
+        <span class="pswitch"><span></span></span>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="mb-3 font-display text-2xl font-extrabold">Карточка товара</h2>
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <article class="pcard">
+          <div class="pcard-media">
+            <div class="absolute left-2.5 top-2.5 z-10 flex flex-col items-start gap-1">
+              <span class="rounded-lg px-2 py-0.5 text-[11px] font-extrabold text-white" style="background:var(--danger)">−30%</span>
+              <span class="rounded-lg bg-ink px-2 py-0.5 text-[11px] font-extrabold text-white">ХИТ</span>
+            </div>
+            <div class="flex h-full w-full items-center justify-center text-line">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5L5 20"/></svg>
+            </div>
+          </div>
+          <div class="flex flex-1 flex-col p-3">
+            <span class="sku-tag mb-1.5 self-start">#DEMO-1</span>
+            <span class="product-title text-sm font-bold text-ink">Пример товара, длинное название в две строки</span>
+            <div class="mt-auto pt-3">
+              <div class="nums mb-2.5 flex items-end gap-2">
+                <span class="text-xl font-extrabold leading-none text-ink">49 000</span>
+                <span class="text-xs text-muted">сум/шт</span>
+              </div>
+              <button class="pcard-add">В корзину</button>
+            </div>
+          </div>
+        </article>
+
+        <div class="ccard">
+          <div class="ccard-shade"></div>
+          <div class="ccard-fallback"></div>
+          <div class="relative z-10 p-3">
+            <div class="font-display text-sm font-extrabold text-white">Категория</div>
+            <div class="nums mt-0.5 text-xs text-white/70">12 товаров</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

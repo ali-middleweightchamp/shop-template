@@ -27,23 +27,28 @@
   @mouseenter="stop()" @mouseleave="start()"
   @touchstart="stop(); x0 = $event.touches[0].clientX"
   @touchend="swipe($event)"
-  class="banner"
+  class="banner" style="--banner-aspect: {{ shop.banner_aspect_css }}"
   role="region" aria-roledescription="{% trans 'Карусель' %}" aria-label="{% trans 'Акции магазина' %}">
 
   <div class="banner-track" :style="`transform: translateX(-${index * 100}%)`">
     {% for b in banners %}
-    <a href="{{ b.button_link|default:'#' }}" class="banner-slide"
-       {% if b.image %}{% thumbnail b.image "1600x600" crop="smart" as im %}style="background-image:url('{{ im.url }}'); background-size:cover; background-position:center"{% endif %}
-       {% if not b.image %}style="background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 94%, #000) 0%, var(--accent-2) 100%)"{% endif %}>
+    <a href="{{ b.button_link|default:'#' }}"
+       class="banner-slide {% if b.image %}banner-slide--image{% else %}banner-slide--gradient{% endif %}"
+       {% if not b.image %}style="background: var(--banner-grad)"{% endif %}>
+      {% comment %}Готовую картинку показываем ЦЕЛИКОМ (natural aspect), без кропа —
+      текст на ней уже впечатан. Скрим и текст-оверлей рисуем только если заданы поля.{% endcomment %}
+      {% if b.image %}<img src="{{ b.image.url }}" alt="{{ b.title }}" class="banner-img" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">{% endif %}
+      {% if b.title or b.subtitle or b.badge or b.button_text %}
       {% if b.image %}<span class="pointer-events-none absolute inset-0" style="background: linear-gradient(90deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.28) 45%, rgba(0,0,0,.08) 100%)"></span>{% endif %}
-      <span class="relative z-10 flex max-w-lg flex-col items-start">
+      <span class="banner-text">
         {% if b.badge %}<span class="mb-3 inline-flex w-fit items-center rounded-full bg-white/20 px-3 py-1 text-xs font-bold backdrop-blur">{{ b.badge }}</span>{% endif %}
-        <span class="font-display text-[26px] font-extrabold leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl">{{ b.title }}</span>
+        {% if b.title %}<span class="font-display text-[26px] font-extrabold leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl">{{ b.title }}</span>{% endif %}
         {% if b.subtitle %}<span class="mt-2 max-w-md text-sm text-white/90 sm:text-base">{{ b.subtitle }}</span>{% endif %}
         {% if b.button_text %}<span class="btn-white mt-5 w-fit !px-5 !py-3 text-sm">{{ b.button_text }}
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </span>{% endif %}
       </span>
+      {% endif %}
     </a>
     {% endfor %}
   </div>
