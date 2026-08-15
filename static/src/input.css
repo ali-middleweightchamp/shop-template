@@ -517,21 +517,27 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .aurora::after, .aurora-fixed::after {
     content: "";
     position: absolute;
-    inset: -40%;
-    background-image: repeating-linear-gradient(100deg,
-      var(--aurora-1, #FAFAFA) 0%, var(--aurora-1, #FAFAFA) 6%,
-      transparent 9%, transparent 12%,
-      var(--aurora-2, #A1A1AA) 16%, var(--aurora-2, #A1A1AA) 20%,
-      transparent 24%, transparent 28%,
-      var(--aurora-3, #52525B) 32%);
-    background-size: 200% 200%;
-    filter: blur(44px) saturate(1.15);
-    opacity: .45;
-    animation: aurora 55s linear infinite;
+    inset: -25%;
+    /* Плавно перетекающий градиент из палитры темы (--aurora-1/2/3). Последняя
+       остановка = первая → бесшовный цикл. Цвета свои у каждой темы. */
+    background: linear-gradient(120deg,
+      var(--aurora-1, #FAFAFA) 0%,
+      var(--aurora-2, #A1A1AA) 35%,
+      var(--aurora-3, #52525B) 65%,
+      var(--aurora-1, #FAFAFA) 100%);
+    background-size: 300% 300%;
+    filter: blur(60px) saturate(1.1);
+    opacity: .38;
+    animation: gradientShift 14s ease-in-out infinite;
     will-change: background-position;
   }
-  .aurora-fixed::after { opacity: .28; filter: blur(60px) saturate(1.1); }
-  @keyframes aurora { from { background-position: 0% 50%; } to { background-position: 200% 50%; } }
+  /* Полноэкранный фон — мягче, чтобы контент читался поверх */
+  .aurora-fixed::after { opacity: .16; filter: blur(80px) saturate(1.05); }
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
   @media (prefers-reduced-motion: reduce) { .aurora::after, .aurora-fixed::after { animation: none; } }
 
   /* Плавающая кнопка корзины (иконка + счётчик + «Корзина» + сумма) */
