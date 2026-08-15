@@ -309,19 +309,12 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
      min-height (текст дышит), с планшета — aspect-ratio выбранного формата. */
   .banner-slide--gradient { min-height: 12rem; }
   @media (min-width: 640px) {
-    .banner-slide--gradient { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 22rem; }
+    .banner-slide--gradient { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 30rem; }
   }
-  /* Картинка-баннер: ФИКСИРОВАННЫЙ размер по формату (одинаковый у всех слайдов,
-     карусель не прыгает). object-cover заполняет контейнер; если картинка сделана
-     под формат — обрезки нет. Высоту НЕ режем (иначе широкий контейнер обрезает
-     картинку сверху/снизу). */
+  /* Картинка-баннер: во всю ширину, высота = ширина ÷ пропорция формата.
+     Высоту НЕ ограничиваем — иначе object-cover режет картинку сверху/снизу.
+     Хотите ниже — выберите более широкий формат (4:1 «полоса»). */
   .banner-slide--image { aspect-ratio: var(--banner-aspect, 3 / 1); }
-  /* На десктопе баннер компактнее: сужаем сам баннер (пропорции целы, без обрезки),
-     а не ограничиваем высоту. */
-  @media (min-width: 1024px) {
-    .banner { max-width: 66rem; margin-inline: auto; }
-    .banner-slide--gradient { max-height: 20rem; }
-  }
   .banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   /* Текст-оверлей одинаково поверх картинки и градиента. */
   .banner-text {

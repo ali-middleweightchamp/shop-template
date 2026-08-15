@@ -112,8 +112,10 @@ class ShopSettings(models.Model):
     )
 
     class BannerFormat(models.TextChoices):
+        STRIP = "strip", _("Полоса (4:1) — самый низкий")
         WIDE = "wide", _("Широкий (3:1)")
         CLASSIC = "classic", _("Классический (12:5)")
+        HALF = "half", _("Средний (2:1)")
         MOBILE = "mobile", _("Высокий (16:9)")
 
     banner_format = models.CharField(
@@ -121,11 +123,11 @@ class ShopSettings(models.Model):
         max_length=16,
         choices=BannerFormat.choices,
         default=BannerFormat.WIDE,
-        help_text=_("Единый размер всех баннеров. Делайте картинки под эту пропорцию — без обрезки."),
+        help_text=_("Единый размер всех баннеров. Делайте картинки под эту пропорцию — без обрезки. Чем шире формат, тем ниже баннер."),
     )
 
     # Пропорции под каждый формат: для кропа при загрузке и для CSS aspect-ratio.
-    _BANNER_RATIOS = {"wide": (3, 1), "classic": (12, 5), "mobile": (16, 9)}
+    _BANNER_RATIOS = {"strip": (4, 1), "wide": (3, 1), "classic": (12, 5), "half": (2, 1), "mobile": (16, 9)}
 
     @property
     def banner_ratio(self):
