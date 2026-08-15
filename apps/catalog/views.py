@@ -8,14 +8,52 @@ from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 
-from .models import Banner, Category, Product, ShortOrder
+from .models import Banner, Category, Product, ProductAttribute, ShortOrder
 
 PER_PAGE = 24
+
+# Названия характеристики, которые считаем «брендом» (регистр не важен).
+BRAND_ATTR_NAMES = ["бренд", "brand", "марка", "brend", "производитель"]
 
 
 def _active_products():
     # Активные товары с подгруженной категорией — без N+1 в списках
     return Product.objects.filter(is_active=True).select_related("category")
+
+
+def _brand_name_values():
+    """Набор написаний «брендовых» названий в разных регистрах.
+
+    Через exact-match (__in) вместо iexact — чтобы кириллица корректно матчилась
+    и на SQLite (dev), и на PostgreSQL (prod), без зависимости от регистро-фолдинга БД.
+    """
+    vals = set()
+    for n in BRAND_ATTR_NAMES:
+        vals |= {n, n.lower(), n.upper(), n.capitalize(), n.title()}
+    return list(vals)
+
+
+def _brand_name_q(prefix=""):
+    """Q, матчащий «брендовые» характеристики по названию."""
+    return Q(**{f"{prefix}name__in": _brand_name_values()})
+
+
+def _brand_facets(base_products):
+    """Список брендов со счётчиком товаров в текущем наборе: [{value, count}, …]."""
+    rows = (
+        ProductAttribute.objects.filter(_brand_name_q(), product__in=base_products)
+        .values("value")
+        .annotate(n=Count("product", distinct=True))
+        .order_by("value")
+    )
+    return [{"value": r["value"], "count": r["n"]} for r in rows if r["value"]]
+
+
+def _apply_brands(products, values):
+    """Оставить товары, у которых бренд входит в выбранные значения."""
+    if not values:
+        return products
+    return products.filter(_brand_name_q("attributes__"), attributes__value__in=values).distinct()
 
 
 def _sidebar_categories():
@@ -61,8 +99,11 @@ def _filter_sort(products, request):
 
 
 def catalog(request):
-    """Весь каталог: чипы категорий, поиск по каталогу, сортировка, сетка."""
-    products, q, sort, in_stock = _filter_sort(_active_products(), request)
+    """Весь каталог: чипы категорий, поиск по каталогу, сортировка, фильтр по бренду, сетка."""
+    base, q, sort, in_stock = _filter_sort(_active_products(), request)
+    brands = _brand_facets(base)
+    selected_brands = request.GET.getlist("brand")
+    products = _apply_brands(base, selected_brands)
     page = Paginator(products, PER_PAGE).get_page(request.GET.get("page"))
     context = {
         "categories": _sidebar_categories(),
@@ -72,6 +113,8 @@ def catalog(request):
         "q": q,
         "sort": sort,
         "in_stock": in_stock,
+        "brands": brands,
+        "selected_brands": selected_brands,
     }
     return render(request, "catalog/catalog.html", context)
 
@@ -80,7 +123,10 @@ def category(request, slug):
     """Товары одной категории (включая подкатегории). Тот же шаблон, что и каталог."""
     cat = get_object_or_404(Category, slug=slug, is_active=True)
     products = _active_products().filter(Q(category=cat) | Q(category__parent=cat))
-    products, q, sort, in_stock = _filter_sort(products, request)
+    base, q, sort, in_stock = _filter_sort(products, request)
+    brands = _brand_facets(base)
+    selected_brands = request.GET.getlist("brand")
+    products = _apply_brands(base, selected_brands)
     page = Paginator(products, PER_PAGE).get_page(request.GET.get("page"))
     context = {
         "categories": _sidebar_categories(),
@@ -91,6 +137,8 @@ def category(request, slug):
         "q": q,
         "sort": sort,
         "in_stock": in_stock,
+        "brands": brands,
+        "selected_brands": selected_brands,
     }
     return render(request, "catalog/catalog.html", context)
 

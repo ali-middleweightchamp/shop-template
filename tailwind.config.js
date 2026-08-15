@@ -39,7 +39,7 @@ module.exports = {
         card: "var(--shadow-card)",
       },
       maxWidth: {
-        shell: "1200px",
+        shell: "1440px",
       },
     },
   },

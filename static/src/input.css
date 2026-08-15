@@ -417,6 +417,20 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
     transition: transform .24s cubic-bezier(.4,0,.2,1), box-shadow .24s ease;
   }
   .ccard:hover { transform: translateY(-3px); box-shadow: 0 20px 38px -22px rgba(15, 27, 45, 0.34); }
+  /* Карточка-слайд в ленте категорий: фикс-ширина, чтобы лента прокручивалась */
+  .ccard-slide { width: 11rem; flex-shrink: 0; scroll-snap-align: start; }
+  @media (min-width: 640px) { .ccard-slide { width: 13rem; } }
+  /* Стрелки слайдера категорий — только на десктопе */
+  .cat-arrow {
+    @apply absolute top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-line lg:grid;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 8px 20px -8px rgba(0, 0, 0, .25);
+    transition: filter .15s ease;
+  }
+  .cat-arrow:hover { filter: brightness(.97); color: var(--accent); }
+  .cat-arrow.left { left: -.5rem; }
+  .cat-arrow.right { right: -.5rem; }
   .ccard-fallback {
     position: absolute; inset: 0;
     background:
