@@ -15,4 +15,10 @@ class ShopSettingsTR(TranslationOptions):
         "currency_label",
         "order_message_header",
         "order_message_footer",
+        "about_title",
+        "about_text",
+        "trust1_text",
+        "trust2_text",
+        "trust3_text",
+        "trust4_text",
     )

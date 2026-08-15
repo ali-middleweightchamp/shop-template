@@ -157,6 +157,73 @@
           <div class="sm:col-span-2"><label class="plabel">{% trans "Приветствие в заказе" %} (UZ)</label>{{ form.order_message_header_uz }}</div>
           <div class="sm:col-span-2"><label class="plabel">{% trans "Подпись заказа" %} (RU)</label>{{ form.order_message_footer_ru }}</div>
           <div class="sm:col-span-2"><label class="plabel">{% trans "Подпись заказа" %} (UZ)</label>{{ form.order_message_footer_uz }}</div>
+          <div class="flex items-end sm:col-span-2">
+            <label class="flex cursor-pointer items-center gap-3" x-data="{ on: {{ form.telegram_float_enabled.value|yesno:'true,false' }} }">
+              <input type="checkbox" name="telegram_float_enabled" x-model="on" class="sr-only">
+              <span class="pswitch" :class="on && 'on'" @click="on=!on"><span></span></span>
+              <span class="text-sm font-bold text-ink">{% trans "Плавающая кнопка Telegram в углу экрана" %}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      {# Плашки доверия #}
+      <div class="pform-block">
+        <div class="mb-2 flex items-center justify-between gap-3">
+          <h2 class="font-display text-lg font-extrabold text-ink">{% trans "Плашки доверия" %}</h2>
+          <label class="flex cursor-pointer items-center gap-3" x-data="{ on: {{ form.trust_enabled.value|yesno:'true,false' }} }">
+            <input type="checkbox" name="trust_enabled" x-model="on" class="sr-only">
+            <span class="pswitch" :class="on && 'on'" @click="on=!on"><span></span></span>
+            <span class="text-sm font-bold text-ink">{% trans "Показывать" %}</span>
+          </label>
+        </div>
+        <p class="phint mb-4">{% trans "Полоса из 2–4 плашек на главной: «Оптом и в розницу», «Работаем с 2015 года», «500+ клиентов» и т.п. Пустые — не показываются." %}</p>
+        <div class="space-y-3">
+          <div class="grid gap-3 rounded-xl border border-line p-3 sm:grid-cols-3 sm:items-end">
+            <div><label class="plabel">{% trans "Иконка" %} 1</label>{{ form.trust1_icon }}</div>
+            <div><label class="plabel">{% trans "Текст" %} (RU)</label>{{ form.trust1_text_ru }}</div>
+            <div><label class="plabel">{% trans "Текст" %} (UZ)</label>{{ form.trust1_text_uz }}</div>
+          </div>
+          <div class="grid gap-3 rounded-xl border border-line p-3 sm:grid-cols-3 sm:items-end">
+            <div><label class="plabel">{% trans "Иконка" %} 2</label>{{ form.trust2_icon }}</div>
+            <div><label class="plabel">{% trans "Текст" %} (RU)</label>{{ form.trust2_text_ru }}</div>
+            <div><label class="plabel">{% trans "Текст" %} (UZ)</label>{{ form.trust2_text_uz }}</div>
+          </div>
+          <div class="grid gap-3 rounded-xl border border-line p-3 sm:grid-cols-3 sm:items-end">
+            <div><label class="plabel">{% trans "Иконка" %} 3</label>{{ form.trust3_icon }}</div>
+            <div><label class="plabel">{% trans "Текст" %} (RU)</label>{{ form.trust3_text_ru }}</div>
+            <div><label class="plabel">{% trans "Текст" %} (UZ)</label>{{ form.trust3_text_uz }}</div>
+          </div>
+          <div class="grid gap-3 rounded-xl border border-line p-3 sm:grid-cols-3 sm:items-end">
+            <div><label class="plabel">{% trans "Иконка" %} 4</label>{{ form.trust4_icon }}</div>
+            <div><label class="plabel">{% trans "Текст" %} (RU)</label>{{ form.trust4_text_ru }}</div>
+            <div><label class="plabel">{% trans "Текст" %} (UZ)</label>{{ form.trust4_text_uz }}</div>
+          </div>
+        </div>
+      </div>
+
+      {# Блок «О нас» #}
+      <div class="pform-block">
+        <div class="mb-2 flex items-center justify-between gap-3">
+          <h2 class="font-display text-lg font-extrabold text-ink">{% trans "Блок «О нас»" %}</h2>
+          <label class="flex cursor-pointer items-center gap-3" x-data="{ on: {{ form.about_enabled.value|yesno:'true,false' }} }">
+            <input type="checkbox" name="about_enabled" x-model="on" class="sr-only">
+            <span class="pswitch" :class="on && 'on'" @click="on=!on"><span></span></span>
+            <span class="text-sm font-bold text-ink">{% trans "Показывать" %}</span>
+          </label>
+        </div>
+        <p class="phint mb-4">{% trans "Пара предложений о магазине + фото. Отвечает покупателю на «кто вы», «с какого года», «что везёте»." %}</p>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div><label class="plabel">{% trans "Заголовок" %} (RU)</label>{{ form.about_title_ru }}</div>
+          <div><label class="plabel">{% trans "Заголовок" %} (UZ)</label>{{ form.about_title_uz }}</div>
+          <div class="sm:col-span-2"><label class="plabel">{% trans "Текст" %} (RU)</label>{{ form.about_text_ru }}</div>
+          <div class="sm:col-span-2"><label class="plabel">{% trans "Текст" %} (UZ)</label>{{ form.about_text_uz }}</div>
+          <div class="sm:col-span-2">
+            <label class="plabel">{% trans "Фото (склад/магазин)" %}</label>
+            {% if form.instance.about_image %}<img src="{{ form.instance.about_image.url }}" alt="" class="mb-2 h-32 w-full max-w-xs rounded-xl object-cover">{% endif %}
+            {{ form.about_image }}
+            <div class="phint">{% trans "Обрежется под 4:3. Необязательно." %}</div>
+          </div>
         </div>
       </div>
     </div>

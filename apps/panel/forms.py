@@ -109,10 +109,23 @@ class ShopSettingsForm(forms.ModelForm):
             "min_order_amount", "show_prices", "banners_enabled", "banner_format",
             "order_message_header_ru", "order_message_header_uz",
             "order_message_footer_ru", "order_message_footer_uz",
+            # Плавающая кнопка Telegram
+            "telegram_float_enabled",
+            # Блок «О нас»
+            "about_enabled", "about_title_ru", "about_title_uz",
+            "about_text_ru", "about_text_uz", "about_image",
+            # Плашки доверия
+            "trust_enabled",
+            "trust1_icon", "trust1_text_ru", "trust1_text_uz",
+            "trust2_icon", "trust2_text_ru", "trust2_text_uz",
+            "trust3_icon", "trust3_text_ru", "trust3_text_uz",
+            "trust4_icon", "trust4_text_ru", "trust4_text_uz",
         ]
         widgets = {
             "description_ru": forms.Textarea(attrs={"rows": 3}),
             "description_uz": forms.Textarea(attrs={"rows": 3}),
+            "about_text_ru": forms.Textarea(attrs={"rows": 3}),
+            "about_text_uz": forms.Textarea(attrs={"rows": 3}),
             "primary_color": forms.TextInput(attrs={"placeholder": "необязательно, напр. #2563EB"}),
         }
 

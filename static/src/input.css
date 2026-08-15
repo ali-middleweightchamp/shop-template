@@ -302,14 +302,14 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .banner-slide { @apply relative min-w-full overflow-hidden; color: #fff; }
   /* Цветной баннер без картинки: высоту задаёт формат. На мобилке — комфортный
      min-height (текст дышит), с планшета — aspect-ratio выбранного формата. */
-  .banner-slide--gradient { min-height: 15rem; }
+  .banner-slide--gradient { min-height: 12rem; }
   @media (min-width: 640px) {
-    .banner-slide--gradient { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 30rem; }
+    .banner-slide--gradient { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 22rem; }
   }
   /* Картинка-баннер: ФИКСИРОВАННЫЙ размер по формату (одинаковый у всех слайдов,
      карусель не прыгает). object-cover заполняет контейнер; если картинка сделана
-     под формат — обрезки нет. */
-  .banner-slide--image { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 30rem; }
+     под формат — обрезки нет. Высоту держим компактной (не на весь экран). */
+  .banner-slide--image { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 22rem; }
   .banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   /* Текст-оверлей одинаково поверх картинки и градиента. */
   .banner-text {
@@ -518,6 +518,43 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
     padding-bottom: calc(.7rem + env(safe-area-inset-bottom));
   }
   .cart-fab:hover { filter: brightness(1.04); }
+
+  /* ---------- Плашки доверия (trust badges) ---------- */
+  .trust-strip {
+    @apply grid grid-cols-2 gap-3 sm:grid-cols-4;
+  }
+  .trust-item {
+    @apply flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3;
+    box-shadow: var(--shadow-card);
+  }
+  .trust-ico {
+    @apply grid h-10 w-10 shrink-0 place-items-center rounded-xl;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+  .trust-text { @apply text-sm font-bold leading-tight text-ink; }
+
+  /* ---------- Блок «О нас» ---------- */
+  .about-block {
+    @apply grid items-center gap-6 rounded-card border border-line bg-surface p-5 sm:p-8 md:grid-cols-2;
+    box-shadow: var(--shadow-card);
+  }
+  .about-media { @apply overflow-hidden rounded-2xl; }
+  .about-media img { @apply h-full max-h-72 w-full object-cover; }
+  .about-body { @apply flex flex-col; }
+
+  /* ---------- Плавающая кнопка Telegram ---------- */
+  .tg-fab {
+    @apply fixed z-40 grid place-items-center rounded-full;
+    left: 1.25rem;
+    bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    height: 3.5rem; width: 3.5rem;
+    color: #fff;
+    background: #229ED9;   /* фирменный цвет Telegram — не зависит от темы */
+    box-shadow: 0 12px 28px -8px rgba(34, 158, 217, .6);
+    transition: transform .15s ease, filter .15s ease;
+  }
+  .tg-fab:hover { filter: brightness(1.05); transform: translateY(-2px); }
 
   /* Круглый счётчик в корзине */
   .cart-step { @apply inline-flex items-center gap-3; }
