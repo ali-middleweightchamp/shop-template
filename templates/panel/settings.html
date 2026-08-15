@@ -18,7 +18,15 @@
           { id: 'rose',    name: 'Rose',    c: ['#E11D48', '#F43F5E', '#FECDD3'] },
           { id: 'sunset',  name: 'Sunset',  c: ['#C2410C', '#EA7A3B', '#FED7AA'] }
         ],
-        setLogo(f){ if(f && f[0]) this.logoUrl = URL.createObjectURL(f[0]); }
+        setLogo(f){ if(f && f[0]) this.logoUrl = URL.createObjectURL(f[0]); },
+        // контрастный текст на фирменном цвете (тёмный на светлом, светлый на тёмном)
+        textOn(hex){
+          let h = (hex || '').replace('#','');
+          if (h.length === 3) h = h.split('').map(c => c + c).join('');
+          if (h.length !== 6) return '#ffffff';
+          const r = parseInt(h.slice(0,2),16), g = parseInt(h.slice(2,4),16), b = parseInt(h.slice(4,6),16);
+          return (0.299*r + 0.587*g + 0.114*b) > 150 ? '#0A0A0A' : '#ffffff';
+        }
       }"
       x-init="panelTheme = document.documentElement.getAttribute('data-theme') || 'light'">
   {% csrf_token %}
@@ -302,7 +310,7 @@
       <div class="pform-block sticky top-5">
         <div class="plabel">{% trans "Превью шапки сайта" %}</div>
         {# data-preset/data-theme применяют переменные выбранной темы прямо в превью #}
-        <div class="overflow-hidden rounded-xl border border-line" :data-preset="theme" :data-theme="panelTheme" :style="color ? `--accent:${color}` : ''">
+        <div class="overflow-hidden rounded-xl border border-line" :data-preset="theme" :data-theme="panelTheme" :style="color ? `--accent:${color};--on-accent:${textOn(color)}` : ''">
           <div class="flex items-center gap-2 bg-surface p-3">
             <template x-if="logoUrl"><img :src="logoUrl" class="h-9 w-9 rounded-lg object-cover"></template>
             <template x-if="!logoUrl"><span class="grid h-9 w-9 place-items-center rounded-lg font-display text-sm font-extrabold" :style="`background:${color || 'var(--accent)'};color:var(--on-accent)`" x-text="(name || 'М').charAt(0).toUpperCase()"></span></template>

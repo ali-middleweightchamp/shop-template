@@ -18,7 +18,7 @@
     })();
   </script>
   {% comment %}Фирменный цвет перебивает акцент только в светлой теме: в тёмной берём выверенный тёмный акцент пресета, чтобы контраст не ломался.{% endcomment %}
-  {% if shop.primary_color %}<style>[data-theme="light"]{--accent:{{ shop.primary_color }};--accent-hover:{{ shop.primary_color }};--accent-2:color-mix(in srgb,{{ shop.primary_color }} 78%,#ffffff);}</style>{% endif %}
+  {% if shop.primary_color %}<style>[data-theme="light"]{--accent:{{ shop.primary_color }};--accent-hover:{{ shop.primary_color }};--accent-2:color-mix(in srgb,{{ shop.primary_color }} 78%,#ffffff);--on-accent:{{ shop.primary_on_accent }};}</style>{% endif %}
   <title>{% block title %}{{ shop.name }}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ shop.description|striptags|truncatewords:24 }}{% endblock %}">
   <link rel="canonical" href="{{ request.build_absolute_uri }}">

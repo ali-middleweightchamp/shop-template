@@ -122,6 +122,22 @@ class ShopSettings(models.Model):
         """Строка для CSS aspect-ratio."""
         return "3 / 1"
 
+    @property
+    def primary_on_accent(self):
+        """Контрастный цвет текста на фирменном цвете (тёмный на светлом фоне,
+        светлый на тёмном) — чтобы кнопки/акценты читались при любом бренд-цвете."""
+        h = (self.primary_color or "").lstrip("#")
+        if len(h) == 3:
+            h = "".join(c * 2 for c in h)
+        if len(h) != 6:
+            return "#FFFFFF"
+        try:
+            r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+        except ValueError:
+            return "#FFFFFF"
+        # Воспринимаемая яркость (0..255)
+        return "#0A0A0A" if (0.299 * r + 0.587 * g + 0.114 * b) > 150 else "#FFFFFF"
+
     # --- Верхняя инфо-полоса (top bar) над шапкой ---
     topbar_enabled = models.BooleanField(
         _("Показывать инфо-полосу сверху"),

@@ -8,7 +8,7 @@
   <title>{% block title %}Панель{% endblock %} · {{ shop.name }}</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="{% static 'css/app.css' %}?v={{ asset_version }}">
-  {% if shop.primary_color %}<style>[data-theme="light"]{--accent:{{ shop.primary_color }};--accent-hover:{{ shop.primary_color }};--accent-2:color-mix(in srgb,{{ shop.primary_color }} 78%,#ffffff);}</style>{% endif %}
+  {% if shop.primary_color %}<style>[data-theme="light"]{--accent:{{ shop.primary_color }};--accent-hover:{{ shop.primary_color }};--accent-2:color-mix(in srgb,{{ shop.primary_color }} 78%,#ffffff);--on-accent:{{ shop.primary_on_accent }};}</style>{% endif %}
   <script>function toggleTheme(){var h=document.documentElement,n=h.getAttribute("data-theme")==="dark"?"light":"dark";h.setAttribute("data-theme",n);try{localStorage.setItem("theme",n);}catch(e){}}</script>
   {# Alpine self-hosted (не CDN): быстрее на слабом мобильном интернете #}
   <script defer src="{% static 'js/alpine.min.js' %}?v={{ asset_version }}"></script>
