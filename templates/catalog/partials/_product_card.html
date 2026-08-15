@@ -23,22 +23,21 @@
     </a>
   </div>
 
-  <div class="flex flex-1 flex-col p-3">
-    <span class="sku-tag mb-1.5 self-start">#{{ p.sku }}</span>
-    <a href="{{ p.get_absolute_url }}" class="product-title text-sm font-bold text-ink hover:text-accent">{{ p.name }}</a>
+  <div class="flex flex-1 flex-col p-3.5">
+    <a href="{{ p.get_absolute_url }}" class="product-title text-sm font-semibold text-ink hover:text-accent">{{ p.name }}</a>
     {% if p.pack_size %}<div class="mt-1 line-clamp-1 text-xs text-muted">{{ p.pack_size }}</div>{% endif %}
 
     <div class="mt-auto pt-3">
       {% if p.get_display_price is not None %}
-        <div class="nums mb-2.5 flex items-end gap-2">
-          <span class="text-xl font-extrabold leading-none text-ink">{{ p.get_display_price|money }}</span>
-          <div class="flex flex-col leading-tight">
+        <div class="nums mb-3">
+          <div class="flex items-baseline gap-2">
+            <span class="text-[1.35rem] font-extrabold leading-none text-ink">{{ p.get_display_price|money }}</span>
             {% if p.old_price %}<span class="text-xs text-muted line-through">{{ p.old_price|money }}</span>{% endif %}
-            <span class="text-xs text-muted">{{ shop.currency_label }}{% if p.unit %}/{{ p.get_unit_display }}{% endif %}</span>
           </div>
+          <div class="mt-1 text-xs text-muted">{{ shop.currency_label }}{% if p.unit %}/{{ p.get_unit_display }}{% endif %}</div>
         </div>
       {% else %}
-        <div class="mb-2.5 text-sm font-semibold text-muted">{% trans "Цена по запросу" %}</div>
+        <div class="mb-3 text-sm font-semibold text-muted">{% trans "Цена по запросу" %}</div>
       {% endif %}
 
       {% if p.in_stock %}

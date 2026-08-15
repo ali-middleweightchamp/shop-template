@@ -75,7 +75,7 @@
 
   <div class="mt-5 grid gap-6 lg:grid-cols-[minmax(0,440px)_1fr] lg:gap-10">
     {# ---------- Галерея ---------- #}
-    <div x-data="{ main: '{% if product.image %}{{ main_im.url }}{% endif %}' }" class="relative">
+    <div x-data="{ main: '{% if product.image %}{{ main_im.url }}{% endif %}', zoom: false }" class="relative">
       {# Кнопки: избранное и поделиться #}
       <div class="absolute right-4 top-4 z-10 flex flex-col gap-2">
         <button type="button" @click="$store.fav.toggle(p)" :class="$store.fav.has(p.sku) && 'is-fav'"
@@ -90,11 +90,25 @@
 
       <div class="pd-imgcard">
         {% if product.image %}
-          <img :src="main" alt="{{ product.name }}" class="h-full w-full object-contain">
+          <img :src="main" alt="{{ product.name }}" class="h-full w-full cursor-zoom-in object-contain" @click="zoom = true">
+          <span class="pointer-events-none absolute bottom-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-ink/60 text-white">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-3.5-3.5M11 8v6M8 11h6"/></svg>
+          </span>
         {% else %}
           {% include "catalog/partials/_no_image.html" with category=product.category.name_ru %}
         {% endif %}
       </div>
+
+      {# Лайтбокс: увеличенное фото по клику #}
+      {% if product.image %}
+      <div x-show="zoom" x-cloak x-transition.opacity @click="zoom = false" @keydown.escape.window="zoom = false"
+           class="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4" role="dialog" aria-modal="true">
+        <img :src="main" alt="{{ product.name }}" class="max-h-[92vh] max-w-[92vw] object-contain">
+        <button type="button" @click.stop="zoom = false" class="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-white/15 text-white hover:bg-white/25" aria-label="{% trans 'Закрыть' %}">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      {% endif %}
 
       {% if product.images.all %}
         <div class="mt-3 flex gap-2 overflow-x-auto">
