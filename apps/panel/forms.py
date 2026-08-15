@@ -80,6 +80,9 @@ class CategoryForm(forms.ModelForm):
         if self.instance and self.instance.pk:
             qs = qs.exclude(pk=self.instance.pk)
         self.fields["parent"].queryset = qs
+        self.fields["parent"].empty_label = _("— выберите категорию —")
+        # x-ref, чтобы переключатель «Основная/Подкатегория» мог очистить выбор
+        self.fields["parent"].widget.attrs["x-ref"] = "parentsel"
         for name, field in self.fields.items():
             if not isinstance(field.widget, forms.CheckboxInput):
                 field.widget.attrs["class"] = "pfield"
