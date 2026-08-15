@@ -773,6 +773,17 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .pcard-box { @apply overflow-hidden rounded-2xl border border-line bg-surface; box-shadow: 0 1px 2px rgba(15,27,45,.04); }
   .pfield { @apply w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted focus:border-accent; }
 
+  /* Сегментированная кнопка выбора («Основная / Подкатегория») */
+  .ptype-btn {
+    @apply rounded-xl border border-line bg-surface py-2.5 text-sm font-bold text-ink transition;
+  }
+  .ptype-btn:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--border-input)); }
+  .ptype-btn.is-on {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
   /* Переключатель (наличие / показ на сайте) */
   .pswitch {
     @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition;

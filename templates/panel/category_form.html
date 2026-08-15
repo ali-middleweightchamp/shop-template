@@ -38,10 +38,26 @@
           <div class="phint">{% trans "Если пусто — покажется русское." %}</div>
         </div>
       </div>
-      <div>
-        <label class="plabel">{% trans "Родительская категория" %}</label>
-        {{ form.parent }}
-        <div class="phint">{% trans "Оставьте пустым для категории верхнего уровня. Максимум 2 уровня." %}</div>
+      {# Тип категории: понятный переключатель вместо «пустого» выпадающего списка #}
+      <div x-data="{ isSub: {% if form.parent.value %}true{% else %}false{% endif %} }">
+        <label class="plabel">{% trans "Что это?" %}</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" class="ptype-btn" :class="!isSub && 'is-on'"
+                  @click="isSub = false; $refs.parentsel.value = ''">
+            {% trans "Основная категория" %}
+          </button>
+          <button type="button" class="ptype-btn" :class="isSub && 'is-on'"
+                  @click="isSub = true">
+            {% trans "Подкатегория" %}
+          </button>
+        </div>
+        {# Выбор родителя — только для подкатегории #}
+        <div x-show="isSub" x-cloak class="mt-3">
+          <label class="plabel">{% trans "Внутри какой категории?" %}</label>
+          {{ form.parent }}
+          <div class="phint">{% trans "Например: «Офисная бумага» внутри «Бумага». Максимум 2 уровня." %}</div>
+        </div>
+        <p x-show="!isSub" x-cloak class="phint">{% trans "Категория верхнего уровня — показывается в главном меню." %}</p>
         {% for e in form.parent.errors %}<div class="perror">{{ e }}</div>{% endfor %}
       </div>
       <label class="flex cursor-pointer items-center gap-3" x-data="{ on: {{ form.is_active.value|yesno:'true,false' }} }">
