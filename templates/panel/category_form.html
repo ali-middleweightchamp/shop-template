@@ -70,7 +70,11 @@
             </div>
           </template>
         </div>
-        <button type="button" x-show="preview" @click="preview=''; $refs.file.value=''; cleared = true" class="mt-2 text-xs font-semibold text-muted hover:text-ink">{% trans "Убрать" %}</button>
+        <button type="button" x-show="preview" @click="preview=''; $refs.file.value=''; cleared = true"
+                class="pbtn-danger-ghost mt-3 w-full justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14"/></svg>
+          {% trans "Убрать фото" %}
+        </button>
       </div>
       <p class="phint">{% trans "JPG/PNG/WebP, до 5 МБ. Обрежется 4:3. Рекомендуем 800×600px." %}</p>
       {% if img_error %}<div class="perror">{{ img_error }}</div>{% endif %}
