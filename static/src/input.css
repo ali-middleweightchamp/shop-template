@@ -561,6 +561,27 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   .tg-fab:hover { filter: brightness(1.05); transform: translateY(-2px); }
 
+  /* ---------- Инфо-полоса над шапкой ---------- */
+  .topbar {
+    border-bottom: 1px solid var(--border-input);
+    background: var(--surface-sunken);
+    font-size: .78rem;
+  }
+  .topbar-inner {
+    @apply flex w-full items-center gap-4 px-4 sm:px-6;
+    height: 36px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .topbar-inner::-webkit-scrollbar { display: none; }
+  .topbar-item {
+    @apply inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap font-semibold;
+    color: var(--text-muted);
+    transition: color .15s ease;
+  }
+  .topbar-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+  a.topbar-item:hover { color: var(--accent); }
+
   /* ---------- Пагинация: номера страниц ---------- */
   .pagination { @apply mt-8 flex flex-wrap items-center justify-center gap-1.5; }
   .pg-item {
