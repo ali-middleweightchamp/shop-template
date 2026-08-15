@@ -313,11 +313,14 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   /* Картинка-баннер: ФИКСИРОВАННЫЙ размер по формату (одинаковый у всех слайдов,
      карусель не прыгает). object-cover заполняет контейнер; если картинка сделана
-     под формат — обрезки нет. Высоту держим компактной (не на весь экран). */
-  .banner-slide--image { aspect-ratio: var(--banner-aspect, 3 / 1); max-height: 22rem; }
-  /* На десктопе баннер компактнее — не занимает пол-экрана */
+     под формат — обрезки нет. Высоту НЕ режем (иначе широкий контейнер обрезает
+     картинку сверху/снизу). */
+  .banner-slide--image { aspect-ratio: var(--banner-aspect, 3 / 1); }
+  /* На десктопе баннер компактнее: сужаем сам баннер (пропорции целы, без обрезки),
+     а не ограничиваем высоту. */
   @media (min-width: 1024px) {
-    .banner-slide--image, .banner-slide--gradient { max-height: 18rem; }
+    .banner { max-width: 66rem; margin-inline: auto; }
+    .banner-slide--gradient { max-height: 20rem; }
   }
   .banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   /* Текст-оверлей одинаково поверх картинки и градиента. */
