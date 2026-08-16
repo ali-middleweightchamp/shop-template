@@ -445,7 +445,8 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
       linear-gradient(160deg, #cfd8d5, #aeb9b8);
   }
   .ccard-fallback .ci { position: absolute; right: 10px; top: 10px; opacity: .5; color: #fff; }
-  .ccard-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(15,27,45,.72)); }
+  /* Подложка под текстом — лёгкая, только у самого низа (чтобы текст читался, но без тёмной «тени») */
+  .ccard-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 62%, rgba(15,27,45,.42)); }
 
   /* --- Фрост-шапка: полупрозрачный фон + размытие того, что скроллится под ней --- */
   .site-header {
