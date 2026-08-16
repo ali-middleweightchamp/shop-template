@@ -1,5 +1,5 @@
 {% load i18n %}
-{% comment %}Полка товаров на главной: заголовок + ссылка + компактная сетка (до 5 в ряд).
+{% comment %}Полка товаров на главной: заголовок + ссылка + горизонтальный слайдер.
 Ожидает: shelf_title, shelf_products, shelf_url (необязательно).{% endcomment %}
 {% if shelf_products %}
 <section class="mt-12">
@@ -7,8 +7,19 @@
     <h2 class="font-display text-xl font-extrabold text-ink sm:text-2xl">{{ shelf_title }}</h2>
     <a href="{{ shelf_url|default:'' }}{% if not shelf_url %}{% url 'catalog:catalog' %}{% endif %}" class="shrink-0 whitespace-nowrap text-sm font-bold text-accent hover:underline">{% trans "Смотреть все" %} →</a>
   </div>
-  <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-    {% for p in shelf_products %}{% include "catalog/partials/_product_card.html" %}{% endfor %}
+  {# Слайдер: одна прокручиваемая лента + стрелки на десктопе #}
+  <div class="relative" x-data>
+    <div class="no-scrollbar flex snap-x scroll-smooth gap-3 overflow-x-auto pb-1" x-ref="shelf">
+      {% for p in shelf_products %}
+      <div class="w-[44%] shrink-0 snap-start sm:w-52 lg:w-[15rem]">{% include "catalog/partials/_product_card.html" %}</div>
+      {% endfor %}
+    </div>
+    <button type="button" class="cat-arrow left" @click="$refs.shelf.scrollBy({ left: -360, behavior: 'smooth' })" aria-label="{% trans 'Назад' %}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <button type="button" class="cat-arrow right" @click="$refs.shelf.scrollBy({ left: 360, behavior: 'smooth' })" aria-label="{% trans 'Вперёд' %}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
   </div>
 </section>
 {% endif %}
