@@ -419,11 +419,10 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
 
   /* --- Плитка категории с фото/градиентом --- */
   .ccard {
-    @apply relative flex aspect-[4/3] items-end overflow-hidden rounded-card;
-    box-shadow: 0 1px 2px rgba(15, 27, 45, 0.05);
-    transition: transform .24s cubic-bezier(.4,0,.2,1), box-shadow .24s ease;
+    @apply relative flex aspect-[4/3] items-end overflow-hidden rounded-card border border-line;
+    transition: transform .24s cubic-bezier(.4,0,.2,1), border-color .24s ease;
   }
-  .ccard:hover { transform: translateY(-3px); box-shadow: 0 6px 14px -10px rgba(15, 27, 45, 0.18); }
+  .ccard:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 45%, var(--border-input)); }
   /* Карточка-слайд в ленте категорий: фикс-ширина, чтобы лента прокручивалась */
   .ccard-slide { width: 11rem; flex-shrink: 0; scroll-snap-align: start; }
   @media (min-width: 640px) { .ccard-slide { width: 13rem; } }
@@ -507,44 +506,17 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .fav-btn.is-fav { color: #fff; background: var(--danger); border-color: var(--danger); }
   .fav-btn.is-fav svg { fill: #fff; }
 
-  /* ---- Aurora: мягкое анимированное свечение (CSS-порт React-компонента,
-     без framer-motion). Лёгкий: один слой, анимируется только позиция
-     градиента, уважает prefers-reduced-motion. Кладётся точечно (hero,
-     пустые экраны), НЕ на всю страницу — бережём слабые телефоны. ---- */
+  /* ---- Фон страницы: без анимации/призмы.
+     Светлые темы — чистый --bg (без цветов). Тёмные — простой мягкий градиент. ---- */
   .aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-  /* Полноэкранный фон: фиксированный слой позади всего контента (не
-     перерисовывается при скролле). Прозрачность ниже, чтобы контент читался. */
   .aurora-fixed { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; }
-  .aurora::after, .aurora-fixed::after {
+  [data-theme="dark"] .aurora-fixed::after {
     content: "";
-    position: absolute;
-    inset: -25%;
-    /* Призматические световые лучи из палитры темы (--aurora-1/2/3): цветные
-       диагональные полосы с прозрачными зазорами (эффект преломления), медленно
-       дрейфуют. Чистый CSS, свои цвета у каждой темы. */
-    background: linear-gradient(115deg,
-      transparent 0%,
-      var(--aurora-1, #FAFAFA) 10%,
-      transparent 23%,
-      var(--aurora-2, #A1A1AA) 42%,
-      transparent 56%,
-      var(--aurora-3, #52525B) 74%,
-      transparent 87%,
-      var(--aurora-1, #FAFAFA) 100%);
-    background-size: 260% 260%;
-    filter: blur(64px) saturate(1.2);
-    opacity: .34;
-    animation: gradientShift 16s ease-in-out infinite;
-    will-change: background-position;
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg,
+      color-mix(in srgb, var(--surface) 65%, var(--bg)) 0%,
+      var(--bg) 55%);
   }
-  /* Полноэкранный фон — мягче, чтобы контент читался поверх */
-  .aurora-fixed::after { opacity: .16; filter: blur(80px) saturate(1.05); }
-  @keyframes gradientShift {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  @media (prefers-reduced-motion: reduce) { .aurora::after, .aurora-fixed::after { animation: none; } }
 
   /* Плавающая кнопка корзины (иконка + счётчик + «Корзина» + сумма) */
   .cart-fab {

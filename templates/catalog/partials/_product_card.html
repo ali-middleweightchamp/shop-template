@@ -29,12 +29,10 @@
 
     <div class="mt-auto pt-3">
       {% if p.get_display_price is not None %}
-        <div class="nums mb-3">
-          <div class="flex items-baseline gap-2">
-            <span class="text-[1.35rem] font-extrabold leading-none text-ink">{{ p.get_display_price|money }}</span>
-            {% if p.old_price %}<span class="text-xs text-muted line-through">{{ p.old_price|money }}</span>{% endif %}
-          </div>
-          <div class="mt-1 text-xs text-muted">{{ shop.currency_label }}{% if p.unit %}/{{ p.get_unit_display }}{% endif %}</div>
+        <div class="nums mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+          <span class="text-[1.35rem] font-extrabold leading-none text-ink">{{ p.get_display_price|money }}</span>
+          <span class="text-xs font-semibold text-muted">{{ shop.currency_label }}{% if p.unit %}/{{ p.get_unit_display }}{% endif %}</span>
+          {% if p.old_price %}<span class="text-xs text-muted line-through">{{ p.old_price|money }}</span>{% endif %}
         </div>
       {% else %}
         <div class="mb-3 text-sm font-semibold text-muted">{% trans "Цена по запросу" %}</div>
