@@ -417,12 +417,13 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   .qty-row .qv { @apply nums flex-1 text-center text-base font-extrabold text-ink; }
 
-  /* --- Плитка категории с фото/градиентом --- */
+  /* --- Плитка категории: фото сверху, подпись снизу на фоне карточки (без затемнения) --- */
   .ccard {
-    @apply relative flex aspect-[4/3] items-end overflow-hidden rounded-card border border-line;
+    @apply relative flex flex-col overflow-hidden rounded-card border border-line bg-surface;
     transition: transform .24s cubic-bezier(.4,0,.2,1), border-color .24s ease;
   }
   .ccard:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 45%, var(--border-input)); }
+  .ccard-img { @apply relative aspect-[4/3] overflow-hidden bg-sunken; }
   /* Карточка-слайд в ленте категорий: фикс-ширина, чтобы лента прокручивалась */
   .ccard-slide { width: 11rem; flex-shrink: 0; scroll-snap-align: start; }
   @media (min-width: 640px) { .ccard-slide { width: 13rem; } }
@@ -444,8 +445,6 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
       linear-gradient(160deg, #cfd8d5, #aeb9b8);
   }
   .ccard-fallback .ci { position: absolute; right: 10px; top: 10px; opacity: .5; color: #fff; }
-  /* Подложка под текстом — лёгкая, только у самого низа (чтобы текст читался, но без тёмной «тени») */
-  .ccard-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 62%, rgba(15,27,45,.42)); }
 
   /* --- Фрост-шапка: полупрозрачный фон + размытие того, что скроллится под ней --- */
   .site-header {
