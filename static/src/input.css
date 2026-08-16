@@ -519,17 +519,22 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
     content: "";
     position: absolute;
     inset: -25%;
-    /* Плавно перетекающий градиент из палитры темы (--aurora-1/2/3). Последняя
-       остановка = первая → бесшовный цикл. Цвета свои у каждой темы. */
-    background: linear-gradient(120deg,
-      var(--aurora-1, #FAFAFA) 0%,
-      var(--aurora-2, #A1A1AA) 35%,
-      var(--aurora-3, #52525B) 65%,
+    /* Призматические световые лучи из палитры темы (--aurora-1/2/3): цветные
+       диагональные полосы с прозрачными зазорами (эффект преломления), медленно
+       дрейфуют. Чистый CSS, свои цвета у каждой темы. */
+    background: linear-gradient(115deg,
+      transparent 0%,
+      var(--aurora-1, #FAFAFA) 10%,
+      transparent 23%,
+      var(--aurora-2, #A1A1AA) 42%,
+      transparent 56%,
+      var(--aurora-3, #52525B) 74%,
+      transparent 87%,
       var(--aurora-1, #FAFAFA) 100%);
-    background-size: 300% 300%;
-    filter: blur(60px) saturate(1.1);
-    opacity: .38;
-    animation: gradientShift 14s ease-in-out infinite;
+    background-size: 260% 260%;
+    filter: blur(64px) saturate(1.2);
+    opacity: .34;
+    animation: gradientShift 16s ease-in-out infinite;
     will-change: background-position;
   }
   /* Полноэкранный фон — мягче, чтобы контент читался поверх */
