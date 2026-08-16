@@ -33,7 +33,7 @@
     </div>
     {# Слайдер категорий: горизонтальная лента + стрелки на десктопе #}
     <div class="relative" x-data>
-      <div class="no-scrollbar flex snap-x scroll-smooth gap-3 overflow-x-auto pb-1" x-ref="cattrack">
+      <div class="no-scrollbar flex snap-x scroll-smooth gap-3 overflow-x-auto px-1 py-2" x-ref="cattrack">
         {% for c in categories %}
         <a href="{{ c.get_absolute_url }}" class="ccard ccard-slide group snap-start">
           {% if c.image %}
