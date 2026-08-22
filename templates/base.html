@@ -315,10 +315,41 @@
     </div>
   </footer>
 
+  {# ---------- Нижняя навигация (только мобилка, десктоп не трогаем) ---------- #}
+  {% with page=request.resolver_match.url_name %}
+  <nav class="bottom-nav" aria-label="{% trans 'Навигация' %}">
+    <a href="{% url 'catalog:catalog' %}" class="bottom-nav-item{% if page == 'catalog' or page == 'category' %} is-active{% endif %}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <span class="bottom-nav-label">{% trans "Каталог" %}</span>
+    </a>
+    <a href="{% url 'catalog:search' %}" class="bottom-nav-item{% if page == 'search' %} is-active{% endif %}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+      <span class="bottom-nav-label">{% trans "Поиск" %}</span>
+    </a>
+    <a href="{% url 'catalog:home' %}" class="bottom-nav-item{% if page == 'home' %} is-active{% endif %}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+      <span class="bottom-nav-label">{% trans "Главная" %}</span>
+    </a>
+    <a href="{% url 'catalog:favorites' %}" class="bottom-nav-item{% if page == 'favorites' %} is-active{% endif %}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <span x-data x-show="$store.fav.count > 0" x-text="$store.fav.count" x-cloak
+            class="bottom-nav-badge text-white" style="background: var(--danger)"></span>
+      <span class="bottom-nav-label">{% trans "Избранное" %}</span>
+    </a>
+    <a href="{% url 'catalog:cart' %}" class="bottom-nav-item{% if page == 'cart' %} is-active{% endif %}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 7H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>
+      <span x-data x-show="$store.cart.count > 0" x-text="$store.cart.count" x-cloak
+            class="bottom-nav-badge text-on-accent" style="background: var(--accent)"></span>
+      <span class="bottom-nav-label">{% trans "Корзина" %}</span>
+    </a>
+  </nav>
+  {% endwith %}
+
   {# ---------- Плавающая кнопка корзины: иконка + счётчик + «Корзина» + сумма ---------- #}
+  {# На мобилке скрыта — там корзина уже в нижней навигации; остаётся только на десктопе #}
   {% if request.resolver_match.url_name != 'cart' %}
   <a href="{% url 'catalog:cart' %}" x-data x-show="$store.cart.count > 0" x-cloak x-transition
-     class="cart-fab" aria-label="{% trans 'Корзина' %}">
+     class="cart-fab hidden md:flex" aria-label="{% trans 'Корзина' %}">
     <span class="relative shrink-0">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
         <path d="M3 3h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 7H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>

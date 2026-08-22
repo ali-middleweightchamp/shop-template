@@ -172,41 +172,6 @@ class ShopSettings(models.Model):
     about_text = models.TextField(_("Текст «О нас»"), blank=True, default="")
     about_image = models.ImageField(_("Фото для «О нас»"), upload_to="shop/", blank=True)
 
-    # --- Доверительные плашки (trust badges) ---
-    trust_enabled = models.BooleanField(_("Показывать плашки доверия"), default=False)
-
-    class TrustIcon(models.TextChoices):
-        TAG = "tag", _("Ценник (опт/розница)")
-        TRUCK = "truck", _("Грузовик (доставка)")
-        USERS = "users", _("Клиенты")
-        CALENDAR = "calendar", _("Календарь (с какого года)")
-        BOX = "box", _("Коробка (наличие на складе)")
-        SHIELD = "shield", _("Щит (гарантия/качество)")
-        CLOCK = "clock", _("Часы работы")
-        PERCENT = "percent", _("Скидки")
-        STAR = "star", _("Звезда (качество)")
-        WALLET = "wallet", _("Кошелёк (цены)")
-
-    # Четыре фиксированных слота — просто и без отдельного CRUD.
-    trust1_icon = models.CharField(_("Плашка 1 · иконка"), max_length=16, choices=TrustIcon.choices, default=TrustIcon.TAG, blank=True)
-    trust1_text = models.CharField(_("Плашка 1 · текст"), max_length=60, blank=True, default="")
-    trust2_icon = models.CharField(_("Плашка 2 · иконка"), max_length=16, choices=TrustIcon.choices, default=TrustIcon.TRUCK, blank=True)
-    trust2_text = models.CharField(_("Плашка 2 · текст"), max_length=60, blank=True, default="")
-    trust3_icon = models.CharField(_("Плашка 3 · иконка"), max_length=16, choices=TrustIcon.choices, default=TrustIcon.USERS, blank=True)
-    trust3_text = models.CharField(_("Плашка 3 · текст"), max_length=60, blank=True, default="")
-    trust4_icon = models.CharField(_("Плашка 4 · иконка"), max_length=16, choices=TrustIcon.choices, default=TrustIcon.BOX, blank=True)
-    trust4_text = models.CharField(_("Плашка 4 · текст"), max_length=60, blank=True, default="")
-
-    @property
-    def trust_badges(self):
-        """Список заполненных плашек: [{icon, text}, …]. Пустые слоты пропускаем."""
-        out = []
-        for i in (1, 2, 3, 4):
-            text = getattr(self, f"trust{i}_text", "")
-            if text:
-                out.append({"icon": getattr(self, f"trust{i}_icon", ""), "text": text})
-        return out
-
     # --- Блок «Как заказать» (3 шага, универсальный флоу шаблона) ---
     howto_enabled = models.BooleanField(_("Показывать блок «Как заказать»"), default=False)
 

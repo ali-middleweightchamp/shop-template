@@ -528,20 +528,30 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   }
   .cart-fab:hover { filter: brightness(1.04); }
 
-  /* ---------- Плашки доверия (trust badges) ---------- */
-  .trust-strip {
-    @apply grid grid-cols-2 gap-3 sm:grid-cols-4;
+  /* ---------- Нижняя навигация (только мобилка) ---------- */
+  .bottom-nav {
+    @apply fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around md:hidden;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    /* Учитываем «чёлку»/жест-бар iPhone снизу */
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -8px 24px -18px rgba(0,0,0,.35);
   }
-  .trust-item {
-    @apply flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3;
-    box-shadow: var(--shadow-card);
+  .bottom-nav-item {
+    @apply relative flex flex-1 flex-col items-center justify-center gap-1 py-2 text-muted;
   }
-  .trust-ico {
-    @apply grid h-10 w-10 shrink-0 place-items-center rounded-xl;
-    color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  .bottom-nav-item svg { @apply h-6 w-6; }
+  .bottom-nav-label { @apply text-[10px] font-bold leading-none; }
+  /* Активная вкладка — фирменным акцентом */
+  .bottom-nav-item.is-active { color: var(--accent); }
+  /* Счётчик (избранное/корзина) поверх иконки */
+  .bottom-nav-badge {
+    @apply absolute flex h-4 min-w-[16px] items-center justify-center rounded-full px-1
+           text-[10px] font-bold leading-none;
+    top: .25rem;
+    /* правее центра иконки */
+    right: calc(50% - 1.15rem);
   }
-  .trust-text { @apply text-sm font-bold leading-tight text-ink; }
 
   /* ---------- Блок «О нас» ---------- */
   .about-block {
@@ -556,12 +566,17 @@ main { animation: fadeInUp .45s cubic-bezier(.4, 0, .2, 1) both; }
   .tg-fab {
     @apply fixed z-40 grid place-items-center rounded-full;
     left: 1.25rem;
-    bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    /* На мобилке приподнимаем над нижней навигацией */
+    bottom: calc(4.75rem + env(safe-area-inset-bottom));
     height: 3.5rem; width: 3.5rem;
     color: #fff;
     background: #229ED9;   /* фирменный цвет Telegram — не зависит от темы */
     box-shadow: 0 12px 28px -8px rgba(34, 158, 217, .6);
     transition: transform .15s ease, filter .15s ease;
+  }
+  /* На десктопе нижней панели нет — возвращаем кнопку в нижний угол */
+  @media (min-width: 768px) {
+    .tg-fab { bottom: calc(1.25rem + env(safe-area-inset-bottom)); }
   }
   .tg-fab:hover { filter: brightness(1.05); transform: translateY(-2px); }
 

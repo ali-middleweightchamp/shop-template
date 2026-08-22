@@ -67,18 +67,6 @@ class ShopSettingsAdmin(TranslationAdmin):
             _("Блок «О нас»"),
             {"fields": ("about_enabled", "about_title", "about_text", "about_image")},
         ),
-        (
-            _("Плашки доверия"),
-            {
-                "fields": (
-                    "trust_enabled",
-                    "trust1_icon", "trust1_text",
-                    "trust2_icon", "trust2_text",
-                    "trust3_icon", "trust3_text",
-                    "trust4_icon", "trust4_text",
-                )
-            },
-        ),
     )
 
     @admin.display(description=_("Как выглядит цвет"))

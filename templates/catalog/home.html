@@ -10,20 +10,6 @@
 {% endif %}
 
 <div class="shell{% if not banners %} pt-2{% endif %}">
-  {# ---------- Плашки доверия (настраиваются в панели → Настройки) ---------- #}
-  {% if shop.trust_enabled and shop.trust_badges %}
-  <section class="mt-6">
-    <div class="trust-strip">
-      {% for b in shop.trust_badges %}
-      <div class="trust-item">
-        <span class="trust-ico">{% include "catalog/partials/_trust_icon.html" with key=b.icon size="h-6 w-6" %}</span>
-        <span class="trust-text">{{ b.text }}</span>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
-  {% endif %}
-
   {# ---------- Категории (мельче на десктопе) ---------- #}
   {% if categories %}
   <section class="mt-10">

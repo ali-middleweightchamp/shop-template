@@ -120,12 +120,6 @@ class ShopSettingsForm(forms.ModelForm):
             # Блок «О нас»
             "about_enabled", "about_title_ru", "about_title_uz",
             "about_text_ru", "about_text_uz", "about_image",
-            # Плашки доверия
-            "trust_enabled",
-            "trust1_icon", "trust1_text_ru", "trust1_text_uz",
-            "trust2_icon", "trust2_text_ru", "trust2_text_uz",
-            "trust3_icon", "trust3_text_ru", "trust3_text_uz",
-            "trust4_icon", "trust4_text_ru", "trust4_text_uz",
             # Как заказать
             "howto_enabled",
             # FAQ
