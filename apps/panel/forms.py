@@ -140,7 +140,6 @@ class ShopSettingsForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["name_ru"].required = True
         # Ответы FAQ — многострочные
         for i in range(1, 6):
             for lang in ("ru", "uz"):
@@ -150,8 +149,7 @@ class ShopSettingsForm(forms.ModelForm):
         for name, field in self.fields.items():
             if isinstance(field.widget, forms.CheckboxInput):
                 continue
-            if name != "name_ru":
-                field.required = False
+            field.required = False
             field.widget.attrs["class"] = "pfield"
 
 
