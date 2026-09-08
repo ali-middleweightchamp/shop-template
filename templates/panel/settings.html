@@ -46,7 +46,7 @@
         <div class="grid gap-4 sm:grid-cols-2">
           <div>
             <label class="plabel">{% trans "Название" %} (RU)</label>
-            <input type="text" name="name_ru" x-model="name" required class="pfield">
+            <input type="text" name="name_ru" x-model="name" class="pfield">
             {% for e in form.name_ru.errors %}<div class="perror">{{ e }}</div>{% endfor %}
           </div>
           <div>
