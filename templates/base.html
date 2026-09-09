@@ -84,8 +84,8 @@
           <img src="{{ shop.logo.url }}" alt="{{ shop.name }}" class="h-10 w-auto">
         {% else %}
           <span class="logo-circle">{{ shop.name|first|upper }}</span>
+          <span class="hidden font-display text-lg font-extrabold tracking-tight text-ink lg:block">{{ shop.name }}</span>
         {% endif %}
-        <span class="hidden font-display text-lg font-extrabold tracking-tight text-ink lg:block">{{ shop.name }}</span>
       </a>
 
       {# Кнопка «Каталог» с бургером + выпадающее мега-меню категорий (десктоп) #}
@@ -195,8 +195,8 @@
             <img src="{{ shop.logo.url }}" alt="{{ shop.name }}" class="h-10 w-auto">
           {% else %}
             <span class="logo-circle">{{ shop.name|first|upper }}</span>
+            <span class="font-display text-lg font-extrabold text-white">{{ shop.name }}</span>
           {% endif %}
-          <span class="font-display text-lg font-extrabold text-white">{{ shop.name }}</span>
         </div>
         {% if shop.description %}
           <p class="mt-4 max-w-xs text-sm leading-relaxed" style="color:rgba(255,255,255,.75)">{{ shop.description|striptags|truncatewords:26 }}</p>
