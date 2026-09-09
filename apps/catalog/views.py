@@ -1,11 +1,13 @@
 """Витрина: главная, каталог, карточка товара, поиск, контакты, корзина."""
 import json
 
+from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
 
 from .models import Banner, Category, Product, ProductAttribute, ShortOrder
@@ -65,6 +67,7 @@ def _sidebar_categories():
     )
 
 
+@cache_page(60 * 5)
 def home(request):
     """Главная: баннер, категории и три полки товаров (популярное, хиты, новинки)."""
     from apps.shopsettings.models import ShopSettings
@@ -98,6 +101,7 @@ def _filter_sort(products, request):
     return products, q, sort, in_stock
 
 
+@cache_page(60 * 5)
 def catalog(request):
     """Весь каталог: чипы категорий, поиск по каталогу, сортировка, фильтр по бренду, сетка."""
     base, q, sort, in_stock = _filter_sort(_active_products(), request)
@@ -119,6 +123,7 @@ def catalog(request):
     return render(request, "catalog/catalog.html", context)
 
 
+@cache_page(60 * 5)
 def category(request, slug):
     """Товары одной категории (включая подкатегории). Тот же шаблон, что и каталог."""
     cat = get_object_or_404(Category, slug=slug, is_active=True)
@@ -143,6 +148,7 @@ def category(request, slug):
     return render(request, "catalog/catalog.html", context)
 
 
+@cache_page(60 * 10)
 def product_detail(request, slug):
     """Карточка товара: галерея, описание, похожие товары."""
     product = get_object_or_404(

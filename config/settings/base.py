@@ -145,6 +145,18 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Кеш страниц на диске — без Redis, без лишних контейнеров.
+# Публичные страницы (главная, каталог, карточка) кешируются 5 минут.
+# Сигналы в apps/catalog/signals.py сбрасывают кеш при изменении данных.
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/tmp/django_cache",
+        "TIMEOUT": 300,
+        "OPTIONS": {"MAX_ENTRIES": 1000},
+    }
+}
+
 SITE_ID = 1
 
 # easy-thumbnails: превью для списков товаров, оригиналы не отдаём
