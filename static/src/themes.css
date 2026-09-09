@@ -241,7 +241,7 @@
  * ================================================================== */
 [data-theme="light"][data-preset="noir"]    .panel-aside { --accent:#FAFAFA; --accent-2:#D4D4D8; --on-accent:#0A0A0A; }
 [data-preset="emerald"] .panel-aside { background: linear-gradient(160deg, #0F172A 0%, #1E3A5F 100%); }
-[data-theme="light"][data-preset="emerald"] .panel-aside { --accent:#60A5FA; --accent-2:#93C5FD; --on-accent:#0F172A; }
+[data-theme="light"][data-preset="emerald"] .panel-aside { --accent:#1FB98C; --accent-2:#46D2A6; --on-accent:#06120E; }
 [data-theme="light"][data-preset="ocean"]   .panel-aside { --accent:#3B82F6; --accent-2:#60A5FA; --on-accent:#08101F; }
 [data-theme="light"][data-preset="violet"]  .panel-aside { --accent:#A78BFA; --accent-2:#C4B5FD; --on-accent:#0F0A1A; }
 [data-theme="light"][data-preset="rose"]    .panel-aside { --accent:#FB7185; --accent-2:#FDA4AF; --on-accent:#1A0509; }
